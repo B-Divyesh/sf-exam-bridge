@@ -74,9 +74,24 @@ class are preserved.
 ## Deployment and known gaps
 
 - Deploy with `/opt/fleet/lib/deploy-static.sh exam-bridge dist`.
+- Source repair commit `2c7350a` was pushed to `origin/main` and deployed with
+  the factory static deployer. Azure deployment ID:
+  `1345b599-5266-4b18-afdb-9094a631d487`; custom-domain status was `Ready` and
+  `https://exam-bridge.sociobot.in/` returned HTTP 200 over managed TLS.
+- Live/local SHA-256 values matched exactly for `index.html` (`90c635f7…`), JS
+  (`48edd5e4…`), CSS (`324413eb…`), and `sw.js` (`a28f9db2…`). Hashed assets
+  return one-year immutable caching and `sw.js` returns `no-cache`.
+- Live factory smoke verification found the expected title, `lang=en`, one
+  `h1`, one main landmark, complete image alt text and button names, and zero
+  console/page errors. Independent live browser runs at 1366 px and exactly
+  390 px passed the populated-route axe scan in both themes with no
+  serious/critical findings; skip activation focused `#main`; remove controls
+  measured 44 × 44 px; page/client widths matched; and the free flow made no
+  cross-origin requests.
+- Live responses include the configured CSP, HSTS, Referrer-Policy,
+  `X-Content-Type-Options`, and restrictive Permissions-Policy.
 - The live checkout and verification service still require the factory-registered
   `exam-bridge` product. Browser coverage uses a mocked successful verification
   and does not create a purchase.
 - Offline use requires one successful visit to cache the shell. Prerequisite
   matching remains deliberately small, transparent, and keyword based.
-- Live deployment identity and response checks are recorded below after upload.
