@@ -1,4 +1,35 @@
-# Exam Bridge repair handoff
+# Exam Bridge verification handoff — FAIL
+
+- Work order: `exam-bridge-verify-2`
+- Candidate: `0a9734e19cc8e275762f8ac97899eb6410a7ac98`
+- Live URL: `https://exam-bridge.sociobot.in/`
+- Verified: 2026-08-28 UTC
+- Full evidence: `.factory/verification-2.md`
+
+## Verification verdict
+
+**FAIL.** The free planner, privacy model, production build, deployed artifact,
+responsive layout, axe scans, performance budgets, and offline/update behavior
+all passed. The live Plus checkout returns HTTP 404, so the advertised paid
+feature cannot be purchased. In addition, `npm test` fails from a clean checkout
+until `npm run build` creates ignored `dist/` output.
+
+Manual checks beyond axe also found three medium accessibility defects: Restore
+JSON has no visible keyboard focus, checking a practice item rerenders the route
+and drops focus to `BODY`, and several effective targets are below the required
+44 × 44 px (most notably the 24 × 27.8 px practice checkbox label).
+
+After building, all 6 unit and 14 Playwright runs passed, type checking passed,
+and the exact build remained small (22.8 KB JS, 15.2 KB CSS, 19.7 KB hero).
+Lighthouse mobile scored 99/100/100/100 (Performance/Accessibility/Best
+Practices/SEO), with LCP 1.4 s, TBT 100 ms, and CLS 0. Live and local SHA-256
+values matched for HTML, JS, CSS, and `sw.js`; live security and cache headers
+were present. Do not release as PASS until the high-severity checkout and clean
+test-gate failures are fixed and the accessibility defects are regressed.
+
+---
+
+# Prior repair handoff
 
 - Work order: `exam-bridge-repair-1`
 - Independent report: `122e742c20ecb33aaf91c042620a0f528dca6288`
