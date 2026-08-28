@@ -1,0 +1,12 @@
+{
+  "globalHeaders": {
+    "Content-Security-Policy": "default-src 'self'; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; connect-src 'self' https://api.sociobot.in https://pilot-api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self' https://api.sociobot.in https://pilot-api.sociobot.in; frame-ancestors 'none'",
+    "Referrer-Policy": "strict-origin-when-cross-origin",
+    "X-Content-Type-Options": "nosniff",
+    "Permissions-Policy": "camera=(), microphone=(), geolocation=()"
+  },
+  "routes": [
+    { "route": "/assets/*", "headers": { "Cache-Control": "public, max-age=31536000, immutable" } },
+    { "route": "/sw.js", "headers": { "Cache-Control": "no-cache" } }
+  ]
+}
