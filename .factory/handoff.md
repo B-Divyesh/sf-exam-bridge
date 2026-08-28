@@ -36,7 +36,9 @@
   Pixel 5/mobile). Coverage includes the full plan flow, reload persistence, invalid
   input, legal routes, axe WCAG A/AA scan, offline status, no console errors, and a
   mocked successful license return/verification.
-- `npm run build`: passed with TypeScript strict checking and Vite 7.3.6.
+- Fresh local clone: `npm ci` and the exact `npm run build` command passed; the
+  resulting `dist/index.html` was verified present. TypeScript strict checking and
+  Vite 7.3.6 are part of that build.
 - `npm audit`: 0 known vulnerabilities.
 - Production bundle: 22.81 KB raw JS (8.35 KB gzip), 15.06 KB raw CSS (4.16 KB
   gzip), 20 KB hero WebP; all are below the required budgets.
