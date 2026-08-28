@@ -1,80 +1,63 @@
-# Exam Bridge repair handoff — PASS
+# Exam Bridge independent verification handoff — FAIL
 
-- Work order: `exam-bridge-repair-3`
-- Base candidate: `843efb137f4271fb3a10fc69dc812d6074f6df36`
-- Repair commit: `b748c63` (`fix: buffer generated remove touch target`)
-- Artifact/deployment class: static web / Azure Static Web Apps
+- Work order: `exam-bridge-verify-3`
+- Candidate: `553f8fb9d4f6b524d3560e12af59b38e5e790acf`
 - Live URL: `https://exam-bridge.sociobot.in/`
-- Deployment ID: `6ae0e14a-c996-4d14-88d6-cb193ff74874`
-- Verified: 2026-08-28 UTC
+- Verified: 2026-08-28 06:24 UTC
+- Full evidence: `.factory/verification-3.md`
 
-## Repair
+## Result
 
-The generated practice-reference remove button was constrained to exactly
-`min-height: 44px`. The factory desktop audit measured that exact boundary as
-`43.99994px`, so it could fail the 44px accessibility target after browser
-subpixel rounding. In the local Chromium run it rounded to 44px, but the source
-constraint confirmed the same boundary condition. The generated remove-button
-rule now uses `min-height: 45px`, retaining its 44px width and giving a full CSS
-pixel of safe margin.
+**FAIL.** Clean install, tests, TypeScript, production build, bundle budgets,
+Lighthouse, axe, privacy checks, normal desktop/mobile journeys, fresh-profile
+offline reload, and live byte identity all pass. Release is blocked by two High
+defects:
 
-`tests/app.spec.ts` has focused desktop regression coverage for the generated
-remove control: it checks the effective 44px target and asserts the deployed
-computed `min-height` is `45px`. This avoids making the test itself depend on
-unstable fractional geometry while protecting the intended rounding buffer.
+1. A valid 80-topic plan accepts topic 81, saves it, then silently disappears
+   from the UI on reload because saved-plan validation rejects more than 80.
+   This reproduced locally and live (`81 → 0` visible topics).
+2. The previous app build and this candidate ship byte-identical `sw.js` with
+   cache `exam-bridge-v1` despite changed HTML/JS/CSS. An exact upgrade test from
+   `0a9734e` to `553f8fb` saw the new build on an uncached network probe but kept
+   serving `0a9734e` after `registration.update()`, normal reload, and offline
+   reload.
 
-## Verification evidence
+The researched paid unlock is also incomplete: production and pilot checkout
+both return 404. The UI honestly omits the dead buy link and leaves templates
+free, so the free planner is usable.
 
-- Exact clean gate: `npm ci --ignore-scripts && npm test && npm run build`
-  completed successfully. The lockfile install added 59 packages with 0 audit
-  vulnerabilities; the clean build passed; Vitest passed 6/6 tests; Playwright
-  passed all 20/20 runs across Desktop Chrome and Pixel 5.
-- The Playwright suite covers the local planning job end to end, error state,
-  desktop/mobile touch targets, keyboard skip-link and Space behavior, visible
-  focus restoration, populated-route axe checks in both themes, offline state,
-  returned-license storage/verification, legal pages, templates, and no-console
-  errors. The focused repaired desktop test also passed separately after a fresh
-  production build.
-- Local production service-worker smoke passed: after warming the shell and
-  waiting for activation, `registration.update()` retained an active `/sw.js`
-  worker; a reload while offline still rendered the app `h1`; console errors
-  were 0.
-- `npm run build` passed separately. Output: JavaScript 22,483 B raw / 8,250 B
-  gzip; CSS 15,458 B raw / 4,240 B gzip; the shipped hero WebP is 19,704 B.
-  The initial JavaScript and CSS are well within the static-product budgets.
-- `npm audit --omit=dev --audit-level=high` reported 0 vulnerabilities.
-- Local production `verify-url.sh` passed at `http://127.0.0.1:4173` in 605 ms:
-  HTTP 200, expected title, `lang=en`, one `h1`, main landmark, complete image
-  alt text, named buttons, and zero page/console errors.
-- Live `verify-url.sh` passed in 1,205 ms with the same semantic checks and zero
-  page/console errors. Live `/privacy/` and `/terms/` return 200; an unknown
-  path returns 404. The root has HSTS, CSP, `Referrer-Policy:
-  strict-origin-when-cross-origin`, `X-Content-Type-Options: nosniff`, and a
-  restrictive Permissions-Policy.
-- Live populated-route QA generated a practice reference and measured its remove
-  control at 44 × 45 CSS px with computed `min-height: 45px`; its WCAG 2A/2AA
-  axe scan had 0 serious/critical findings and there were 0 console errors.
-- Live identity check: local and deployed SHA-256 values match exactly.
+## Verification summary
 
-  | File | SHA-256 |
-  | --- | --- |
-  | `index.html` | `424bb2cc6b87042909c1951810db4252b9fec1efb4856187aca58cfe3eb665d5` |
-  | `assets/index-CKoo6GD-.css` | `999dcc0ba7c2aa55f23f1a751f607127670efcd9b42e729c9a15cf984b8a3042` |
-  | `assets/index-9_9B9L9L.js` | `e235294bf16089f282ef590cf6471534eeeb0f16faad88debdea0c0205833989` |
-  | `sw.js` | `a28f9db2a2f6b3922f25f83069f5295a2f4d814ef81d90f63eb432e1aca858f3` |
+- `npm ci --ignore-scripts`: 59 packages, 0 vulnerabilities.
+- `npm test`: build passed; Vitest 6/6; Playwright 20/20 desktop/mobile.
+- `npx tsc --noEmit`, `npm run build`, and production audit: passed. No lint
+  command/config exists.
+- Build: JS 22,483 B raw / 8,250 B gzip; CSS 15,458 B / 4,240 B; hero 19,704 B;
+  no runtime fonts.
+- Lighthouse mobile local/live: 100 Performance, 100 Accessibility, 100 Best
+  Practices, 100 SEO; LCP 1.3 s local / 0.9 s live; CLS 0; TBT 0 ms.
+- Populated desktop/390 px, both themes, Privacy, and Terms: 0 axe
+  serious/critical findings; 0 console/page errors; all audited mobile targets
+  ≥44 × 44 px; keyboard focus and reduced motion passed.
+- Representative 10-topic planning, ordering, prerequisite editing, practice,
+  reload, CSV/JSON export, invalid/valid restore, and reset recovery passed.
+- Live files match candidate production hashes exactly on a fresh request.
 
-## Run and deploy
+## Repair and reverify
+
+1. Enforce the 80-topic limit for **Add topic** (and every mutation) or align the
+   validator, then test maximum-size edit → save → reload → export.
+2. Generate/bump a release-scoped service-worker cache and test upgrade from the
+   exact currently deployed build, including offline reload after activation.
+3. Keep checkout hidden until the external Sociobot products return a hosted
+   checkout instead of 404.
+
+Run gates with:
 
 ```sh
 npm ci --ignore-scripts
 npm test
+npx tsc --noEmit
+npm audit --omit=dev --audit-level=high
 npm run build
-/opt/fleet/lib/deploy-static.sh exam-bridge dist
 ```
-
-## Known follow-up
-
-The factory still needs to register the production and pilot `exam-bridge`
-billing products before restoring the ₹499 checkout link. The app deliberately
-keeps templates locally usable and does not advertise the previously dead
-checkout; existing-license restore and background verification remain available.
