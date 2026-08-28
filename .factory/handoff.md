@@ -1,4 +1,4 @@
-# Exam Bridge v1 handoff
+# Exam Bridge v1 handoff — verifier result: FAIL
 
 - Work order: `exam-bridge-build-1`
 - Artifact: static web app
@@ -60,3 +60,25 @@
 - Prerequisite matching is deliberately small, transparent, and keyword based.
   Candidates must compare suggestions with their current official syllabus; v1
   does not claim exhaustive subject coverage or exam-authority affiliation.
+
+## Independent verification — authoritative status (2026-08-28)
+
+**FAIL** for candidate `afebcc85d98d0a18a42afc6b6f339eee8fc60479` at
+`https://exam-bridge.sociobot.in/`. The deployed `index.html`, JS, CSS, and
+service worker hashes match the candidate, so this is a release defect rather
+than a deployment mismatch.
+
+- **High:** After mapping a syllabus, axe WCAG 2 A/AA reports a serious
+  `color-contrast` violation on `.route-overview > div > .eyebrow`: coral
+  `#c73e2d` on `#17211f` is 3.26:1 at 13 px, below the required 4.5:1.
+- **Medium:** Activating the skip link leaves focus on `BODY`, rather than the
+  main/planner target.
+- **Medium:** A generated practice-reference remove button is 32 x 32 CSS px,
+  below the 44 x 44 touch-target contract.
+
+Fresh clean-clone evidence: `npm ci --ignore-scripts`, `npm test` (6 unit + 10
+desktop/mobile Playwright), `npm run build`, and production bundle budgets all
+passed. The planner’s normal flow, validation/recovery cases, 390 px layout,
+reduced motion, PWA update/offline reload, privacy/network behavior, and live
+response headers were independently checked. Full commands, measurements, and
+reproduction details are in `.factory/verification.md`.
