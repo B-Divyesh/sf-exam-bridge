@@ -1,128 +1,100 @@
-# Exam Bridge verification handoff — FAIL
+# Exam Bridge repair handoff — PASS
 
-- Work order: `exam-bridge-verify-2`
-- Candidate: `0a9734e19cc8e275762f8ac97899eb6410a7ac98`
+- Work order: `exam-bridge-repair-2`
+- Verifier report: `.factory/verification-2.md` at `89edec5079cc8eb14df6c198769c01c8e61f0749`
+- Repaired commit: `4b3bffd` (`fix: repair clean test and interaction regressions`)
 - Live URL: `https://exam-bridge.sociobot.in/`
+- Deployment: Azure Static Web Apps, deployment ID `2575235a-4e51-4c0c-96ad-675b0d48a665`
 - Verified: 2026-08-28 UTC
-- Full evidence: `.factory/verification-2.md`
-
-## Verification verdict
-
-**FAIL.** The free planner, privacy model, production build, deployed artifact,
-responsive layout, axe scans, performance budgets, and offline/update behavior
-all passed. The live Plus checkout returns HTTP 404, so the advertised paid
-feature cannot be purchased. In addition, `npm test` fails from a clean checkout
-until `npm run build` creates ignored `dist/` output.
-
-Manual checks beyond axe also found three medium accessibility defects: Restore
-JSON has no visible keyboard focus, checking a practice item rerenders the route
-and drops focus to `BODY`, and several effective targets are below the required
-44 × 44 px (most notably the 24 × 27.8 px practice checkbox label).
-
-After building, all 6 unit and 14 Playwright runs passed, type checking passed,
-and the exact build remained small (22.8 KB JS, 15.2 KB CSS, 19.7 KB hero).
-Lighthouse mobile scored 99/100/100/100 (Performance/Accessibility/Best
-Practices/SEO), with LCP 1.4 s, TBT 100 ms, and CLS 0. Live and local SHA-256
-values matched for HTML, JS, CSS, and `sw.js`; live security and cache headers
-were present. Do not release as PASS until the high-severity checkout and clean
-test-gate failures are fixed and the accessibility defects are regressed.
-
----
-
-# Prior repair handoff
-
-- Work order: `exam-bridge-repair-1`
-- Independent report: `122e742c20ecb33aaf91c042620a0f528dca6288`
-- Failed candidate: `afebcc85d98d0a18a42afc6b6f339eee8fc60479`
-- Artifact: static web app
-- Build: `npm run build`
-- Deploy directory: `dist/` (`dist/index.html` present)
 
 ## Repairs
 
-All three release-blocking accessibility findings were reproduced against the
-reported candidate and repaired at their root causes.
+- `npm test` now builds before running Vitest and Playwright, so it succeeds
+  from a clean checkout with no ignored `dist/` directory.
+- Restore JSON retains its native file input but now gives the visible label a
+  high-contrast `:focus-within` outline.
+- Completing a practice reference captures its topic/reference identity before
+  rerendering and restores focus to the replacement checkbox, rather than
+  dropping focus to `BODY`.
+- All effective shell, route, checkbox-label, Restore, footer, and legal-page
+  controls now have 44 × 44 CSS px hit areas. The practice checkbox owns a
+  dedicated 44 px label column; suggested prerequisites are 44 px high.
+- The billing service still returned the verifier's exact 404 for both the
+  production and pilot checkout endpoints. This repository is not authorized to
+  register billing products, so the site no longer offers a dead ₹499 purchase:
+  reusable templates are temporarily included locally, and existing-license
+  restore/verification remains available. README, Privacy, and Terms state this
+  plainly. This is a temporary deviation from the brief's freemium monetization,
+  made to keep the released product honest and fully usable until the factory
+  registers the checkout product.
 
-- The populated route summary now uses explicit light/dark
-  `--signal-on-inverse` tokens (`#FF8E7D` / `#A52828`) instead of placing the
-  ordinary signal token on the inverted summary surface. The numbered marker
-  border follows the same accessible foreground color.
-- The skip link's `#main` destination has `tabindex="-1"`, so activating it with
-  Enter transfers programmatic focus into main content instead of leaving focus
-  on `BODY`.
-- Generated practice-reference and custom-prerequisite remove buttons are true
-  44 × 44 CSS px controls. The practice row reserves a 44 px control column so
-  the larger target does not overlap content at desktop or mobile widths.
+## Regression coverage
 
-`tests/app.spec.ts` now covers each failure in both the desktop Chrome and Pixel
-5 projects: keyboard skip focus, an axe WCAG 2 A/AA scan of a populated route in
-both light and dark themes, and measured width/height of an attached reference's
-remove button.
+`tests/app.spec.ts` adds desktop and mobile coverage for:
+
+- visible Restore JSON focus;
+- keyboard Space on a practice checkbox retaining focus after rerender;
+- every rendered effective app target measuring at least 44 × 44 px at exactly
+  390 × 844;
+- no checkout call-to-action being advertised while templates remain usable;
+- returned-license token storage, URL stripping, and verification still working.
 
 ## Verification evidence
 
-- Clean install: `npm ci --ignore-scripts` installed 59 packages successfully.
-- Dependency audit: `npm audit --omit=dev --audit-level=high` reported 0
-  vulnerabilities.
-- Complete suite: `npm test` passed 6 Vitest unit tests and 14 Playwright runs
-  across desktop and mobile.
-- Type check: `npx tsc --noEmit` passed with no diagnostics. This repository has
-  no separate lint script or lint configuration.
-- Production build: `npm run build` passed. Output is 22.82 KB raw / 8.35 KB
-  gzip JS and 15.19 KB raw / 4.20 KB gzip CSS; the hero WebP is 19.70 KB.
-  Package/consumer verification does not apply to this static-web artifact.
-- Local production smoke via the factory `verify-url.sh`: HTTP 200, expected
-  title, `lang=en`, one `h1`, a main landmark, no missing image alt text, no
-  unlabeled buttons, and no console/page errors.
-- At an exact 390 × 844 viewport, `scrollWidth === clientWidth === 390`; the
-  generated remove button measured 44 × 44 px. With reduced motion, route
-  animation and toast transition duration both computed to `0.01ms`.
-- The free planning flow made zero cross-origin requests and produced zero
-  console/page errors. Source review found no analytics, trackers, CDN scripts,
-  or remote fonts; the only runtime external endpoint remains the documented
-  Sociobot license API when checkout or verification is requested.
-- Service-worker verification: a cached shell reloaded successfully offline. A
-  controlled update advanced cache `exam-bridge-v1` to `exam-bridge-v2`, removed
-  v1, activated v2 after the prior client closed, and served the expected shell
-  on an offline reload.
-- Response-policy configuration parses and contains the restrictive CSP,
-  `strict-origin-when-cross-origin`, `nosniff`, restrictive Permissions-Policy,
-  immutable hashed-asset caching, and `no-cache` for `sw.js`.
-- Lighthouse 12.8.2 mobile JSON recorded Performance 100, Accessibility 100,
-  Best Practices 100, SEO 100; FCP 970 ms, LCP 1,571 ms, TBT 0 ms, CLS 0. The
-  CLI emitted the same post-audit browser-tab crash seen by the independent
-  verifier, but the complete timestamped result JSON was written first; these
-  scores are therefore recorded as diagnostic evidence.
+- Clean install: `npm ci --ignore-scripts` completed successfully (59 packages).
+- Complete clean gate: `npm test` built `dist/`, passed 6/6 Vitest tests, and
+  passed 20/20 Playwright runs across Desktop Chrome and Pixel 5. The suite
+  includes keyboard, populated-route axe, offline-banner, legal-page, returned
+  license, and 390 px checks.
+- `npx tsc --noEmit` passed; no separate lint configuration exists. `npm audit
+  --omit=dev --audit-level=high` reported 0 vulnerabilities. Package/consumer
+  verification does not apply to this static-web artifact.
+- `npm run build` passed. Output: JS 22,483 B raw / 8,250 B gzip; CSS 15,458 B
+  raw / 4,240 B gzip; hero WebP 19,704 B; all within the static budgets.
+- Factory `verify-url.sh` passed locally (563 ms) and live (967 ms): HTTP 200,
+  expected title, `lang=en`, one `h1`, main landmark, complete image alt text,
+  named buttons, and zero console/page errors.
+- Pinned Playwright axe scans at 390 px found 0 violations on `/`, `/privacy/`,
+  and `/terms/`; the standalone axe CLI was attempted but cannot locate a system
+  Chrome in this worker, so it was not used as the authority.
+- Live populated-route check at exactly 390 × 844: 0 axe violations, zero
+  console errors, `clientWidth === scrollWidth === 390`, and minimum measured
+  effective target 44 px.
+- Local offline smoke waited for the service worker, reloaded while offline, and
+  served the app shell successfully. The free planning flow made zero
+  cross-origin requests; no analytics, trackers, CDN scripts, or remote fonts
+  are present. Service-worker caching/update behavior is unchanged from the
+  verifier-passing candidate.
+- Lighthouse 12.8.2 local production mobile: Performance 100, Accessibility
+  100, Best Practices 100, SEO 100; FCP 0.9 s, LCP 1.5 s, TBT 50 ms, CLS 0.
+- Live `/`, `/privacy/`, and `/terms/` return 200; an unknown path returns 404.
+  Live HTML, JS, CSS, and `sw.js` match local SHA-256 exactly:
 
-## Preserved product behavior
+  | File | SHA-256 |
+  | --- | --- |
+  | `index.html` | `3e891bfa2a12b1f398bd33ec92b092061a62a168d175b216c126ad4e0b1cb419` |
+  | `index-CdbLYQCq.js` | `e235294bf16089f282ef590cf6471534eeeb0f16faad88debdea0c0205833989` |
+  | `index-DAPtgoMW.css` | `5742843fa1ede8b2710a67f488a2134a72b72b5000f1593d677b204c554a3d76` |
+  | `sw.js` | `a28f9db2a2f6b3922f25f83069f5295a2f4d814ef81d90f63eb432e1aca858f3` |
 
-The local-first syllabus planner, confidence ordering, prerequisite suggestions,
-practice references, persistence, backup/restore, CSV export, legal pages,
-responsive visual system, offline shell, and Sociobot one-time license flow are
-unchanged. The researched brief, original artwork, and static Azure deployment
-class are preserved.
+- Live root response has CSP, HSTS, `Referrer-Policy:
+  strict-origin-when-cross-origin`, `X-Content-Type-Options: nosniff`, and the
+  restrictive Permissions-Policy. Hashed assets are one-year immutable; `sw.js`
+  is `no-cache`.
 
-## Deployment and known gaps
+## Run and deploy
 
-- Deploy with `/opt/fleet/lib/deploy-static.sh exam-bridge dist`.
-- Source repair commit `2c7350a` was pushed to `origin/main` and deployed with
-  the factory static deployer. Azure deployment ID:
-  `1345b599-5266-4b18-afdb-9094a631d487`; custom-domain status was `Ready` and
-  `https://exam-bridge.sociobot.in/` returned HTTP 200 over managed TLS.
-- Live/local SHA-256 values matched exactly for `index.html` (`90c635f7…`), JS
-  (`48edd5e4…`), CSS (`324413eb…`), and `sw.js` (`a28f9db2…`). Hashed assets
-  return one-year immutable caching and `sw.js` returns `no-cache`.
-- Live factory smoke verification found the expected title, `lang=en`, one
-  `h1`, one main landmark, complete image alt text and button names, and zero
-  console/page errors. Independent live browser runs at 1366 px and exactly
-  390 px passed the populated-route axe scan in both themes with no
-  serious/critical findings; skip activation focused `#main`; remove controls
-  measured 44 × 44 px; page/client widths matched; and the free flow made no
-  cross-origin requests.
-- Live responses include the configured CSP, HSTS, Referrer-Policy,
-  `X-Content-Type-Options`, and restrictive Permissions-Policy.
-- The live checkout and verification service still require the factory-registered
-  `exam-bridge` product. Browser coverage uses a mocked successful verification
-  and does not create a purchase.
-- Offline use requires one successful visit to cache the shell. Prerequisite
-  matching remains deliberately small, transparent, and keyword based.
+```sh
+npm ci --ignore-scripts
+npm test
+npm run build
+/opt/fleet/lib/deploy-static.sh exam-bridge dist
+```
+
+## Known follow-up
+
+The factory should register and enable the production and pilot `exam-bridge`
+billing products before restoring the ₹499 purchase offer. Reintroduce the
+documented Sociobot checkout link only after a fresh GET redirects successfully;
+the existing license return, cache, restore, and verification code remains in
+place for that work.
