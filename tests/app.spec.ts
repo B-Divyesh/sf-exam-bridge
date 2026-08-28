@@ -41,3 +41,25 @@ test('legal pages are reachable', async ({ page }) => {
   await page.goto('/terms/');
   await expect(page).toHaveTitle(/Terms/);
 });
+
+test('shows an offline state and loads without console errors', async ({ page, context }) => {
+  const errors: string[] = [];
+  page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
+  await context.setOffline(true);
+  await expect(page.getByText(/You’re offline/)).toBeVisible();
+  await page.keyboard.press('Tab');
+  await expect(page.locator(':focus')).toBeVisible();
+  await context.setOffline(false);
+  expect(errors).toEqual([]);
+});
+
+test('stores, strips, and verifies a returned Plus license', async ({ page }) => {
+  await page.route('**/api/v1/products/exam-bridge/verify?license=valid-test', route => route.fulfill({
+    contentType: 'application/json',
+    body: JSON.stringify({ valid: true, reason: 'ok', expires_at: null }),
+  }));
+  await page.goto('/?license=valid-test');
+  await expect(page).toHaveURL('http://127.0.0.1:4173/');
+  await expect(page.getByText('Templates unlocked on this device')).toBeVisible();
+  expect(await page.evaluate(() => localStorage.getItem('sb_license:exam-bridge'))).toBe('valid-test');
+});
