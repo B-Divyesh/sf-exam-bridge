@@ -35,6 +35,10 @@ unstable fractional geometry while protecting the intended rounding buffer.
   returned-license storage/verification, legal pages, templates, and no-console
   errors. The focused repaired desktop test also passed separately after a fresh
   production build.
+- Local production service-worker smoke passed: after warming the shell and
+  waiting for activation, `registration.update()` retained an active `/sw.js`
+  worker; a reload while offline still rendered the app `h1`; console errors
+  were 0.
 - `npm run build` passed separately. Output: JavaScript 22,483 B raw / 8,250 B
   gzip; CSS 15,458 B raw / 4,240 B gzip; the shipped hero WebP is 19,704 B.
   The initial JavaScript and CSS are well within the static-product budgets.
