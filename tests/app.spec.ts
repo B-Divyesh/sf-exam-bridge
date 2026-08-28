@@ -61,6 +61,9 @@ test('keeps the populated route accessible and generated remove controls touch-s
   expect(box).not.toBeNull();
   expect(box!.width).toBeGreaterThanOrEqual(44);
   expect(box!.height).toBeGreaterThanOrEqual(44);
+  // Keep a full CSS-pixel buffer over the 44px requirement: a 44px minimum
+  // can be reported as 43.99994px after browser subpixel rounding.
+  await expect(remove).toHaveCSS('min-height', '45px');
 });
 
 test('keeps visible focus on Restore JSON and preserves focus after marking practice complete', async ({ page }) => {
