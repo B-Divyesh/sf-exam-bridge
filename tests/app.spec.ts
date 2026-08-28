@@ -35,6 +35,34 @@ test('validates the empty route and has no serious accessibility findings', asyn
   expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([]);
 });
 
+test('moves keyboard focus into main content from the skip link', async ({ page }) => {
+  await page.keyboard.press('Tab');
+  await expect(page.getByRole('link', { name: 'Skip to planner' })).toBeFocused();
+  await page.keyboard.press('Enter');
+  await expect(page.locator('#main')).toBeFocused();
+});
+
+test('keeps the populated route accessible and generated remove controls touch-sized', async ({ page }) => {
+  await page.getByLabel(/Syllabus topics/).fill('Signals and systems\nControl systems');
+  await page.getByRole('button', { name: /Map my syllabus/ }).click();
+  await expect(page.getByRole('heading', { name: 'Your next pass' })).toBeVisible();
+
+  for (const theme of ['light', 'dark']) {
+    if (theme === 'dark') await page.getByRole('button', { name: 'Switch color theme' }).click();
+    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
+    expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([]);
+  }
+
+  const firstTopic = page.locator('.topic').first();
+  await firstTopic.getByLabel(/Question ID or note/).fill('2023 · Q14');
+  await firstTopic.getByRole('button', { name: 'Attach' }).click();
+  const remove = firstTopic.getByRole('button', { name: 'Remove 2023 · Q14' });
+  const box = await remove.boundingBox();
+  expect(box).not.toBeNull();
+  expect(box!.width).toBeGreaterThanOrEqual(44);
+  expect(box!.height).toBeGreaterThanOrEqual(44);
+});
+
 test('legal pages are reachable', async ({ page }) => {
   await page.goto('/privacy/');
   await expect(page).toHaveTitle(/Privacy/);

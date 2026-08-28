@@ -23,6 +23,7 @@ evokes a late-night study table.
 | Line | `#C7CEC6` | `#46524E` | topology edges and dividers |
 | Signal | `#C73E2D` | `#FF7A66` | actions, active route |
 | Signal ink | `#FFFFFF` | `#171A18` | text on signal |
+| Signal on inverse | `#FF8E7D` | `#A52828` | coral route labels on inverted summary surfaces, ≥4.5:1 |
 | Route | `#155E63` | `#72D1C8` | mastered/connected state |
 | Caution | `#865B0B` | `#F6C967` | developing state |
 | Danger | `#A52828` | `#FF8E8E` | validation and failures |
