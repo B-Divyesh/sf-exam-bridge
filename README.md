@@ -15,7 +15,7 @@ Live product: <https://exam-bridge.sociobot.in>
 - Confidence-aware study ordering and progress summary
 - Local autosave, offline shell, JSON backup/restore, and CSV export
 - Light and dark themes, keyboard support, responsive 390 px layout
-- A one-time Exam Bridge Plus unlock for reusable domain templates
+- Reusable editable domain templates, currently included while hosted checkout is prepared
 - No accounts, trackers, CDN scripts, hosted questions, or exam-authority claims
 
 Plans live in browser `localStorage`. Clearing site data deletes them, so export a
@@ -46,11 +46,12 @@ npm run preview
 
 ## Billing behavior
 
-The free planner and exports are not gated. Exam Bridge Plus links to the Sociobot
-hosted checkout, stores a returned `license` token as `sb_license:exam-bridge`,
-strips it from the URL, and verifies it through the Sociobot API no more than once
-per day. Local development uses the pilot API; the production hostname uses the
-production API. No product ID or payment-provider integration is embedded here.
+The planner, templates, and exports are currently available without payment while
+the Sociobot hosted checkout is being prepared. Existing license holders can still
+restore a token; it is stored as `sb_license:exam-bridge`, stripped from the URL,
+and verified through the Sociobot API no more than once per day. Local development
+uses the pilot API; the production hostname uses the production API. No payment
+provider integration is embedded here.
 
 ## Deployment and privacy
 

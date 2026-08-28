@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "vitest run && playwright test",
+    "test": "npm run build && vitest run && playwright test",
     "test:unit": "vitest run",
     "test:e2e": "playwright test"
   },

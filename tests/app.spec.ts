@@ -63,6 +63,56 @@ test('keeps the populated route accessible and generated remove controls touch-s
   expect(box!.height).toBeGreaterThanOrEqual(44);
 });
 
+test('keeps visible focus on Restore JSON and preserves focus after marking practice complete', async ({ page }) => {
+  await page.getByLabel(/Syllabus topics/).fill('Signals and systems\nControl systems');
+  await page.getByRole('button', { name: /Map my syllabus/ }).click();
+
+  const restore = page.locator('#import-json');
+  await restore.focus();
+  await expect(restore).toBeFocused();
+  await expect(restore.locator('..')).toHaveCSS('outline-style', 'solid');
+
+  const firstTopic = page.locator('.topic').first();
+  await firstTopic.getByLabel(/Question ID or note/).fill('2023 · Q14');
+  await firstTopic.getByRole('button', { name: 'Attach' }).click();
+  const complete = page.getByRole('checkbox', { name: 'Mark 2023 · Q14 complete' });
+  await complete.focus();
+  await page.keyboard.press('Space');
+  await expect(complete).toBeFocused();
+  await expect(page.getByText('Attempted', { exact: true })).toBeVisible();
+});
+
+test('keeps all effective route, shell, and footer targets at least 44px at 390px', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByLabel(/Syllabus topics/).fill('Signals and systems\nControl systems');
+  await page.getByRole('button', { name: /Map my syllabus/ }).click();
+  const firstTopic = page.locator('.topic').first();
+  await firstTopic.getByLabel(/Question ID or note/).fill('2023 · Q14');
+  await firstTopic.getByRole('button', { name: 'Attach' }).click();
+
+  const targets = page.locator('a, button, .file-button, .check-list label, .practice-list li > label');
+  const boxes = await targets.evaluateAll(elements => elements
+    .filter(element => {
+      const style = getComputedStyle(element);
+      return style.display !== 'none' && style.visibility !== 'hidden';
+    })
+    .map(element => {
+      const rect = element.getBoundingClientRect();
+      return { label: (element as HTMLElement).innerText || element.getAttribute('aria-label') || element.id, width: rect.width, height: rect.height };
+    }));
+  expect(boxes).not.toEqual([]);
+  for (const box of boxes) {
+    expect(box.width, `${box.label} must be at least 44px wide`).toBeGreaterThanOrEqual(44);
+    expect(box.height, `${box.label} must be at least 44px high`).toBeGreaterThanOrEqual(44);
+  }
+});
+
+test('does not advertise an unavailable checkout and keeps templates usable', async ({ page }) => {
+  await expect(page.getByRole('link', { name: /Buy template unlock|Buy a new license/i })).toHaveCount(0);
+  await page.getByRole('button', { name: 'Use template' }).first().click();
+  await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
+});
+
 test('legal pages are reachable', async ({ page }) => {
   await page.goto('/privacy/');
   await expect(page).toHaveTitle(/Privacy/);
@@ -88,6 +138,6 @@ test('stores, strips, and verifies a returned Plus license', async ({ page }) =>
   }));
   await page.goto('/?license=valid-test');
   await expect(page).toHaveURL('http://127.0.0.1:4173/');
-  await expect(page.getByText('Templates unlocked on this device')).toBeVisible();
+  await expect(page.getByText('Existing templates license verified')).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem('sb_license:exam-bridge'))).toBe('valid-test');
 });

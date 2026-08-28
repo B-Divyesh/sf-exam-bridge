@@ -6,7 +6,6 @@ const THEME_KEY = 'exam-bridge:theme';
 const LICENSE_KEY = 'sb_license:exam-bridge';
 const LICENSE_CACHE_KEY = 'exam-bridge:license-verdict';
 const billingBase = location.hostname === 'exam-bridge.sociobot.in' ? 'https://api.sociobot.in' : 'https://pilot-api.sociobot.in';
-const checkoutUrl = `${billingBase}/api/v1/products/exam-bridge/checkout`;
 
 const templates = [
   { name: 'Engineering foundations', note: 'A reusable starter map—not an official syllabus.', topics: ['Engineering mathematics', 'Signals and systems', 'Electric circuits', 'Control systems', 'General aptitude'] },
@@ -135,10 +134,10 @@ function workspace(): string {
 }
 
 function templatesSection(): string {
-  return `<section class="templates" id="templates" aria-labelledby="templates-title"><div class="section-index"><span>+</span><div><p class="eyebrow">Reusable starting points</p><h2 id="templates-title">Begin from a foundation map</h2><p>The free planner and all exports stay unlimited. A one-time ₹499 unlock adds reusable, editable starter templates for permitted exam domains.</p></div></div>
-    <div class="template-list">${templates.map((template, index) => `<article><div><span class="template-shape" aria-hidden="true"></span><h3>${template.name}</h3><p>${template.note}</p><small>${template.topics.length} editable topics</small></div><button type="button" data-template="${index}" ${paidUnlocked ? '' : 'aria-describedby="paid-note"'}>${paidUnlocked ? 'Use template' : 'Preview locked'}</button></article>`).join('')}</div>
-    <div class="license-panel"><div><p class="eyebrow">Exam Bridge Plus</p><h3>${paidUnlocked ? 'Templates unlocked on this device' : 'One purchase, reusable templates'}</h3><p id="paid-note">${paidUnlocked ? 'Your free tools and unlocked templates work without an account.' : 'One-time ₹499 purchase. Sociobot/Dodo is the merchant of record. Refunds are handled there and revoke the license.'}</p>${licenseNotice ? `<p class="license-notice">${escapeHtml(licenseNotice)} <a href="${checkoutUrl}">Buy a new license</a>.</p>` : ''}</div>
-    ${paidUnlocked ? '<button class="button secondary" id="recheck-license" type="button">Recheck license</button>' : `<div class="license-actions"><a class="button primary" href="${checkoutUrl}">Buy template unlock</a><form id="license-form"><label for="license-token">Have a license?</label><div><input id="license-token" name="license" autocomplete="off" required placeholder="Paste license token"><button type="submit">Verify</button></div><p id="license-status" role="status" aria-live="polite"></p></form></div>`}</div>
+  return `<section class="templates" id="templates" aria-labelledby="templates-title"><div class="section-index"><span>+</span><div><p class="eyebrow">Reusable starting points</p><h2 id="templates-title">Begin from a foundation map</h2><p>Use an editable starter map for a permitted exam domain, then make it your own. The planner, templates, and exports stay local to this device.</p></div></div>
+    <div class="template-list">${templates.map((template, index) => `<article><div><span class="template-shape" aria-hidden="true"></span><h3>${template.name}</h3><p>${template.note}</p><small>${template.topics.length} editable topics</small></div><button type="button" data-template="${index}">Use template</button></article>`).join('')}</div>
+    <div class="license-panel"><div><p class="eyebrow">Local-first access</p><h3>${paidUnlocked ? 'Existing templates license verified' : 'Templates are available on this device'}</h3><p id="paid-note">Templates are currently included while Exam Bridge prepares its hosted purchase flow. No card details or account are needed.</p>${licenseNotice ? `<p class="license-notice">${escapeHtml(licenseNotice)} You can restore a valid existing license below.</p>` : ''}</div>
+    <form id="license-form"><label for="license-token">Have an existing license?</label><div><input id="license-token" name="license" autocomplete="off" required placeholder="Paste license token"><button type="submit">Verify</button></div><p id="license-status" role="status" aria-live="polite"></p></form></div>
   </section>`;
 }
 
@@ -156,10 +155,11 @@ function announce(message: string): void {
   window.setTimeout(() => toast.classList.remove('show'), 2600);
 }
 
-function rerenderPlanner(message?: string): void {
+function rerenderPlanner(message?: string, focusSelector?: string): void {
   if (message) savePlan(message);
   document.querySelector<HTMLDivElement>('#planner')!.innerHTML = workspace();
   bindPlannerEvents();
+  if (focusSelector) document.querySelector<HTMLElement>(focusSelector)?.focus({ preventScroll: true });
 }
 
 function findTopic(element: Element): Topic | undefined {
@@ -211,7 +211,8 @@ function bindPlannerEvents(): void {
         const refId = target.closest<HTMLElement>('[data-ref-id]')?.dataset.refId;
         const ref = topic.practice.find(item => item.id === refId);
         if (ref) ref.done = input.checked;
-        rerenderPlanner('Practice progress saved.');
+        const focusSelector = refId ? `#topic-${CSS.escape(topic.id)} [data-ref-id="${CSS.escape(refId)}"] [data-action="practice-done"]` : undefined;
+        rerenderPlanner('Practice progress saved.', focusSelector);
       }
     });
     card.addEventListener('submit', event => {
@@ -279,7 +280,6 @@ function bindEvents(): void {
   document.querySelector('#theme-toggle')?.addEventListener('click', toggleTheme);
   document.querySelectorAll<HTMLButtonElement>('[data-template]').forEach(button => button.addEventListener('click', () => {
     const template = templates[Number(button.dataset.template)];
-    if (!paidUnlocked) { document.querySelector('#license-token')?.scrollIntoView({ behavior: 'smooth', block: 'center' }); announce('Unlock Plus or restore a license to use this template.'); return; }
     if (plan && !window.confirm('Replace your current plan? Export a backup first if you need it.')) return;
     plan = createPlan(template.name, '', template.topics); savePlan('Template saved as a new local plan.'); rerenderPlanner(); document.querySelector('#workspace-title')?.scrollIntoView({ behavior: 'smooth' });
   }));
