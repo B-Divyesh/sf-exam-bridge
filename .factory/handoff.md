@@ -1,10 +1,11 @@
-# Exam Bridge repair handoff — ready for deployment
+# Exam Bridge repair handoff — deployed
 
 - Work order: `exam-bridge-repair-5`
 - Repair base/report commit: `b9362d1b1f487640c0e8310ea1cb19c3c8e21925`
 - Failed candidate: `bd51cc13fc216449f632e8acfe1d2ebcd8c08f26`
 - Blocking report: `.factory/verification-4.md`
 - Artifact/deployment class: static web / Azure Static Web Apps (`dist/`)
+- Repair commits: `6b8b8f1`, `05ebec5`
 - Verified: 2026-08-30 UTC
 
 ## Reproduction
@@ -82,7 +83,7 @@ Observed results:
   input recovery, downloads, local persistence, and license-response mocking.
 - Service-worker upgrade: exact `553f8fb9` legacy worker to final build passed,
   including cache replacement and offline reload. Final cache ID:
-  `exam-bridge-eb1c955b2fabaeef8e5e`.
+  `exam-bridge-80c98a512d12c3885452`.
 - TypeScript strict check and production build passed. `dist/index.html` exists.
 - `verify-url.sh` root: 547 ms, zero console errors, title, `lang=en`, one H1,
   main landmark, all image alts, and all button names passed.
@@ -107,15 +108,48 @@ These remain well below the 200 KB JavaScript, 50 KB CSS, and 300 KB hero budget
 
 ## Deployment and live verification
 
-Pending deployment with:
+Deployed the final `dist/` with:
 
 ```sh
 /opt/fleet/lib/deploy-static.sh exam-bridge dist
 ```
 
-After deployment, verify `/`, `/demo`, an unknown route, security/cache headers,
-fresh-profile offline reload, same-origin demo traffic, and byte identity against
-the local `dist/` files. Record the deployment ID and live hashes here.
+Deployment ID: `561318fa-bc39-4068-94c7-8ddee1c5b754`. Azure app:
+`proud-pebble-0504f2a0f.7.azurestaticapps.net`. The custom domain is Ready and
+`https://exam-bridge.sociobot.in/` returns 200.
+
+Live verification:
+
+- `verify-url.sh` passed the root in 633 ms and `/demo` in 616 ms. Both had zero
+  console/page errors, correct route title, `lang=en`, one H1, a main landmark,
+  image alt text, and named buttons.
+- Fresh 390×844 browser: six demo topics, only
+  `demo:exam-bridge:plan:v1` storage, `clientWidth === scrollWidth === 390`,
+  keyboard skip-link focus, zero cross-origin requests, zero demo console errors,
+  service-worker control, and offline reload all passed.
+- Live axe scans on the populated demo found zero violations in desktop light,
+  desktop dark, mobile light, and mobile dark modes.
+- Live Lighthouse: Performance 100, Accessibility 100, Best Practices 100, SEO
+  100; FCP 0.90 s, LCP 1.05 s, TBT 18 ms, CLS 0.
+- `/missing-live-repair-5` returns HTTP 404 with the product H1 and no external
+  assets. It includes CSP with response-header `frame-ancestors 'none'`, HSTS,
+  strict referrer policy, `nosniff`, and restrictive permissions policy.
+- Root and `/demo` have the same security headers. Hashed assets are one-year
+  immutable; `sw.js` is `no-cache`.
+- A single live invalid-license check returned 200, `{valid:false,
+  reason:"invalid"}`, and `Cache-Control: no-store` from the production Sociobot
+  endpoint.
+
+Local and live SHA-256 values match exactly:
+
+| File | SHA-256 |
+| --- | --- |
+| `index.html` | `83d5b23ed47c9ab1c8abc0994d59206dd2e1adb59fc138d989c10125ef763ddb` |
+| `assets/index-g-Uu5oJe.js` | `a170d1ea7989ae22bd3b98d4114bd51cdb5c10824eeddf418d65cbfd0d370328` |
+| `assets/index-B74SkQKw.css` | `ddace3c1eda6e321216953d3855916cde53441c67ebdb9150a73d754f1bd24b2` |
+| `assets/learning-topology.webp` | `2b89e36f3b6404b94b7f87de69906ef6d45668f9a7c13e81190dbcb1f88b3441` |
+| `404.html` | `dc1f87414e077df09b076bbbff0a9592051f7e299e21854c2402bb93052035ef` |
+| `sw.js` | `95f807e1bb8cd817f3d0e412d7782036a6a87781038e5244950af72115836c1f` |
 
 ## Known gap
 
