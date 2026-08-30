@@ -38,5 +38,8 @@ const copyAudit = await readFile('.factory/copy-audit.md', 'utf8');
 assert.match(copyAudit, /No sentence exceeds 22 words\./u);
 const visitorCopy = `${app}\n${await readFile('README.md', 'utf8')}\n${await readFile('index.html', 'utf8')}\n${notFound}`;
 assert.doesNotMatch(visitorCopy, /\b(?:leverage|seamless|effortless|robust|powerful|intuitive|reimagine|supercharge|unlock|delightful|journey|ecosystem|AI-powered)\b/iu, 'visitor copy contains a banned marketing word');
+if (/No card details or account are needed|without an account|\bNo accounts\b/iu.test(visitorCopy)) {
+  assert.ok(ids.includes('account-free-planning'), 'visitor account/card-details promises must be registered as account-free-planning');
+}
 
 console.log(`PASS: ${claims.length} registered claims, isolated demo contract, and product 404 policy`);

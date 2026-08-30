@@ -127,6 +127,35 @@ test('@claim:templates loads an editable foundation map inside demo storage', as
   expect(await page.evaluate(() => localStorage.getItem('demo:exam-bridge:plan:v1'))).toContain('Engineering foundations');
 });
 
+test('@claim:account-free-planning builds a real plan and uses a template without account or card details', async ({ page }) => {
+  const requests: string[] = [];
+  page.on('request', request => requests.push(request.url()));
+  await openDemo(page);
+  await page.locator('.demo-banner').getByRole('link', { name: 'Start for real' }).click();
+
+  await expect(page).toHaveURL('http://127.0.0.1:4173/');
+  await expect(page.locator('#paid-note')).toContainText('No card details or account are needed.');
+  await expect(page.locator([
+    'input[type="password"]',
+    'input[autocomplete="email"]',
+    'input[autocomplete="cc-number"]',
+    'input[name*="card" i]',
+  ].join(', '))).toHaveCount(0);
+  await page.getByLabel('Plan name').fill('Account-free return plan');
+  await page.getByLabel(/Syllabus topics/).fill('Signals and systems\nControl systems');
+  await page.getByRole('button', { name: /Map my syllabus/ }).click();
+  await expect(page.locator('.topic')).toHaveCount(2);
+
+  page.once('dialog', dialog => dialog.accept());
+  await page.getByRole('button', { name: 'Use template' }).first().click();
+  await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
+  await expect(page.locator('.topic')).toHaveCount(5);
+
+  const origin = new URL(page.url()).origin;
+  expect(requests.filter(url => new URL(url).origin !== origin)).toEqual([]);
+  expect(requests.filter(url => /\/(?:auth|login|checkout|payment)(?:[/?#]|$)/iu.test(new URL(url).pathname))).toEqual([]);
+});
+
 test('@claim:accessible-responsive supports keyboard, themes, reduced motion, and 390px screens', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.emulateMedia({ reducedMotion: 'reduce' });

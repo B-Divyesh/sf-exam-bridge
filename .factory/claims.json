@@ -49,6 +49,13 @@
     "sandbox": "fresh /demo context; select a template; assert five editable topics and demo-only storage"
   },
   {
+    "id": "account-free-planning",
+    "claim": "Fresh visitors can build a plan and use templates without an account or card details.",
+    "where": "landing templates panel, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:account-free-planning",
+    "sandbox": "fresh /demo context; leave for the real planner; build a normal plan and replace it with a template; assert there are no account or card fields and no authentication, checkout, payment, or cross-origin requests"
+  },
+  {
     "id": "accessible-responsive",
     "claim": "Supports keyboard use, light and dark themes, reduced motion, 44-pixel targets, and a 390-pixel screen.",
     "where": "interface, design document, README",
