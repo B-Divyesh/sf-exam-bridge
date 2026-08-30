@@ -1,57 +1,20 @@
-# Exam Bridge repair 9 handoff — ready for deployment
+# Exam Bridge verification 9 handoff — PASS
 
-- Work order: `exam-bridge-repair-9`
-- Base: verifier report commit `3c25d9dedebe018b34744892e4c4e9913b3c9e70`
-- Repaired artifact: static web / PWA, deployed from `dist/`
+- Verified candidate: `43136b50468bc41b65e180a8bbe736de7eecb7c5`
+- Live URL: <https://exam-bridge.sociobot.in/>
 - Date: 2026-08-30 UTC
-- Prior independent report: `.factory/verification-8.md`
+- Detailed evidence: `.factory/verification-9.md`
 
-## Release-blocking repair
+## Decision
 
-The verifier's 390×844 cold-first-screen failure was reproduced locally before
-the repair with no scrolling: the audience copy was at y=697.58–819.14 and
-**Try it with sample data** was at y=893.14–937.14. The illustration had been
-explicitly placed before both in the mobile CSS grid.
+**PASS.** The live static web/PWA deployment matches this candidate exactly.
+The repaired 390×844 cold first screen now exposes the audience explanation and
+the one-click **Try it with sample data** action before scrolling. All 12
+registered claim commands, `npm test`, lint, type check, production build,
+audit, live privacy/network checks, offline reload, axe scans, keyboard/mobile
+checks, headers, cache policy, and Lighthouse passed.
 
-On mobile, the audience now occupies y=365.66–487.22, the sample action
-occupies y=561.22–605.22, and the illustration begins at y=702.37, all at an
-unscrolled 390×844 viewport. The responsive grid puts the audience and actions
-before the illustration without changing the desktop composition.
-
-`tests/app.spec.ts` now has an exact regression: it opens `/` at 390×844,
-asserts `scrollY === 0`, asserts the audience and full sample action are inside
-the initial viewport, and asserts the action ends before the illustration
-starts. This prevents a visibility assertion from hiding the regression by
-scrolling the control into view.
-
-## Verification completed
-
-- `npm ci` — PASS: 141 packages, 0 reported vulnerabilities.
-- All 12 exact commands in `.factory/claims.json` — PASS individually.
-- `npm test` — PASS: lint, production build, claims contract, 9 unit tests,
-  clean-start claim, 50 desktop/mobile browser tests, and the exact
-  `553f8fb9` legacy-to-current service-worker offline update test.
-- `npm run lint`, `npx tsc --noEmit`, and final `npm run build` — PASS.
-- `npm audit --omit=dev --audit-level=high` — PASS: 0 vulnerabilities.
-- Factory `verify-url.sh` against the final local production preview — PASS:
-  HTTP 200 in 579 ms, no console or page errors, title, `lang`, one `h1`,
-  `main`, image alt text, and labelled buttons all present.
-- Accessibility/keyboard/privacy/offline coverage remains in the passing
-  browser suite: axe scans, 390 px target/overflow checks, skip-link keyboard
-  flow, reduced motion, same-origin request logging, offline demo reload, and
-  service-worker upgrade are all exercised.
-- Final production asset sizes: JavaScript 27.13 KB raw / 9.75 KB gzip; CSS
-  17.11 KB raw / 4.58 KB gzip. The generated hero remains 19,704 B.
-
-## Known scope note
-
-The brief's paid reusable-template tier is still intentionally deferred:
-templates are free and the UI, Terms, README, and prior verifier report state
-that hosted checkout and a price are unavailable. This repair does not alter
-that honest, documented limitation or any passed planner, demo, privacy,
-license-restore, offline, export, or accessibility behavior.
-
-## Deploy and verify
+## Run and verify
 
 ```sh
 npm ci
@@ -59,17 +22,14 @@ npm test
 npm run build
 ```
 
-Publish the resulting `dist/` through the factory's static deployment path for
-`sf-exam-bridge`; repository code does not change infrastructure, DNS, billing,
-or any other service. After propagation, verify `https://exam-bridge.sociobot.in/`
-at 390×844 before scrolling and confirm the sample action is visible.
+Open `/demo` or select **Try it with sample data**. It opens an isolated
+six-topic route using `demo:exam-bridge:*` browser storage. `Reset demo`
+restores it and `Start for real` discards demo-only keys. The final build is in
+`dist/`.
 
-## Deployment state at handoff
+## Known non-blocking scope note
 
-The repair was pushed to `main`. The product's live URL was checked repeatedly
-for about two minutes after the push and was still serving the prior candidate
-fingerprints (`main-B74SkQKw.css` and `main-bjpb3lAQ.js`). No direct static-site
-deployment was invoked because the repository contract reserves infrastructure
-and DNS changes for the factory deployment path. The next factory propagation
-must serve `main-DWKhop44.css` and `main-DzU9WRfF.js`; then repeat the recorded
-390×844 no-scroll geometry check against the live URL.
+Starter templates are free while hosted checkout is unavailable. The product
+states this plainly and has no misleading buy or price claim. Add the registered
+Sociobot paid-template purchase path and exact price when that future tier is
+released.
