@@ -146,6 +146,9 @@ test('@claim:account-free-planning builds a real plan and uses a template withou
   await page.locator('.demo-banner').getByRole('link', { name: 'Start for real' }).click();
 
   await expect(page).toHaveURL('http://127.0.0.1:4173/');
+  await expect(page.locator('#paid-note')).toContainText('All starter templates are free today.');
+  await expect(page.locator('#paid-note')).toContainText('Hosted checkout is unavailable');
+  await expect(page.getByRole('link', { name: /checkout|buy/i })).toHaveCount(0);
   await expect(page.locator('#paid-note')).toContainText('No card details or account are needed.');
   await expect(page.locator([
     'input[type="password"]',

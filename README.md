@@ -21,7 +21,7 @@ Use **Reset demo** to restore the sample. Use **Start for real** to discard it.
 - Confidence-aware study ordering and progress summary
 - Browser autosave, offline reload, JSON backup and restore, and CSV export
 - Light and dark themes, keyboard support, reduced motion, and a 390 px layout
-- Editable foundation templates, included without payment during checkout preparation
+- Editable foundation templates, free while checkout is unavailable
 - No accounts, trackers, CDN scripts, hosted questions, or exam-authority affiliation
 
 Plans live in browser `localStorage`. Clearing site data deletes them. Export a
@@ -54,11 +54,12 @@ npm run preview
 
 ## Billing behavior
 
-The planner, templates, and exports are available without payment during checkout
-preparation. Existing license holders can restore a token. It is stored as
-`sb_license:exam-bridge` and removed from the URL. Exam Bridge verifies it through
-the Sociobot API no more than once daily. Local development uses the pilot API.
-Production uses the production API. The site embeds no payment provider.
+The planner, templates, and exports are free today. Hosted checkout is unavailable,
+so there is no paid template purchase or price to show. Existing license holders
+can still restore a token. It is stored as `sb_license:exam-bridge` and removed
+from the URL. After a successful verification, automatic license checks use the
+cached verdict for up to 24 hours. Local development uses the pilot API. Production
+uses the production API. The site embeds no payment provider.
 
 ## Deployment and privacy
 

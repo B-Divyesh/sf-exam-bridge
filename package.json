@@ -6,8 +6,9 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
+    "lint": "eslint .",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "npm run build && npm run test:contracts && vitest run && npm run test:clean-claim-start && playwright test && npm run test:sw-upgrade",
+    "test": "npm run lint && npm run build && npm run test:contracts && vitest run && npm run test:clean-claim-start && playwright test && npm run test:sw-upgrade",
     "test:contracts": "node scripts/contracts.test.mjs",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
@@ -16,8 +17,12 @@
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",
+    "@eslint/js": "^10.0.1",
     "@playwright/test": "1.58.2",
+    "eslint": "^10.9.1",
+    "globals": "^17.11.0",
     "typescript": "5.9.2",
+    "typescript-eslint": "^8.68.0",
     "vite": "7.3.6",
     "vitest": "3.2.7"
   }

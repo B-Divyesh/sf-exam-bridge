@@ -55,9 +55,10 @@ even when they are phrases rather than sentences.
 | A reusable starter map—not an official syllabus. | 7 |
 | 5 / 6 / 7 editable topics | 4 |
 | Use template | 2 |
-| Local-first access | 2 |
-| Templates are available on this device | 6 |
-| Templates are currently included while Exam Bridge prepares its hosted purchase flow. | 12 |
+| Current template access | 3 |
+| Templates are free today | 4 |
+| All starter templates are free today. | 6 |
+| Hosted checkout is unavailable, so there is no paid template purchase. | 11 |
 | No card details or account are needed. | 7 |
 | Have an existing license? | 4 |
 | Verify | 1 |
@@ -95,6 +96,22 @@ even when they are phrases rather than sentences.
 | Templates work inside the demo | 5 |
 | Try a different foundation map. | 5 |
 | It stays in the same temporary demo storage. | 8 |
+
+## Legal pages
+
+| Copy | Words |
+| --- | ---: |
+| If you restore an existing Exam Bridge Plus license, its token goes to the Sociobot billing API. | 15 |
+| We only check whether the license is active. | 8 |
+| We cache the result and time locally for up to 24 hours. | 12 |
+| Hosted checkout is currently unavailable. | 4 |
+| Hosted checkout is unavailable, so Exam Bridge receives no card details. | 10 |
+| The planner, local saving, exports, and editable templates are free today. | 11 |
+| Hosted checkout is unavailable. | 4 |
+| No paid template purchase is offered. | 6 |
+| Accessibility, export, privacy, and safety features are never gated. | 9 |
+| Existing Exam Bridge Plus license holders may restore and verify a license. | 12 |
+| This does not change access while templates are free. | 10 |
 
 ## Result
 

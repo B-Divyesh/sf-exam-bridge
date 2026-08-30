@@ -155,10 +155,25 @@ test('keeps all effective route, shell, and footer targets at least 44px at 390p
   }
 });
 
-test('does not advertise an unavailable checkout and keeps templates usable', async ({ page }) => {
+test('does not advertise an unavailable checkout and keeps templates free', async ({ page }) => {
   await expect(page.getByRole('link', { name: /Buy template unlock|Buy a new license/i })).toHaveCount(0);
+  await expect(page.locator('#paid-note')).toContainText('Hosted checkout is unavailable');
   await page.getByRole('button', { name: 'Use template' }).first().click();
   await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
+});
+
+test('serves demo-specific metadata before application JavaScript runs', async ({ request }) => {
+  // Vite preview's SPA fallback maps a slashless /demo request to the home
+  // document. The production response policy rewrites that URL to this static
+  // document; requesting its directory form exercises the emitted HTML itself.
+  const response = await request.get('/demo/');
+  expect(response.ok()).toBe(true);
+  const html = await response.text();
+  expect(html).toContain('<title>Demo — Exam Bridge</title>');
+  expect(html).toContain('rel="canonical" href="https://exam-bridge.sociobot.in/demo"');
+  expect(html).toContain('property="og:title" content="Demo — Exam Bridge"');
+  expect(html).toContain('property="og:url" content="https://exam-bridge.sociobot.in/demo"');
+  expect(html).toContain('name="twitter:title" content="Demo — Exam Bridge"');
 });
 
 test('legal pages are reachable', async ({ page }) => {
@@ -199,6 +214,46 @@ test('@claim:license-restore stores, strips, and verifies a returned Plus licens
   }));
   await page.goto('/?license=valid-test');
   await expect(page).toHaveURL('http://127.0.0.1:4173/');
-  await expect(page.getByText('Existing templates license verified')).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Existing license checked' })).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem('sb_license:exam-bridge'))).toBe('valid-test');
+});
+
+test('@claim:license-cache-24h makes no automatic second check until the 24-hour cache boundary', async ({ page }) => {
+  let checks = 0;
+  await page.goto('/demo');
+  await page.locator('.demo-banner').getByRole('link', { name: 'Start for real' }).click();
+  await page.route('**/api/v1/products/exam-bridge/verify?license=cache-test', async route => {
+    checks += 1;
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ valid: true, reason: 'ok', expires_at: null }),
+    });
+  });
+
+  await page.goto('/?license=cache-test');
+  await expect.poll(() => checks).toBe(1);
+  await expect(page.getByRole('heading', { name: 'Existing license checked' })).toBeVisible();
+
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+  expect(checks).toBe(1);
+
+  await page.evaluate(() => {
+    const key = 'exam-bridge:license-verdict';
+    const cache = JSON.parse(localStorage.getItem(key) || '{}');
+    cache.checkedAt = Date.now() - 86_399_000;
+    localStorage.setItem(key, JSON.stringify(cache));
+  });
+  await page.reload();
+  await page.waitForLoadState('networkidle');
+  expect(checks).toBe(1);
+
+  await page.evaluate(() => {
+    const key = 'exam-bridge:license-verdict';
+    const cache = JSON.parse(localStorage.getItem(key) || '{}');
+    cache.checkedAt = Date.now() - 86_400_001;
+    localStorage.setItem(key, JSON.stringify(cache));
+  });
+  await page.reload();
+  await expect.poll(() => checks).toBe(2);
 });

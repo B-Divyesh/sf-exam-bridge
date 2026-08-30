@@ -7,6 +7,7 @@ const STORAGE_KEY = isDemo ? `${DEMO_PREFIX}plan:v1` : 'exam-bridge:plan:v1';
 const THEME_KEY = isDemo ? `${DEMO_PREFIX}theme` : 'exam-bridge:theme';
 const LICENSE_KEY = 'sb_license:exam-bridge';
 const LICENSE_CACHE_KEY = 'exam-bridge:license-verdict';
+const LICENSE_CACHE_MS = 86_400_000;
 const billingBase = location.hostname === 'exam-bridge.sociobot.in' ? 'https://api.sociobot.in' : 'https://pilot-api.sociobot.in';
 
 const templates = [
@@ -96,10 +97,27 @@ function savePlan(message = 'Saved on this device.'): void {
 
 function cachedLicenseIsValid(): boolean {
   if (isDemo) return false;
+  return Boolean(localStorage.getItem(LICENSE_KEY) && readLicenseCache().valid);
+}
+
+interface LicenseCache {
+  valid?: boolean;
+  checkedAt?: number;
+  expiresAt?: string | null;
+}
+
+function readLicenseCache(): LicenseCache {
   try {
-    const cached = JSON.parse(localStorage.getItem(LICENSE_CACHE_KEY) || '{}') as { valid?: boolean };
-    return Boolean(localStorage.getItem(LICENSE_KEY) && cached.valid);
-  } catch { return false; }
+    const cached: unknown = JSON.parse(localStorage.getItem(LICENSE_CACHE_KEY) || '{}');
+    return cached && typeof cached === 'object' ? cached as LicenseCache : {};
+  } catch { return {}; }
+}
+
+/** Successful background checks are throttled to one per 24-hour period. */
+function licenseCheckIsDue(cache = readLicenseCache(), now = Date.now()): boolean {
+  if (!Number.isFinite(cache.checkedAt)) return true;
+  const checkedAt = cache.checkedAt as number;
+  return checkedAt > now || now - checkedAt > LICENSE_CACHE_MS;
 }
 
 function progressStats(): { ready: number; practised: number; total: number } {
@@ -193,14 +211,34 @@ function workspace(): string {
 function templatesSection(): string {
   return `<section class="templates" id="templates" aria-labelledby="templates-title"><div class="section-index"><span>+</span><div><p class="eyebrow">Reusable starting points</p><h2 id="templates-title">Begin from a foundation map</h2><p>Use an editable starter map for a permitted exam domain, then make it your own. The planner, templates, and exports stay local to this device.</p></div></div>
     <div class="template-list">${templates.map((template, index) => `<article><div><span class="template-shape" aria-hidden="true"></span><h3>${template.name}</h3><p>${template.note}</p><small>${template.topics.length} editable topics</small></div><button type="button" data-template="${index}">Use template</button></article>`).join('')}</div>
-    ${isDemo ? '<div class="license-panel demo-license"><div><p class="eyebrow">Included in the sample</p><h3>Templates work inside the demo</h3><p>Try a different foundation map. It stays in the same temporary demo storage.</p></div></div>' : `<div class="license-panel"><div><p class="eyebrow">Local-first access</p><h3>${paidUnlocked ? 'Existing templates license verified' : 'Templates are available on this device'}</h3><p id="paid-note">Templates are currently included while Exam Bridge prepares its hosted purchase flow. No card details or account are needed.</p>${licenseNotice ? `<p class="license-notice">${escapeHtml(licenseNotice)} You can restore a valid existing license below.</p>` : ''}</div>
+    ${isDemo ? '<div class="license-panel demo-license"><div><p class="eyebrow">Included in the sample</p><h3>Templates work inside the demo</h3><p>Try a different foundation map. It stays in the same temporary demo storage.</p></div></div>' : `<div class="license-panel"><div><p class="eyebrow">Current template access</p><h3>${paidUnlocked ? 'Existing license checked' : 'Templates are free today'}</h3><p id="paid-note">All starter templates are free today. Hosted checkout is unavailable, so there is no paid template purchase. No card details or account are needed.</p>${licenseNotice ? `<p class="license-notice">${escapeHtml(licenseNotice)} You can check a past license below.</p>` : ''}</div>
     <form id="license-form"><label for="license-token">Have an existing license?</label><div><input id="license-token" name="license" autocomplete="off" required placeholder="Paste license token"><button type="submit">Verify</button></div><p id="license-status" role="status" aria-live="polite"></p></form></div>`}
   </section>`;
 }
 
+function setMeta(selector: string, content: string): void {
+  document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', content);
+}
+
+function updateRouteMetadata(): void {
+  const route = isDemo ? '/demo' : '/';
+  const title = isDemo ? 'Demo — Exam Bridge' : 'Exam Bridge — syllabus to practice route';
+  const description = isDemo
+    ? 'Explore a six-topic sample study route without changing your real plan.'
+    : 'Turn a syllabus into a prerequisite-aware study route linked to your own past-question references.';
+  const url = `https://exam-bridge.sociobot.in${route}`;
+  document.title = title;
+  document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.setAttribute('href', url);
+  setMeta('meta[name="description"]', description);
+  setMeta('meta[property="og:title"]', title);
+  setMeta('meta[property="og:description"]', description);
+  setMeta('meta[property="og:url"]', url);
+  setMeta('meta[name="twitter:title"]', title);
+  setMeta('meta[name="twitter:description"]', description);
+}
+
 function render(): void {
-  document.title = isDemo ? 'Demo — Exam Bridge' : 'Exam Bridge — syllabus to practice route';
-  document.querySelector<HTMLLinkElement>('link[rel="canonical"]')?.setAttribute('href', `https://exam-bridge.sociobot.in${isDemo ? '/demo' : '/'}`);
+  updateRouteMetadata();
   document.querySelector<HTMLDivElement>('#app')!.innerHTML = `${appHeader()}${demoBanner()}<div id="offline-banner" class="offline-banner" role="status" hidden>You’re offline. Planning and exports still work; license checks will resume when connected.</div><main id="main" tabindex="-1">${hero()}<section id="how" class="how"><p><b>Paste the outline.</b> Rate what you know. Attach only references you’re allowed to use. Your study map stays in this browser.</p></section><div id="planner">${workspace()}</div>${templatesSection()}<section class="principles" aria-labelledby="principles-title"><p class="eyebrow">Built for honest preparation</p><h2 id="principles-title">What Exam Bridge does not do</h2><div><p><b>Your material stays yours.</b><br>Exam Bridge stores plans locally and does not host exam questions or coaching notes.</p><p><b>You remain the judge.</b><br>Prerequisite suggestions are starting points, not a substitute for an official syllabus.</p><p><b>No affiliation implied.</b><br>Exam Bridge is an independent planning tool, not endorsed by any exam authority.</p></div></section></main><footer><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Exam Bridge</span></div><p>Original generated illustration · no tracking · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.1</p></footer><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
   updateNetworkStatus();
   bindEvents();
@@ -398,7 +436,7 @@ async function verifyLicense(token: string, userInitiated = false): Promise<void
     localStorage.setItem(LICENSE_CACHE_KEY, JSON.stringify({ valid: result.valid, checkedAt: Date.now(), expiresAt: result.expires_at }));
     paidUnlocked = result.valid;
     licenseNotice = result.valid ? '' : 'License no longer active.';
-    render(); announce(result.valid ? 'Plus templates unlocked.' : 'License no longer active.');
+    render(); announce(result.valid ? 'Existing license checked.' : 'License no longer active.');
   } catch {
     if (status) status.textContent = 'Could not reach license verification. Your free planner still works; try again when online.';
     if (userInitiated) announce('License check could not connect.');
@@ -417,10 +455,7 @@ function initializeLicense(): void {
     return;
   }
   const token = localStorage.getItem(LICENSE_KEY); if (!token) return;
-  try {
-    const cached = JSON.parse(localStorage.getItem(LICENSE_CACHE_KEY) || '{}') as { checkedAt?: number };
-    if (!cached.checkedAt || Date.now() - cached.checkedAt > 86_400_000) void verifyLicense(token);
-  } catch { void verifyLicense(token); }
+  if (licenseCheckIsDue()) void verifyLicense(token);
 }
 
 const storedTheme = localStorage.getItem(THEME_KEY);

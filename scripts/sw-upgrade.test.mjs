@@ -41,9 +41,10 @@ async function expectedBuildId(outDir) {
 }
 
 function appBundle(dist) {
-  const assets = execFileSync('find', [join(dist, 'assets'), '-maxdepth', '1', '-name', 'index-*.js', '-printf', '%f\\n'], { encoding: 'utf8' }).trim();
-  assert.ok(assets, `no app bundle found in ${dist}`);
-  return `/assets/${assets}`;
+  const assets = execFileSync('find', [join(dist, 'assets'), '-maxdepth', '1', '-name', '*.js', '-printf', '%f\\n'], { encoding: 'utf8' })
+    .trim().split('\n').filter(Boolean);
+  assert.equal(assets.length, 1, `expected one app bundle in ${dist}, found ${assets.join(', ') || 'none'}`);
+  return `/assets/${assets[0]}`;
 }
 
 function staticServer(initialDir) {

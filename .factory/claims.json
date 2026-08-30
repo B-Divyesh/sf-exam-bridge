@@ -50,8 +50,8 @@
   },
   {
     "id": "account-free-planning",
-    "claim": "Fresh visitors can build a plan and use templates without an account or card details.",
-    "where": "landing templates panel, README",
+    "claim": "Fresh visitors can build a plan and use free templates without an account, card details, or checkout.",
+    "where": "landing templates panel, README, Terms",
     "test": "npm run test:e2e -- --project=desktop --grep @claim:account-free-planning",
     "sandbox": "fresh /demo context; leave for the real planner; build a normal plan and replace it with a template; assert there are no account or card fields and no authentication, checkout, payment, or cross-origin requests"
   },
@@ -75,5 +75,12 @@
     "where": "license form, privacy page, terms page, README",
     "test": "npm run test:e2e -- --project=desktop --grep @claim:license-restore",
     "sandbox": "start at /demo; leave for the real planner; mock the documented Sociobot response; return with a test token; assert storage, URL stripping, and verified state"
+  },
+  {
+    "id": "license-cache-24h",
+    "claim": "After a successful verification, automatic license checks use the cached verdict for up to 24 hours.",
+    "where": "README, Privacy page",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:license-cache-24h",
+    "sandbox": "start at /demo; leave for the real planner; mock a successful documented Sociobot response; verify a returned token; reload inside the 24-hour cache period and assert one request; move the cache timestamp to 86,400,001 ms old, reload, and assert a second request"
   }
 ]
