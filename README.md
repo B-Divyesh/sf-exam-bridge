@@ -1,26 +1,32 @@
 # Exam Bridge
 
-Exam Bridge is a local-first syllabus planner for returning exam candidates. Paste
-an official outline, rate confidence topic by topic, identify the prerequisite
-refreshers you actually need, and attach your own permitted past-question IDs or
-links. The route automatically puts lower-confidence, under-practised topics first.
+Exam Bridge turns a pasted syllabus into a study route for returning exam
+candidates. Rate each topic, choose prerequisite refreshers, and attach question
+IDs or links you may use. The route puts lower-confidence topics first.
 
 Live product: <https://exam-bridge.sociobot.in>
 
+## Try the sample
+
+Open <https://exam-bridge.sociobot.in/demo> or select **Try it with sample data**
+on the first screen. The six-topic sample opens without an account or setup.
+Demo changes use `demo:exam-bridge:*` storage and never touch your real plan.
+Use **Reset demo** to restore the sample. Use **Start for real** to discard it.
+
 ## What v1 includes
 
-- Bullet/number-aware syllabus import with duplicate removal
+- Bullet and number-aware import for 2–80 distinct syllabus topics
 - Editable confidence and prerequisite checklists
 - Personal practice IDs, notes, and links with attempted status
 - Confidence-aware study ordering and progress summary
-- Local autosave, offline shell, JSON backup/restore, and CSV export
-- Light and dark themes, keyboard support, responsive 390 px layout
-- Reusable editable domain templates, currently included while hosted checkout is prepared
-- No accounts, trackers, CDN scripts, hosted questions, or exam-authority claims
+- Browser autosave, offline reload, JSON backup and restore, and CSV export
+- Light and dark themes, keyboard support, reduced motion, and a 390 px layout
+- Editable foundation templates, included without payment during checkout preparation
+- No accounts, trackers, CDN scripts, hosted questions, or exam-authority affiliation
 
-Plans live in browser `localStorage`. Clearing site data deletes them, so export a
-JSON backup for anything important. Exam Bridge does not provide or republish test
-questions; users should reference only material they are entitled to use.
+Plans live in browser `localStorage`. Clearing site data deletes them. Export a
+JSON backup for any plan you need to keep. Exam Bridge does not republish test
+questions. Reference only material you may use.
 
 ## Develop and verify
 
@@ -33,10 +39,10 @@ npm test
 npm run build
 ```
 
-`npm test` runs unit tests and the Chromium end-to-end/accessibility suite in
-desktop and mobile projects. Playwright is pinned to 1.58.2. The exact production
-build command is `npm run build`; static output lands in `dist/`, with
-`dist/index.html` at its root.
+`npm test` runs contract checks, unit tests, browser tests, accessibility scans,
+and the service-worker upgrade test. Browser tests cover desktop and 390 px
+mobile projects. Playwright is pinned to 1.58.2. The production build command is
+`npm run build`. Static output lands in `dist/` with `index.html` at its root.
 
 To inspect the production build locally:
 
@@ -46,24 +52,22 @@ npm run preview
 
 ## Billing behavior
 
-The planner, templates, and exports are currently available without payment while
-the Sociobot hosted checkout is being prepared. Existing license holders can still
-restore a token; it is stored as `sb_license:exam-bridge`, stripped from the URL,
-and verified through the Sociobot API no more than once per day. Local development
-uses the pilot API; the production hostname uses the production API. No payment
-provider integration is embedded here.
+The planner, templates, and exports are available without payment during checkout
+preparation. Existing license holders can restore a token. It is stored as
+`sb_license:exam-bridge` and removed from the URL. Exam Bridge verifies it through
+the Sociobot API no more than once daily. Local development uses the pilot API.
+Production uses the production API. The site embeds no payment provider.
 
 ## Deployment and privacy
 
-Deploy `dist/` to Azure Static Web Apps. `staticwebapp.config.json` supplies CSP,
-privacy headers, and cache policy. Each production build generates a
-content-fingerprinted service-worker cache for its exact shell, so an updated
-release replaces an installed prior shell. See `/privacy/` and `/terms/` for
-policy.
+Deploy `dist/` to Azure Static Web Apps. `staticwebapp.config.json` sets security
+headers, cache policy, demo routing, and the product 404. Each build creates a
+content-fingerprinted service-worker cache. A new release replaces the prior app
+shell. See `/privacy/` and `/terms/` for policy.
 
-The visual thesis, asset prompt, review decision, and provenance are in
-`.factory/design.md`. Build verification and known gaps are in
-`.factory/handoff.md`.
+The testable claims are in `.factory/claims.json`. Demo details are in
+`.factory/demo.md`. Visual provenance is in `.factory/design.md`. Verification
+evidence and known gaps are in `.factory/handoff.md`.
 
 ## License
 

@@ -27,7 +27,10 @@ test('builds and updates a complete local study route', async ({ page }) => {
   await expect(page.getByText('2023 · Q14', { exact: true })).toBeVisible();
 });
 
-test('prevents a topic 81 mutation and keeps the maximum plan available after reload', async ({ page }) => {
+test('@claim:topic-cap prevents a topic 81 mutation and keeps the maximum plan available after reload', async ({ page }) => {
+  await page.goto('/demo');
+  page.once('dialog', dialog => dialog.accept());
+  await page.getByRole('button', { name: 'Start over' }).click();
   const maximumTopics = Array.from({ length: 80 }, (_, index) => `Topic ${index + 1}`).join('\n');
   await page.getByLabel(/Syllabus topics/).fill(maximumTopics);
   await page.getByRole('button', { name: /Map my syllabus/ }).click();
@@ -36,7 +39,7 @@ test('prevents a topic 81 mutation and keeps the maximum plan available after re
   const addTopic = page.getByRole('button', { name: 'Add topic' });
   await expect(addTopic).toBeDisabled();
   await expect(page.getByText('Maximum 80 topics reached.')).toBeVisible();
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('exam-bridge:plan:v1') || '{}').topics.length)).toBe(80);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('demo:exam-bridge:plan:v1') || '{}').topics.length)).toBe(80);
 
   const download = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Back up JSON' }).click();
@@ -165,6 +168,17 @@ test('legal pages are reachable', async ({ page }) => {
   await expect(page).toHaveTitle(/Terms/);
 });
 
+test('renders the product-owned 404 without third-party resources', async ({ page }) => {
+  const requests: string[] = [];
+  page.on('request', request => requests.push(request.url()));
+  await page.goto('/404.html');
+  await expect(page).toHaveTitle('Page not found — Exam Bridge');
+  await expect(page.getByRole('heading', { level: 1, name: 'This route does not exist.' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Open the planner' })).toHaveAttribute('href', '/');
+  const origin = new URL(page.url()).origin;
+  expect(requests.filter(url => new URL(url).origin !== origin)).toEqual([]);
+});
+
 test('shows an offline state and loads without console errors', async ({ page, context }) => {
   const errors: string[] = [];
   page.on('console', message => { if (message.type() === 'error') errors.push(message.text()); });
@@ -176,7 +190,9 @@ test('shows an offline state and loads without console errors', async ({ page, c
   expect(errors).toEqual([]);
 });
 
-test('stores, strips, and verifies a returned Plus license', async ({ page }) => {
+test('@claim:license-restore stores, strips, and verifies a returned Plus license', async ({ page }) => {
+  await page.goto('/demo');
+  await page.locator('.demo-banner').getByRole('link', { name: 'Start for real' }).click();
   await page.route('**/api/v1/products/exam-bridge/verify?license=valid-test', route => route.fulfill({
     contentType: 'application/json',
     body: JSON.stringify({ valid: true, reason: 'ok', expires_at: null }),

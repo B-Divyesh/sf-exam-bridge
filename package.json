@@ -1,13 +1,14 @@
 {
   "name": "exam-bridge",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "npm run build && vitest run && playwright test && npm run test:sw-upgrade",
+    "test": "npm run build && npm run test:contracts && vitest run && playwright test && npm run test:sw-upgrade",
+    "test:contracts": "node scripts/contracts.test.mjs",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
     "test:sw-upgrade": "node scripts/sw-upgrade.test.mjs"

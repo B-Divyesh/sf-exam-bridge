@@ -1,0 +1,72 @@
+[
+  {
+    "id": "demo-sandbox",
+    "claim": "Try a realistic six-topic route in one click without changing your real plan.",
+    "where": "landing first screen, demo banner, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:demo-sandbox",
+    "sandbox": "fresh browser context; seed a real-plan marker; enter /demo; edit and reset; assert only demo-prefixed keys change; exit and assert demo keys are removed"
+  },
+  {
+    "id": "local-private",
+    "claim": "Planner content stays in browser storage, and ordinary planning sends no data to third parties or trackers.",
+    "where": "landing facts, planner, privacy page, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:local-private",
+    "sandbox": "fresh /demo context; edit and reload; record every request; assert persisted demo data and same-origin requests only"
+  },
+  {
+    "id": "offline-reload",
+    "claim": "Works offline after the first visit.",
+    "where": "landing facts, offline banner, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:offline-reload",
+    "sandbox": "dedicated fresh browser context; open /demo; wait for service-worker control; set context offline; reload and assert the sample route"
+  },
+  {
+    "id": "csv-export",
+    "claim": "Exports the complete study route as CSV without payment.",
+    "where": "landing facts, planner toolbar, privacy page, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:csv-export",
+    "sandbox": "fresh /demo context; download CSV; assert the exact header and one row for each of six sample topics"
+  },
+  {
+    "id": "json-backup-restore",
+    "claim": "Backs up and restores a complete plan as JSON.",
+    "where": "landing facts, planner toolbar, privacy page, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:json-backup-restore",
+    "sandbox": "fresh /demo context; download backup; replace the route with a template; restore the downloaded bytes; assert all topics and a practice reference return"
+  },
+  {
+    "id": "syllabus-route",
+    "claim": "Cleans pasted syllabus headings, removes duplicates, and orders lower-confidence topics first.",
+    "where": "setup form, route overview, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:syllabus-route",
+    "sandbox": "fresh /demo context; clear sample; paste numbered and bulleted headings with a duplicate; build; change confidence; assert deduplication and reordered topics"
+  },
+  {
+    "id": "templates",
+    "claim": "Loads editable foundation templates without setup or payment.",
+    "where": "templates section, terms page, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:templates",
+    "sandbox": "fresh /demo context; select a template; assert five editable topics and demo-only storage"
+  },
+  {
+    "id": "accessible-responsive",
+    "claim": "Supports keyboard use, light and dark themes, reduced motion, 44-pixel targets, and a 390-pixel screen.",
+    "where": "interface, design document, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:accessible-responsive",
+    "sandbox": "fresh /demo context at 390x844 with reduced motion; use skip link by keyboard; scan both themes with axe; assert no overflow and every visible target is at least 44px"
+  },
+  {
+    "id": "topic-cap",
+    "claim": "New plans accept 2 to 80 distinct topics and never save topic 81.",
+    "where": "setup form, planner toolbar",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:topic-cap",
+    "sandbox": "fresh /demo context; clear sample; create 80 topics; assert Add topic is disabled, storage remains at 80, backup works, and reload keeps all 80"
+  },
+  {
+    "id": "license-restore",
+    "claim": "An existing license can be stored, stripped from the URL, and verified through the Sociobot endpoint.",
+    "where": "license form, privacy page, terms page, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:license-restore",
+    "sandbox": "start at /demo; leave for the real planner; mock the documented Sociobot response; return with a test token; assert storage, URL stripping, and verified state"
+  }
+]

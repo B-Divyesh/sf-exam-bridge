@@ -96,6 +96,9 @@ weight, and labels.
   the 300 KB mobile budget, and is disclosed as generated in the footer. The first
   candidate was retained for provenance but rejected because a ruler contained
   faint number-like artifacts; `learning-topology-clean.png` is the shipped source.
+- The social preview is a center crop of the reviewed source at 1200×630. The
+  180×180 touch icon is a hand-rendered raster of the repository SVG mark. Both
+  derivatives were made locally on 2026-08-30 and introduce no outside source.
 
 All interface icons and geometric marks are authored in CSS/SVG in this repository.
 No external stock art, icon library, runtime fonts, or CDN assets are used.
