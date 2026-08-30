@@ -1,3 +1,23 @@
+# QA handoff — FAIL
+
+- Independent verification: `.factory/verification-5.md`
+- Tested commit: `ef13c8484d287357b3cccbdf66bc264ed9fb14e3`
+- Tested URL: <https://exam-bridge.sociobot.in/>
+- Verified: 2026-08-30 UTC
+
+**Release decision: FAIL.** The deployed files match the candidate and all
+functional, privacy, accessibility, responsive, offline/PWA, header, cache,
+bundle-budget, and rate-limit checks passed. The mandatory claims policy still
+blocks release: live/README copy promises that no card details or account are
+needed, but `.factory/claims.json` has no corresponding claim and no tagged
+demo-sandbox test proves it. See the High finding and exact evidence in
+`.factory/verification-5.md`.
+
+Required next step: add and prove a `no-account`/no-card-details claim from a
+fresh demo entry point, or remove that wording, then rerun verification.
+
+---
+
 # Exam Bridge repair handoff — deployed
 
 - Work order: `exam-bridge-repair-5`
