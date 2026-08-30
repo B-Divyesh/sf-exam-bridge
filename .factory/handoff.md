@@ -119,3 +119,28 @@ Azure Static Web Apps configuration in `public/staticwebapp.config.json`. After
 the deployment is live, verify the root and `sw.js` cache ID from a fresh
 profile, then run the two-build update regression against the deployed previous
 release if deployment tooling exposes both artifact versions.
+
+### Completed production deployment
+
+- Deployed with `/opt/fleet/lib/deploy-static.sh exam-bridge dist`.
+- Azure Static Web Apps deployment ID: `831ff086-7c53-410f-a1b5-8932f1888a8a`.
+- Static app: `proud-pebble-0504f2a0f.7.azurestaticapps.net`; custom domain:
+  `https://exam-bridge.sociobot.in/` (HTTP 200).
+- Live files match the final local production output byte-for-byte:
+
+  | File | SHA-256 |
+  | --- | --- |
+  | `index.html` | `7d76b3f6594d1d0b45d15c904d49e774a21e1ae386c7fa75818d29f4e150ef32` |
+  | `assets/index-BpbKZtA4.js` | `ebb5ab83362e6790bb58706c28dbe651de94d3fe0cfc8d88ee61978eb1790caf` |
+  | `assets/index-By1yD5fd.css` | `0eb72b25b1d45c1c113abf4abb64f5a0295f574909678186b33e8e2a3dccd37a` |
+  | `sw.js` | `2c45039b6a90a01a844026403b96938998f7901ee2dd91443fdda75263e612b4` |
+
+- The live root retains `public, must-revalidate, max-age=30`, HSTS, CSP with
+  `frame-ancestors 'none'`, strict referrer policy, `nosniff`, and restrictive
+  permissions policy; live `sw.js` is `Cache-Control: no-cache`.
+- Live `verify-url.sh`: HTTP 200 in 637 ms; zero console/page errors; title,
+  language, one `h1`, main landmark, alt text, and button names all passed.
+- Fresh-profile live browser test: exact final cache present, offline reload
+  passed, an 80-topic plan persisted through reload with Add topic disabled, and
+  a 390 px viewport measured `clientWidth === scrollWidth === 390` with zero
+  console errors.
