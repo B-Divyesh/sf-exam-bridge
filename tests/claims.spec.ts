@@ -70,8 +70,13 @@ test('@claim:offline-reload reloads the demo after the first visit with the netw
   }
 });
 
-test('@claim:csv-export exports one CSV row for every sample topic', async ({ page }) => {
+test('@claim:csv-export exports every sample topic with only selected prerequisites and complete practice references', async ({ page }) => {
   await openDemo(page);
+  const control = page.locator('.topic').filter({ has: page.getByRole('heading', { level: 3, name: 'Control systems' }) });
+  await control.getByLabel(/Question ID or note/).fill('2025 · Q42');
+  await control.getByLabel('Link').fill('https://example.org/questions/42');
+  await control.getByRole('button', { name: 'Attach' }).click();
+
   const pendingDownload = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export CSV' }).click();
   const download = await pendingDownload;
@@ -83,6 +88,13 @@ test('@claim:csv-export exports one CSV row for every sample topic', async ({ pa
   expect(rows[0]).toBe('"Order","Topic","Confidence","Prerequisites","Practice references","Completed references"');
   expect(csv).toContain('"Control systems"');
   expect(csv).toContain('"2024 · Engineering Mathematics · Q7"');
+  const controlRow = rows.find(row => row.includes('"Control systems"'));
+  expect(controlRow).toBeDefined();
+  expect(controlRow).toContain('"Basic calculus"');
+  expect(controlRow).not.toContain('Algebra and complex numbers');
+  expect(controlRow).not.toContain('Units and dimensional analysis');
+  expect(controlRow?.match(/Basic calculus/gu)).toHaveLength(1);
+  expect(controlRow).toContain('2025 · Q42 (https://example.org/questions/42)');
 });
 
 test('@claim:json-backup-restore exports and restores the complete sample plan', async ({ page }) => {

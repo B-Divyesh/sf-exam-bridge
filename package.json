@@ -7,10 +7,11 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "npm run build && npm run test:contracts && vitest run && playwright test && npm run test:sw-upgrade",
+    "test": "npm run build && npm run test:contracts && vitest run && npm run test:clean-claim-start && playwright test && npm run test:sw-upgrade",
     "test:contracts": "node scripts/contracts.test.mjs",
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
+    "test:clean-claim-start": "node scripts/clean-claim-start.test.mjs",
     "test:sw-upgrade": "node scripts/sw-upgrade.test.mjs"
   },
   "devDependencies": {

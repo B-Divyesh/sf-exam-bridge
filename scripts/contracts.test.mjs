@@ -27,7 +27,20 @@ assert.match(notFound, /<html lang="en">/u);
 assert.equal(notFound.match(/<h1[ >]/gu)?.length, 1, '404 must have exactly one h1');
 assert.match(notFound, /<main id="main">/u);
 assert.match(notFound, /href="\/"/u, '404 must link home');
-assert.doesNotMatch(notFound, /(?:src|href)="https?:\/\//u, '404 must not load third-party resources');
+assert.doesNotMatch(notFound, /<(?:script|img|audio|video|iframe)\b[^>]+(?:src|href)="https?:\/\//u, '404 must not load third-party media or scripts');
+assert.doesNotMatch(notFound, /<link\b(?=[^>]*rel="stylesheet")(?=[^>]*href="https?:\/\/)[^>]*>/u, '404 must not load a third-party stylesheet');
+for (const [name, file] of [['404', 'public/404.html'], ['Privacy', 'public/privacy/index.html'], ['Terms', 'public/terms/index.html']]) {
+  const page = await readFile(file, 'utf8');
+  for (const property of ['twitter:card', 'twitter:title', 'twitter:description', 'twitter:image']) {
+    assert.match(page, new RegExp(`name="${property}"`, 'u'), `${name} must include ${property}`);
+  }
+  assert.match(page, /rel="canonical"/u, `${name} must include a canonical URL`);
+  assert.match(page, /property="og:image"/u, `${name} must include an Open Graph image`);
+}
+
+const playwrightConfig = await readFile('playwright.config.ts', 'utf8');
+assert.match(playwrightConfig, /command: 'npm run build && npm run preview'/u, 'claim commands must build before previewing');
+assert.match(playwrightConfig, /reuseExistingServer: false/u, 'claim commands must not reuse an unknown preview');
 
 const app = await readFile('src/main.ts', 'utf8');
 assert.match(app, /Try it with sample data/u);

@@ -25,7 +25,7 @@
     "claim": "Exports the complete study route as CSV without payment.",
     "where": "landing facts, planner toolbar, privacy page, README",
     "test": "npm run test:e2e -- --project=desktop --grep @claim:csv-export",
-    "sandbox": "fresh /demo context; download CSV; assert the exact header and one row for each of six sample topics"
+    "sandbox": "fresh /demo context; attach a labelled HTTPS practice reference to Control systems; download CSV; assert its exact header, one row for each of six topics, only the selected prerequisite, and both practice label and URL"
   },
   {
     "id": "json-backup-restore",

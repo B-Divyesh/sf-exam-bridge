@@ -43,6 +43,8 @@ npm run build
 and the service-worker upgrade test. Browser tests cover desktop and 390 px
 mobile projects. Playwright is pinned to 1.58.2. The production build command is
 `npm run build`. Static output lands in `dist/` with `index.html` at its root.
+Each exact command in `.factory/claims.json` builds its production preview when
+needed, so it also runs after a clean `npm ci` with no existing `dist/` folder.
 
 To inspect the production build locally:
 

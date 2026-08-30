@@ -23,6 +23,22 @@ describe('planning', () => {
     const plan = createPlan('Test', '', ['Signals, systems']);
     expect(planToCsv(plan)).toContain('"Signals, systems"');
   });
+  it('exports only selected prerequisites and preserves practice labels with links', () => {
+    const plan = createPlan('Test', '', ['Control systems']);
+    const [control] = plan.topics;
+    // The topic wording supplies three suggestions, but only one is checked.
+    control.prerequisites = ['Basic calculus', 'basic calculus'];
+    control.practice = [{
+      id: 'q42', label: '2025 · Q42', url: 'https://example.org/questions/42', done: false,
+    }];
+
+    const csv = planToCsv(plan);
+    expect(csv).toContain('"Basic calculus"');
+    expect(csv).not.toContain('Algebra and complex numbers');
+    expect(csv).not.toContain('Units and dimensional analysis');
+    expect(csv.match(/Basic calculus/gu)).toHaveLength(1);
+    expect(csv).toContain('"2025 · Q42 (https://example.org/questions/42)"');
+  });
   it('rejects incomplete backup data', () => {
     expect(isPlan({ version: 1, examName: 'Broken', topics: [{ id: '1', title: 'X', confidence: 'new' }] })).toBe(false);
   });

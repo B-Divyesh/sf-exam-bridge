@@ -101,12 +101,27 @@ function csvCell(value: string): string {
   return `"${value.replaceAll('"', '""')}"`;
 }
 
+function uniqueSelectedPrerequisites(prerequisites: string[]): string[] {
+  const seen = new Set<string>();
+  return prerequisites.filter(prerequisite => {
+    const key = prerequisite.trim().toLocaleLowerCase();
+    if (!key || seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+function practiceReferenceForCsv(ref: PracticeRef): string {
+  if (ref.label && ref.url) return `${ref.label} (${ref.url})`;
+  return ref.label || ref.url;
+}
+
 export function planToCsv(plan: Plan): string {
   const header = ['Order', 'Topic', 'Confidence', 'Prerequisites', 'Practice references', 'Completed references'];
   const rows = sequenceTopics(plan.topics).map((topic, index) => [
     String(index + 1), topic.title, topic.confidence,
-    [...topic.suggested, ...topic.prerequisites].join('; '),
-    topic.practice.map(ref => ref.url || ref.label).join('; '),
+    uniqueSelectedPrerequisites(topic.prerequisites).join('; '),
+    topic.practice.map(practiceReferenceForCsv).join('; '),
     String(topic.practice.filter(ref => ref.done).length),
   ]);
   return [header, ...rows].map(row => row.map(csvCell).join(',')).join('\n');
