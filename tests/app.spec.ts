@@ -7,6 +7,37 @@ test.beforeEach(async ({ page }) => {
   await page.reload();
 });
 
+test('keeps the audience and sample action in the unscrolled 390 by 844 first viewport', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto('/');
+
+  const audience = page.locator('.lede');
+  const sampleAction = page.getByRole('link', { name: 'Try it with sample data' });
+  const illustration = page.locator('.hero-figure');
+
+  await expect(audience).toBeVisible();
+  await expect(sampleAction).toBeVisible();
+  expect(await page.evaluate(() => window.scrollY)).toBe(0);
+
+  const [audienceBox, actionBox, illustrationBox] = await Promise.all([
+    audience.boundingBox(),
+    sampleAction.boundingBox(),
+    illustration.boundingBox(),
+  ]);
+  expect(audienceBox).not.toBeNull();
+  expect(actionBox).not.toBeNull();
+  expect(illustrationBox).not.toBeNull();
+  const bottom = (box: NonNullable<typeof audienceBox>) => box.y + box.height;
+
+  // This is intentionally geometry-based: visibility alone would scroll the
+  // button into view and miss the cold first-read regression.
+  expect(audienceBox!.y).toBeGreaterThanOrEqual(0);
+  expect(bottom(audienceBox!)).toBeLessThanOrEqual(844);
+  expect(actionBox!.y).toBeGreaterThanOrEqual(0);
+  expect(bottom(actionBox!)).toBeLessThanOrEqual(844);
+  expect(bottom(actionBox!)).toBeLessThanOrEqual(illustrationBox!.y);
+});
+
 test('builds and updates a complete local study route', async ({ page }) => {
   await expect(page.getByRole('heading', { level: 1 })).toHaveCount(1);
   await page.getByLabel('Plan name').fill('My electronics return');
