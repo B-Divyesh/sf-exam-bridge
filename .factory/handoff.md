@@ -1,74 +1,108 @@
-# Exam Bridge independent verification 6 handoff — FAIL
+# Exam Bridge repair handoff
 
-- Work order: `exam-bridge-verify-6`
-- Candidate commit: `b4801355ad5d6d9e223257e83f09d3ac792bca19`
-- Live URL: <https://exam-bridge.sociobot.in/>
+- Work order: `exam-bridge-repair-7`
+- Base verifier report: `.factory/verification-6.md` at `8ba18451831eeb0fe70a9f7badf492ade465872e`
+- Repaired candidate commit: `f904241a8d1532906679523fb99559fb7646af42`
+- Artifact: static web / PWA, Vite + TypeScript, output `dist/`
 - Verified: 2026-08-30 UTC
-- Full report: `.factory/verification-6.md`
 
 ## Release decision
 
-**FAIL.** The deployment is healthy and byte-for-byte matches the candidate, but
-the candidate does not satisfy the mandatory claims contract and its claimed
-complete CSV export loses or misstates user data.
+The two release-blocking verifier findings are repaired and covered by regression
+tests. The local production artifact is buildable from a clean install and passes
+the complete repository test suite. Deployment is initiated by pushing `main` to
+the factory-connected product repository; the repository contains no direct
+infrastructure credentials or deploy command.
 
-## Release blockers
+## Repairs
 
-1. From the clean candidate, after only `npm ci`, all 11 exact commands in
-   `.factory/claims.json` failed with Playwright's 60-second web-server timeout.
-   `npm run test:e2e` invokes `vite preview`, which requires an existing untracked
-   `dist/`; the manifest commands never build it. Once `npm run build` created
-   `dist`, all 11 commands passed individually. The claim tests are therefore not
-   independently runnable from the required clean state.
-2. CSV is not a complete plan export. For a practice reference with both a label
-   and URL, only the URL is exported. The prerequisite column includes unchecked
-   suggestions and duplicates checked suggestions. The sample Control systems row
-   exported `Algebra and complex numbers; Basic calculus; Units and dimensional
-   analysis; Basic calculus` even though only Basic calculus was checked.
+1. **Claim commands now work from a clean clone.** Playwright's web server builds
+   the production artifact before starting `vite preview` and never reuses an
+   unknown existing server. `scripts/clean-claim-start.test.mjs` removes only the
+   generated `dist/`, runs the exact `@claim:demo-sandbox` manifest-style command,
+   and requires it to build, serve, and pass. This reproduces the prior no-`dist`
+   condition without relying on a prebuilt artifact.
+2. **CSV now preserves the selected study route.** The exporter emits only checked
+   prerequisites, deduplicates legacy repeated selections case-insensitively, and
+   serializes a practice label plus URL as `Label (URL)`. Suggestions remain UI
+   hints and are not exported as selected work.
+3. **The CSV claim now proves the formerly lost data.** Its demo test attaches
+   `2025 · Q42` with `https://example.org/questions/42`, then requires the Control
+   systems CSV row to contain that complete reference, only Basic calculus, no
+   unchecked suggestion, and no duplicate prerequisite.
+4. **Secondary metadata is complete.** Privacy, Terms, and the product 404 now
+   include canonical, Open Graph, and full Twitter metadata. The 404 also has the
+   Apple touch icon. Contract coverage checks these fields and continues to reject
+   third-party runtime media, scripts, and stylesheets.
 
-## Other findings
+## Verification evidence
 
-- Medium: the researched freemium paid-template tier is not shipped. Templates are
-  free, with no price or checkout action; only existing-license verification exists.
-- Low: Privacy and Terms omit Twitter title/description/image metadata, and the 404
-  omits canonical/social/apple-touch metadata required by the site contract.
+All commands were run in `/work/repo` after a clean `npm ci` (59 packages; 0
+reported vulnerabilities):
 
-## What passed
+| Check | Result |
+| --- | --- |
+| `npm run test:contracts` | PASS — 11 registered claims, demo isolation, product 404 and metadata policy |
+| `npm run test:unit` | PASS — 9 Vitest tests, including selected-prerequisite and label-plus-URL CSV regression |
+| Every exact `.factory/claims.json` command | PASS — 11/11, each started with no `dist/` and built its own production preview |
+| `npm run test:clean-claim-start` | PASS — exact `@claim:demo-sandbox` command from no `dist/` |
+| `npm test` | PASS — build, contracts, 9 units, clean-start regression, 44 Playwright desktop/Pixel 5 tests, service-worker upgrade |
+| `npx tsc --noEmit` | PASS |
+| `npm run build` | PASS — `dist/index.html` produced |
+| Local `verify-url.sh` | PASS — root and demo, title/lang/H1/main/alts/named buttons and no console errors |
+| Local route response smoke | PASS — `/`, `/demo`, `/privacy/`, `/terms/`, and `/404.html` each returned 200 |
 
-- Cold first-read and one-click sample demo.
-- `npm ci` (59 packages, 0 vulnerabilities).
-- After building: `npm test` (contracts, 8/8 Vitest, 44/44 Playwright, service-worker
-  upgrade), `npx tsc --noEmit`, and the exact `npm run build`.
-- Live ten-topic normal flow; two-topic and 80-topic boundaries; 81st topic blocked;
-  invalid syllabus, URL, practice URL, and JSON recovery; persistence; JSON backup;
-  templates; demo isolation/reset/exit; license invalid-state behavior.
-- Live desktop and 390 px light/dark axe scans: zero serious/critical findings.
-  Keyboard skip navigation, visible focus, reduced motion, ≥44 px audited targets,
-  and no mobile overflow passed.
-- Privacy request log: ordinary cold/demo/planning journey made 28 same-origin-only
-  requests and had no console/page/request errors.
-- PWA live offline reload and exact legacy-to-current service-worker upgrade passed.
-- Security headers and caching passed. License API allowed 30 requests; request 31
-  returned 429 with `Retry-After: 4`.
-- Live mobile Lighthouse: Performance 94, Accessibility 100, Best Practices 100,
-  SEO 100; FCP 1.0 s, LCP 1.2 s, TBT 280 ms, CLS 0.
-- Budgets: JS 26,409 B raw / 9.52 KB gzip; CSS 17,114 B raw / 4.58 KB gzip; hero
-  WebP 19,704 B; no webfonts.
-- Local/live SHA-256 matched for HTML, hashed JS/CSS, hero, 404, and service worker.
+Local verification evidence is at:
 
-## Reproduce
+- `/tmp/exam-bridge-verify-root-hb0lhg/verify.json`
+- `/tmp/exam-bridge-verify-demo-glQ1zP/verify.json`
+
+The production bundle is 26,580 B JavaScript raw / 9,556 B gzip, 17,114 B CSS
+raw / 4,576 B gzip, and 19,704 B for the hero WebP. This is within the static
+product budgets.
+
+Browser coverage includes keyboard skip-link use and focus retention, desktop and
+390 px layouts, reduced motion, light/dark axe scans with no serious or critical
+violations, same-origin-only ordinary planning, demo isolation/reset/exit, offline
+reload, and the exact legacy-to-current service-worker cache upgrade.
+
+## Privacy, deployment, and scope notes
+
+- Planner data remains local-first. The repaired CSV behavior does not add any
+  request or storage scope. License verification still runs only for an explicit
+  token action or a cached token reconciliation.
+- `public/staticwebapp.config.json` remains the response-policy source: CSP,
+  header-delivered `frame-ancestors`, referrer policy, nosniff, permissions policy,
+  cache rules, `/demo` rewrite, and the product-owned 404 override. Repository
+  contracts validate the relevant configuration.
+- No live external service or billing endpoint was contacted during this repair.
+  That respects the work-order resource boundary; local production identity was
+  verified from the generated artifact instead.
+- Package/consumer testing is not applicable: this is a static product, not a
+  published library or CLI. No lint script is configured; TypeScript checking is
+  part of every production build.
+
+## Known follow-up
+
+The researched brief retains its `freemium` direction, but a product checkout was
+previously unavailable outside this repository. The current release deliberately
+keeps the planner and the existing editable templates free rather than exposing a
+dead purchase path. Registering a paid template product, setting its exact price,
+and enabling the hosted Sociobot checkout are factory/billing work outside this
+static repository and were not attempted here. A future paid release must add the
+registered checkout link, clearly state the one-time price and included template
+pack, and add a mocked purchase-return regression without gating export,
+accessibility, privacy, or safety features.
+
+## Run and deploy
 
 ```sh
-git checkout b4801355ad5d6d9e223257e83f09d3ac792bca19
 npm ci
-npm run test:e2e -- --project=desktop --grep @claim:demo-sandbox
-# Fails: Timed out waiting 60000ms from config.webServer.
-
 npm test
-npx tsc --noEmit
 npm run build
-# These pass because npm test/build creates dist first.
+npm run preview
 ```
 
-No product code was modified during verification. Only this handoff and the new
-verification report were added/updated.
+`main` is pushed to the product repository for the factory's configured static
+deployment. Deploy the generated `dist/` directory; do not add infrastructure,
+DNS, billing, or secret changes in this repository.
