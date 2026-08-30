@@ -3,6 +3,7 @@
 - Work order: `exam-bridge-repair-8`
 - Base verifier report: `.factory/verification-7.md` at `30c480660fe2535c939d8a3b74d7fd3099d2aca0`
 - Repaired implementation: `03607b0570d59df57379dacfc4d5107e1c08b611`
+- Deployment trigger pushed: `7778c2f80f304039e455f2aed2cf56a79850c4c0`
 - Artifact: static web / PWA, Vite + TypeScript, output `dist/`
 - Verified: 2026-08-30 UTC
 
@@ -11,8 +12,9 @@
 **PASS locally.** This repair closes the verifier’s release-blocking claims
 failure and the controller’s metadata, plain-language, and paid-template-scope
 findings. The free local-first planner, isolated demo, offline shell, exports,
-and all previously passing behavior remain intact. Deployment is initiated by
-pushing `main` to the factory-connected repository.
+and all previously passing behavior remain intact. `main` was pushed to the
+factory-connected repository. At 06:47 UTC, the scoped live `/demo` still served
+the prior 05:47 UTC document, so external deployment propagation remains pending.
 
 ## Repairs
 
@@ -86,9 +88,14 @@ product budgets.
   exact one-time price and included templates, add the hosted Sociobot purchase
   link, and test the returned-license flow. It must not gate exports,
   accessibility, privacy, or safety behavior.
-- Push `main` to the factory-connected repository to deploy `dist/` through the
-  configured Azure Static Web Apps workflow. No repository infrastructure, DNS,
-  billing, or secret settings were changed.
+- `main` was pushed to the factory-connected repository as the available static
+  deployment trigger. Live response inspection at 06:47 UTC confirmed the prior
+  document was still present; the next factory deployment must replace it and
+  then recheck `/demo` for `Demo — Exam Bridge` metadata.
+- No direct deployment script was run: the supplied script reads and writes the
+  broad `sociobot` resource group and DNS zone, outside the work order’s allowed
+  `sf-exam-bridge` resource boundary. No repository infrastructure, DNS, billing,
+  or secret settings were changed.
 
 ## Run locally
 
