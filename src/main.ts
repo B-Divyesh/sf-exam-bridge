@@ -1,5 +1,5 @@
 import './styles.css';
-import { confidenceOrder, createPlan, isPlan, parseSyllabus, planToCsv, sequenceTopics, type Confidence, type Plan, type Topic } from './planner';
+import { confidenceOrder, createPlan, isPlan, MAX_RECOVERABLE_TOPICS, MAX_TOPICS, parseSyllabus, planToCsv, sequenceTopics, type Confidence, type Plan, type Topic } from './planner';
 
 const STORAGE_KEY = 'exam-bridge:plan:v1';
 const THEME_KEY = 'exam-bridge:theme';
@@ -34,7 +34,10 @@ function loadPlan(): Plan | null {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (!raw) return null;
     const parsed: unknown = JSON.parse(raw);
-    return isPlan(parsed) ? parsed : null;
+    // Version 1.0.0 accidentally let the editor save topic 81. Continue to
+    // load those affected local plans so they can be backed up or reset rather
+    // than silently presenting an empty planner after an upgrade.
+    return isPlan(parsed, MAX_RECOVERABLE_TOPICS) ? parsed : null;
   } catch { return null; }
 }
 
@@ -128,7 +131,8 @@ function workspace(): string {
       <div class="save-state" role="status" aria-live="polite"><span aria-hidden="true">●</span> ${escapeHtml(saveMessage)}</div></div>
     <section class="route-overview" aria-labelledby="route-title"><div><p class="eyebrow"><span>3</span> Follow the route</p><h2 id="route-title">Your next pass</h2><p>Lowest-confidence topics come first. Reassess after practice and the route reorders itself.</p></div>
       <dl><div><dt>Topics</dt><dd>${stats.total}</dd></div><div><dt>Ready</dt><dd>${stats.ready}</dd></div><div><dt>Practised</dt><dd>${stats.practised}</dd></div></dl></section>
-    <div class="toolbar" aria-label="Plan actions"><button type="button" data-global-action="add-topic">Add topic</button><button type="button" data-global-action="export-csv">Export CSV</button><button type="button" data-global-action="export-json">Back up JSON</button><label class="file-button">Restore JSON<input id="import-json" type="file" accept="application/json,.json"></label><button class="danger-link" type="button" data-global-action="reset">Start over</button></div>
+    ${plan.topics.length > MAX_TOPICS ? `<p class="plan-limit-notice" role="alert">This restored plan has ${plan.topics.length} topics. New plans are limited to ${MAX_TOPICS}; back it up before starting a new plan.</p>` : ''}
+    <div class="toolbar" aria-label="Plan actions"><button type="button" data-global-action="add-topic" ${plan.topics.length >= MAX_TOPICS ? 'disabled aria-describedby="topic-limit-note"' : ''}>Add topic</button><span id="topic-limit-note" class="toolbar-note">${plan.topics.length >= MAX_TOPICS ? `Maximum ${MAX_TOPICS} topics reached.` : `${MAX_TOPICS - plan.topics.length} topic slots left.`}</span><button type="button" data-global-action="export-csv">Export CSV</button><button type="button" data-global-action="export-json">Back up JSON</button><label class="file-button">Restore JSON<input id="import-json" type="file" accept="application/json,.json"></label><button class="danger-link" type="button" data-global-action="reset">Start over</button></div>
     <div class="route-list">${ordered.map(topicCard).join('')}</div>
   </section>`;
 }
@@ -253,6 +257,10 @@ function bindPlannerEvents(): void {
     const action = (event.target as HTMLElement).closest<HTMLElement>('[data-global-action]')?.dataset.globalAction;
     if (!action || !plan) return;
     if (action === 'add-topic') {
+      if (plan.topics.length >= MAX_TOPICS) {
+        announce(`A plan can contain up to ${MAX_TOPICS} topics. Remove or start a new plan before adding another.`);
+        return;
+      }
       const title = window.prompt('Topic name');
       if (!title?.trim()) return;
       const addition = createPlan(plan.examName, plan.sourceUrl, [title.trim()]).topics[0];
@@ -350,4 +358,8 @@ render();
 initializeLicense();
 window.addEventListener('online', updateNetworkStatus);
 window.addEventListener('offline', updateNetworkStatus);
-if ('serviceWorker' in navigator && import.meta.env.PROD) window.addEventListener('load', () => void navigator.serviceWorker.register('/sw.js'));
+if ('serviceWorker' in navigator && import.meta.env.PROD) window.addEventListener('load', () => {
+  void navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
+    .then(registration => registration.update())
+    .catch(() => undefined);
+});

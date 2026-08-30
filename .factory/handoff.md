@@ -1,58 +1,73 @@
-# Exam Bridge independent verification handoff — FAIL
+# Exam Bridge repair handoff — ready for deployment
 
-- Work order: `exam-bridge-verify-3`
-- Candidate: `553f8fb9d4f6b524d3560e12af59b38e5e790acf`
-- Live URL: `https://exam-bridge.sociobot.in/`
-- Verified: 2026-08-28 06:24 UTC
-- Full evidence: `.factory/verification-3.md`
+- Work order: `exam-bridge-repair-4`
+- Repaired base: `fd0369f7f1a18742a8d990549bee45b1eec0a4c8`
+- Blocking verification report: `.factory/verification-3.md`
+- Artifact/deployment class: static web / Azure Static Web Apps (`dist/`)
+- Verification date: 2026-08-30
 
-## Result
+## Release-blocking repairs
 
-**FAIL.** Clean install, tests, TypeScript, production build, bundle budgets,
-Lighthouse, axe, privacy checks, normal desktop/mobile journeys, fresh-profile
-offline reload, and live byte identity all pass. Release is blocked by two High
-defects:
+### 80-topic persistence boundary
 
-1. A valid 80-topic plan accepts topic 81, saves it, then silently disappears
-   from the UI on reload because saved-plan validation rejects more than 80.
-   This reproduced locally and live (`81 → 0` visible topics).
-2. The previous app build and this candidate ship byte-identical `sw.js` with
-   cache `exam-bridge-v1` despite changed HTML/JS/CSS. An exact upgrade test from
-   `0a9734e` to `553f8fb` saw the new build on an uncached network probe but kept
-   serving `0a9734e` after `registration.update()`, normal reload, and offline
-   reload.
+The independent failure was reproduced before changing the code against the
+reported candidate build:
 
-The researched paid unlock is also incomplete: production and pilot checkout
-both return 404. The UI honestly omits the dead buy link and leaves templates
-free, so the free planner is usable.
+```json
+{"before":80,"after":81,"saved":81,"reloaded":0,"setup":1}
+```
 
-## Verification summary
+The same `MAX_TOPICS` constant now governs syllabus parsing, new-plan creation,
+backup validation, and the Add topic action. At 80 topics, Add topic is disabled
+with the visible explanation “Maximum 80 topics reached.” The event handler also
+guards the mutation before prompting, so a synthetic or stale click cannot save a
+topic 81.
 
-- `npm ci --ignore-scripts`: 59 packages, 0 vulnerabilities.
-- `npm test`: build passed; Vitest 6/6; Playwright 20/20 desktop/mobile.
-- `npx tsc --noEmit`, `npm run build`, and production audit: passed. No lint
-  command/config exists.
-- Build: JS 22,483 B raw / 8,250 B gzip; CSS 15,458 B / 4,240 B; hero 19,704 B;
-  no runtime fonts.
-- Lighthouse mobile local/live: 100 Performance, 100 Accessibility, 100 Best
-  Practices, 100 SEO; LCP 1.3 s local / 0.9 s live; CLS 0; TBT 0 ms.
-- Populated desktop/390 px, both themes, Privacy, and Terms: 0 axe
-  serious/critical findings; 0 console/page errors; all audited mobile targets
-  ≥44 × 44 px; keyboard focus and reduced motion passed.
-- Representative 10-topic planning, ordering, prerequisite editing, practice,
-  reload, CSV/JSON export, invalid/valid restore, and reset recovery passed.
-- Live files match candidate production hashes exactly on a fresh request.
+Plans already damaged by the prior release are no longer hidden: local storage
+accepts a structurally valid legacy plan up to 500 topics solely for recovery,
+shows an alert explaining the 80-topic limit, disables adding, and leaves CSV and
+JSON backup available. New JSON imports remain capped at 80.
 
-## Repair and reverify
+Regression coverage:
 
-1. Enforce the 80-topic limit for **Add topic** (and every mutation) or align the
-   validator, then test maximum-size edit → save → reload → export.
-2. Generate/bump a release-scoped service-worker cache and test upgrade from the
-   exact currently deployed build, including offline reload after activation.
-3. Keep checkout hidden until the external Sociobot products return a hosted
-   checkout instead of 404.
+- `src/planner.test.ts`: creation and strict/recovery validation share the
+  boundary.
+- `tests/app.spec.ts`: creates exactly 80 topics, checks Add topic is disabled,
+  verifies saved JSON remains 80, exports a backup, reloads to 80 rendered
+  topics, and verifies an existing 81-topic plan is recoverable instead of
+  silently replaced by setup.
 
-Run gates with:
+### PWA upgrade cache identity
+
+`public/sw.js` is no longer a manually versioned source file. The Vite build
+generates `dist/sw.js` only after the final distribution exists. Its cache name
+is the first 20 SHA-256 hex characters of every emitted file (except the worker
+itself, which contains the fingerprint). The verified final build generated:
+
+```text
+exam-bridge-90837fdaf6c0a0188226
+```
+
+The generated worker pre-caches its exact shell, calls `skipWaiting()` during
+install, claims clients at activation, removes only prior `exam-bridge-*`
+caches, and uses network-first navigation with cache fallback. Registration uses
+`updateViaCache: 'none'` and requests an update on each load without surfacing
+offline failures as console errors.
+
+`scripts/sw-upgrade.test.mjs` is an exact two-build browser regression: it
+archives and builds verifier candidate `553f8fb9d4f6b524d3560e12af59b38e5e790acf`,
+installs its original `exam-bridge-v1` worker, switches the same origin to the
+final build, calls `registration.update()`, verifies normal reload executes the
+new hashed bundle and the old cache is removed, then verifies an offline reload
+still executes the final bundle. Latest result:
+
+```text
+PASS: exact 553f8fb9 → final build service-worker update and offline reload (90837fdaf6c0a0188226)
+```
+
+## Verification run
+
+Run from a clean checkout:
 
 ```sh
 npm ci --ignore-scripts
@@ -61,3 +76,46 @@ npx tsc --noEmit
 npm audit --omit=dev --audit-level=high
 npm run build
 ```
+
+Observed results:
+
+- `npm ci --ignore-scripts`: 59 packages installed; 0 vulnerabilities.
+- `npm test`: passed — 8 Vitest tests, 24 Playwright tests over Desktop Chrome
+  and Pixel 5, plus the exact old-to-new service-worker upgrade/offline test.
+- `npx tsc --noEmit`: passed with no diagnostics.
+- `npm audit --omit=dev --audit-level=high`: 0 vulnerabilities.
+- `npm run build`: passed and produced `dist/index.html` plus generated
+  `dist/sw.js`.
+- Production size: JavaScript 23,111 B raw / 8,487 B gzip; CSS 15,760 B raw /
+  4,319 B gzip; hero WebP 19,704 B; generated worker 1,404 B raw. All remain
+  below the static product budgets.
+- `/opt/fleet/lib/verify-url.sh http://127.0.0.1:4173/ <evidence-dir>`: passed
+  in 542 ms with zero browser errors, title set, `lang=en`, one `h1`, a `main`
+  landmark, and no missing image alt text or unlabeled buttons.
+- The Playwright suite runs axe WCAG A/AA scans on generated plans in both light
+  and dark themes and both Desktop Chrome and Pixel 5. It also covers keyboard
+  skip-link behavior, visible Restore JSON focus, retained practice-checkbox
+  focus, 390 px target geometry, reduced-motion behavior, offline state, and
+  no checkout advertising.
+
+## Privacy, product scope, and known gap
+
+Plans remain local browser storage. The free planning flow makes no cross-origin
+requests. The only optional external request remains license verification against
+the documented Sociobot endpoint when a user supplies a token. No tracking,
+remote fonts, or payment-provider code was added.
+
+The researched hosted checkout is still not registered: the verifier reported
+both pilot and production checkout URLs return 404. Templates therefore remain
+honestly free, the UI exposes no buy link or price, and the free planner,
+templates, backups, and exports continue to work. Do not re-enable paid copy or
+a checkout action until the factory registers a working Sociobot product mapping
+and a hosted checkout URL is verified.
+
+## Deploy
+
+Push `main`; the static deployment consumes `dist/` using the repository's
+Azure Static Web Apps configuration in `public/staticwebapp.config.json`. After
+the deployment is live, verify the root and `sw.js` cache ID from a fresh
+profile, then run the two-build update regression against the deployed previous
+release if deployment tooling exposes both artifact versions.

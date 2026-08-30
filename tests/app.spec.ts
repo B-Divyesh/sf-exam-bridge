@@ -27,6 +27,48 @@ test('builds and updates a complete local study route', async ({ page }) => {
   await expect(page.getByText('2023 · Q14', { exact: true })).toBeVisible();
 });
 
+test('prevents a topic 81 mutation and keeps the maximum plan available after reload', async ({ page }) => {
+  const maximumTopics = Array.from({ length: 80 }, (_, index) => `Topic ${index + 1}`).join('\n');
+  await page.getByLabel(/Syllabus topics/).fill(maximumTopics);
+  await page.getByRole('button', { name: /Map my syllabus/ }).click();
+
+  await expect(page.locator('.topic')).toHaveCount(80);
+  const addTopic = page.getByRole('button', { name: 'Add topic' });
+  await expect(addTopic).toBeDisabled();
+  await expect(page.getByText('Maximum 80 topics reached.')).toBeVisible();
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('exam-bridge:plan:v1') || '{}').topics.length)).toBe(80);
+
+  const download = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Back up JSON' }).click();
+  const backup = await download;
+  expect((await backup.createReadStream())?.readable).toBe(true);
+
+  await page.reload();
+  await expect(page.locator('.topic')).toHaveCount(80);
+  await expect(page.locator('#setup-form')).toHaveCount(0);
+});
+
+test('recovers an over-limit legacy plan instead of hiding it after an upgrade', async ({ page }) => {
+  await page.evaluate(() => {
+    const now = new Date().toISOString();
+    const topics = Array.from({ length: 81 }, (_, index) => ({
+      id: `legacy-${index}`,
+      title: `Legacy topic ${index + 1}`,
+      confidence: 'new',
+      suggested: [],
+      prerequisites: [],
+      practice: [],
+    }));
+    localStorage.setItem('exam-bridge:plan:v1', JSON.stringify({
+      version: 1, examName: 'Recovered plan', sourceUrl: '', topics, createdAt: now, updatedAt: now,
+    }));
+  });
+  await page.reload();
+  await expect(page.locator('.topic')).toHaveCount(81);
+  await expect(page.locator('.plan-limit-notice')).toContainText('This restored plan has 81 topics');
+  await expect(page.getByRole('button', { name: 'Add topic' })).toBeDisabled();
+});
+
 test('validates the empty route and has no serious accessibility findings', async ({ page }) => {
   await page.getByLabel(/Syllabus topics/).fill('Only one topic');
   await page.getByRole('button', { name: /Map my syllabus/ }).click();

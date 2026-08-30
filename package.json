@@ -7,9 +7,10 @@
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "npm run build && vitest run && playwright test",
+    "test": "npm run build && vitest run && playwright test && npm run test:sw-upgrade",
     "test:unit": "vitest run",
-    "test:e2e": "playwright test"
+    "test:e2e": "playwright test",
+    "test:sw-upgrade": "node scripts/sw-upgrade.test.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",

@@ -56,8 +56,10 @@ provider integration is embedded here.
 ## Deployment and privacy
 
 Deploy `dist/` to Azure Static Web Apps. `staticwebapp.config.json` supplies CSP,
-privacy headers, and cache policy. The service worker caches the local shell and
-same-origin assets after first use. See `/privacy/` and `/terms/` for policy.
+privacy headers, and cache policy. Each production build generates a
+content-fingerprinted service-worker cache for its exact shell, so an updated
+release replaces an installed prior shell. See `/privacy/` and `/terms/` for
+policy.
 
 The visual thesis, asset prompt, review decision, and provenance are in
 `.factory/design.md`. Build verification and known gaps are in

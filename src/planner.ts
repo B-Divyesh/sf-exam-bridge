@@ -1,5 +1,16 @@
 export type Confidence = 'new' | 'shaky' | 'practising' | 'ready';
 
+/** The largest plan the editor and backup importer accept. */
+export const MAX_TOPICS = 80;
+
+/**
+ * Old releases could write one extra topic through the editor. Keep those
+ * affected plans recoverable on this device, while refusing new oversized
+ * imports and mutations. This ceiling prevents malformed local storage from
+ * creating an unbounded render workload.
+ */
+export const MAX_RECOVERABLE_TOPICS = 500;
+
 export interface PracticeRef {
   id: string;
   label: string;
@@ -49,7 +60,7 @@ export function parseSyllabus(input: string): string[] {
     if (topic.length < 2 || seen.has(key)) return false;
     seen.add(key);
     return true;
-  }).slice(0, 80);
+  }).slice(0, MAX_TOPICS);
 }
 
 export function suggestPrerequisites(title: string): string[] {
@@ -65,7 +76,7 @@ export function createPlan(examName: string, sourceUrl: string, titles: string[]
     sourceUrl: sourceUrl.trim(),
     createdAt: stamp,
     updatedAt: stamp,
-    topics: titles.map((title, index) => ({
+    topics: titles.slice(0, MAX_TOPICS).map((title, index) => ({
       id: `${now.getTime().toString(36)}-${index}`,
       title,
       confidence: 'new',
@@ -101,12 +112,12 @@ export function planToCsv(plan: Plan): string {
   return [header, ...rows].map(row => row.map(csvCell).join(',')).join('\n');
 }
 
-export function isPlan(value: unknown): value is Plan {
+export function isPlan(value: unknown, maximumTopics = MAX_TOPICS): value is Plan {
   if (!value || typeof value !== 'object') return false;
   const plan = value as Partial<Plan>;
   return plan.version === 1 && typeof plan.examName === 'string' && typeof plan.sourceUrl === 'string' &&
     typeof plan.createdAt === 'string' && typeof plan.updatedAt === 'string' && Array.isArray(plan.topics) &&
-    plan.topics.length <= 80 && plan.topics.every(topic => topic && typeof topic.id === 'string' &&
+    plan.topics.length <= maximumTopics && plan.topics.every(topic => topic && typeof topic.id === 'string' &&
       typeof topic.title === 'string' && confidenceOrder.includes(topic.confidence) &&
       Array.isArray(topic.suggested) && topic.suggested.every(item => typeof item === 'string') &&
       Array.isArray(topic.prerequisites) && topic.prerequisites.every(item => typeof item === 'string') &&
