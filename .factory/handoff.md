@@ -63,3 +63,13 @@ Publish the resulting `dist/` through the factory's static deployment path for
 `sf-exam-bridge`; repository code does not change infrastructure, DNS, billing,
 or any other service. After propagation, verify `https://exam-bridge.sociobot.in/`
 at 390×844 before scrolling and confirm the sample action is visible.
+
+## Deployment state at handoff
+
+The repair was pushed to `main`. The product's live URL was checked repeatedly
+for about two minutes after the push and was still serving the prior candidate
+fingerprints (`main-B74SkQKw.css` and `main-bjpb3lAQ.js`). No direct static-site
+deployment was invoked because the repository contract reserves infrastructure
+and DNS changes for the factory deployment path. The next factory propagation
+must serve `main-DWKhop44.css` and `main-DzU9WRfF.js`; then repeat the recorded
+390×844 no-scroll geometry check against the live URL.
