@@ -1,107 +1,72 @@
-# Exam Bridge repair 8 handoff — local PASS
+# Exam Bridge verification 8 handoff — FAIL
 
-- Work order: `exam-bridge-repair-8`
-- Base verifier report: `.factory/verification-7.md` at `30c480660fe2535c939d8a3b74d7fd3099d2aca0`
-- Repaired implementation: `03607b0570d59df57379dacfc4d5107e1c08b611`
-- Deployment trigger pushed: `7778c2f80f304039e455f2aed2cf56a79850c4c0`
-- Artifact: static web / PWA, Vite + TypeScript, output `dist/`
+- Work order: `exam-bridge-verify-8`
+- Candidate: `7c37b18579cbe1b4fffc5692bc12f746ed1e430b`
+- Live URL: <https://exam-bridge.sociobot.in/>
 - Verified: 2026-08-30 UTC
+- Full report: `.factory/verification-8.md`
 
 ## Release decision
 
-**PASS locally.** This repair closes the verifier’s release-blocking claims
-failure and the controller’s metadata, plain-language, and paid-template-scope
-findings. The free local-first planner, isolated demo, offline shell, exports,
-and all previously passing behavior remain intact. `main` was pushed to the
-factory-connected repository. At 06:47 UTC, the scoped live `/demo` still served
-the prior 05:47 UTC document, so external deployment propagation remains pending.
+**FAIL.** The live deployment exactly matches the candidate, all 12 claim tests
+and all local quality gates pass, and the planner works end to end. The required
+390×844 cold first screen does not show any first action: **Try it with sample
+data** begins at y=893, below the 844 px viewport.
 
-## Repairs
+This is not a deployment-only failure.
 
-1. **Registered and proved the 24-hour license-cache promise.**
-   `.factory/claims.json` now contains `license-cache-24h`. The application has
-   one named `86_400_000` ms cache boundary. Its exact browser claim test starts
-   from the demo, mocks a successful returned license, sees one verification,
-   sees no second automatic request after reload or at 86,399,000 ms, then sees
-   the second request after 86,400,001 ms.
-2. **Made demo metadata correct before JavaScript.** `demo/index.html` is a
-   Vite entry with Demo title, canonical URL, Open Graph, and Twitter metadata.
-   Static Web Apps rewrites `/demo` to that document. Runtime metadata also stays
-   correct after application rendering. A browser response test and contracts
-   cover both the emitted document and the production routing rule.
-3. **Simplified and audited legal copy.** The cache language is short and exact.
-   Terms plainly says templates are free and hosted checkout is unavailable. The
-   copy audit now includes legal routes; a contract rejects every legal sentence
-   longer than 22 words.
-4. **Stated paid-template scope honestly.** All starter templates are free
-   today. There is no checkout action, price, account, or card form. Existing
-   license verification remains available for past holders but does not gate free
-   templates. No checkout behavior was invented while the shared endpoint is
-   environment-gated. The `account-free-planning` claim test now proves this.
-5. **Added a clean lint gate and preserved update coverage.** `npm test` now
-   runs ESLint. The service-worker upgrade harness accepts Vite’s current hashed
-   app-bundle name after the metadata entry added a second HTML input.
+## Blocking defect
 
-## Verification evidence
+At 390×844, the responsive layout puts the full hero illustration before the
+audience text and actions. The headline is visible and the audience sentence ends
+at y=819, but the sample-data action starts at y=893. A phone visitor must scroll
+before learning what to click first, contrary to the explicit first-read gate.
 
-All commands ran in `/work/repo` after a clean `npm ci` (141 packages, 0
-reported vulnerabilities):
+Evidence: `.factory/verification-artifacts/live-cold-mobile-390.png`.
 
-| Check | Result |
-| --- | --- |
-| `npm run lint` | PASS |
-| `npx tsc --noEmit` | PASS |
-| `npm run test:contracts` | PASS — 12 registered claims, demo metadata/routing, legal-copy ceiling, response-policy contract |
-| `npm run test:unit` | PASS — 9 Vitest unit tests |
-| Every exact `.factory/claims.json` command | PASS — 12/12, including the 24-hour request-count boundary |
-| `npm test` | PASS — lint, production build, contracts, units, clean-start claim, 48 Playwright desktop/Pixel 5 tests, and service-worker upgrade |
-| `npm run build` | PASS — `dist/index.html` and `dist/demo/index.html` produced |
-| `npm run test:sw-upgrade` | PASS — exact `553f8fb9` legacy worker to current build, then offline reload |
-| Factory `verify-url.sh` | PASS — root and raw demo HTML: title, lang, H1, main, image alts, named buttons, and no console errors |
-| Response policy smoke | PASS — CSP, `frame-ancestors 'none'`, and only the scoped production/pilot license endpoints in `connect-src` |
+Required fix: place the audience sentence and sample action before the
+illustration on mobile, or otherwise fit them in the initial viewport. Add a
+390×844 test that asserts the action intersects the initial viewport.
 
-Local browser evidence:
+## Other finding
 
-- Root: `/tmp/exam-bridge-verify-root-Pl0jnE/verify.json`
-- Demo: `/tmp/exam-bridge-verify-demo-aNtBdF/verify.json`
+**Medium:** the researched paid reusable-template tier remains deferred. All
+templates are free, and no price or hosted purchase link is available. The UI and
+documentation describe that limitation honestly.
 
-Browser coverage includes keyboard skip-link and focus behavior, 390 px and
-desktop layouts, light/dark axe scans without serious or critical findings,
-reduced motion, demo isolation/reset/exit, ordinary-planning same-origin-only
-requests, offline reload, and service-worker upgrade. The 24-hour cache test
-uses a mocked endpoint and does not contact billing.
+## Verification summary
 
-Production bundle measurements: JavaScript 27,125 B raw / 9,712 B gzip; CSS
-17,114 B raw / 4,578 B gzip; hero WebP 19,704 B. These are within the static
-product budgets.
-
-## Scope and deployment
-
-- This remains a static product; package/consumer installation is not applicable.
-- No direct billing, checkout, Azure, or other external service was contacted.
-  Planner data remains browser-local, and ordinary planning makes no cross-origin
-  requests.
-- The researched freemium template purchase remains deliberately deferred until
-  factory product registration and the environment-gated shared checkout endpoint
-  are available. This release makes that limitation visible instead of exposing a
-  dead purchase path. A future paid release must register the product, publish an
-  exact one-time price and included templates, add the hosted Sociobot purchase
-  link, and test the returned-license flow. It must not gate exports,
-  accessibility, privacy, or safety behavior.
-- `main` was pushed to the factory-connected repository as the available static
-  deployment trigger. Live response inspection at 06:47 UTC confirmed the prior
-  document was still present; the next factory deployment must replace it and
-  then recheck `/demo` for `Demo — Exam Bridge` metadata.
-- No direct deployment script was run: the supplied script reads and writes the
-  broad `sociobot` resource group and DNS zone, outside the work order’s allowed
-  `sf-exam-bridge` resource boundary. No repository infrastructure, DNS, billing,
-  or secret settings were changed.
+- `npm ci`: PASS — 141 packages, 0 vulnerabilities.
+- Every `.factory/claims.json` command: PASS — 12/12.
+- `npm test`: PASS — lint, production build, contracts, 9 unit tests, clean-start
+  claim, 48 desktop/mobile browser tests, and service-worker update/offline test.
+- `npm run lint`, `npx tsc --noEmit`, `npm run build`: PASS.
+- Live ten-topic planning, practice, CSV, backup, reload, and invalid-input
+  recovery: PASS, with no console/page errors or external planning requests.
+- Live demo isolation/reset/exit: PASS.
+- Axe: zero violations on both themes, populated planner, legal pages, and 404.
+- 390 px: no overflow; audited controls at least 44×44; reduced motion 0.01 ms;
+  visible 3 px keyboard focus; skip link focuses `main`.
+- Live PWA offline reload: PASS. Exact legacy-to-current SW update test: PASS.
+- Public license verifier: requests 1–30 returned 200; request 31 returned 429
+  with `Retry-After: 4`.
+- Lighthouse mobile: Performance 96, Accessibility 100, Best Practices 100,
+  SEO 100; FCP 1.0 s, LCP 1.2 s, TBT 220 ms, CLS 0.
+- Bundles: JS 27,125 B raw / 9,750 B gzip; CSS 17,114 B raw / 4,578 B gzip;
+  hero 19,704 B.
+- Live root, demo, JS, CSS, hero, legal pages, 404, manifest, and service worker
+  match the local candidate build byte for byte.
 
 ## Run locally
 
 ```sh
 npm ci
 npm test
+npm run lint
+npx tsc --noEmit
 npm run build
 npm run preview
 ```
+
+No product code, infrastructure, DNS, billing configuration, secret, database,
+or unrelated service was read or modified during this verification.
