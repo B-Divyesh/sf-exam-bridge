@@ -18,6 +18,13 @@
     const link = event.target.closest('a[href]');
     if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
     const destination = new URL(link.href, location.href);
+    if (destination.origin === location.origin && destination.pathname === location.pathname && destination.hash === '#main') {
+      event.preventDefault();
+      const main = document.querySelector('#main');
+      main?.scrollIntoView();
+      main?.focus();
+      return;
+    }
     if (destination.origin === location.origin && destination.pathname !== location.pathname) sessionStorage.setItem(key, normalize(destination.pathname));
   });
 
