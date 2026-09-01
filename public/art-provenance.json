@@ -1,0 +1,8 @@
+{
+  "asset": "/assets/learning-topology.webp",
+  "description": "Abstract paper map with circular topic nodes connected by a coral route and teal prerequisite paths.",
+  "provenance": "original generated illustration",
+  "generator": "Azure OpenAI image generation via the Param Factory gen-image.sh workflow",
+  "generated_at": "2026-08-28",
+  "prompt_record": "/.factory/design.md"
+}

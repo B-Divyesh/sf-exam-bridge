@@ -49,6 +49,34 @@
     "sandbox": "fresh /demo context; select a template; assert five editable topics and demo-only storage"
   },
   {
+    "id": "starter-template-boundary",
+    "claim": "Starter templates are editable plans, not official syllabuses.",
+    "where": "template cards, templates section, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:starter-template-boundary",
+    "sandbox": "fresh /demo context; select a starter template; assert its no-official-syllabus boundary, blank source URL, editable topic controls, and demo-only storage"
+  },
+  {
+    "id": "hosted-content-boundary",
+    "claim": "Exam Bridge does not host exam questions or coaching notes.",
+    "where": "planning limits, Terms, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:hosted-content-boundary",
+    "sandbox": "fresh /demo context; inspect the supplied practice data and requests; assert the sample contains references only, no question-text editor or coaching-note content, and no content-service request"
+  },
+  {
+    "id": "independent-tool",
+    "claim": "Exam Bridge is not endorsed by any exam authority.",
+    "where": "planning limits, Terms, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:independent-tool",
+    "sandbox": "fresh /demo context; assert the independent-tool boundary is visible and the product shell loads no authority branding, authority login, or authority-service request"
+  },
+  {
+    "id": "generated-illustration",
+    "claim": "The landing illustration is an original generated illustration.",
+    "where": "footer, design document",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:generated-illustration",
+    "sandbox": "fresh /demo context; assert the displayed artwork is the documented same-origin asset and its shipped provenance record identifies an original generated source"
+  },
+  {
     "id": "free-access",
     "claim": "The planner, every template, CSV exports, and JSON backups are free and require no account, card, checkout, or payment.",
     "where": "landing facts, templates panel, Terms, README",

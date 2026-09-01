@@ -29,15 +29,18 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Paste headings only—one per line. | 5 | Instruction |
 | Exam Bridge never uploads this text. | 6 | `local-private` |
 | One topic per line; bullets and numbering are fine. | 9 | `syllabus-route` |
-| Use an editable starter map for a permitted exam domain, then make it your own. | 15 | `templates` |
+| Study route order | 3 | Clear populated-plan heading |
+| Question references | 2 | Clear topic-card heading |
+| Choose a starter template | 4 | Clear templates heading |
+| Use an editable starter template for a permitted exam domain, then make it your own. | 15 | `templates`, `starter-template-boundary` |
 | The planner, templates, and exports stay local to this device. | 10 | `local-private` |
-| A reusable starter map—not an official syllabus. | 7 | Boundary |
+| A reusable starter template—not an official syllabus. | 7 | `starter-template-boundary` |
 | Use every starter template without an account, card, or payment. | 10 | `free-access` |
 | Plans stay in this browser. | 5 | `local-private` |
-| Exam Bridge does not host exam questions or coaching notes. | 9 | Boundary |
+| Exam Bridge does not host exam questions or coaching notes. | 9 | `hosted-content-boundary` |
 | Check the official syllabus before studying. | 6 | Boundary |
 | Prerequisite suggestions are only starting points. | 6 | Boundary |
-| Exam Bridge is not endorsed by any exam authority. | 9 | Boundary |
+| Exam Bridge is not endorsed by any exam authority. | 9 | `independent-tool` |
 
 ## Demo and offline states
 
@@ -49,7 +52,7 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Start for real | 3 | Action |
 | Explore six realistic topics. | 4 | `demo-sandbox` |
 | Changes stay in the temporary demo sandbox. | 7 | `demo-sandbox` |
-| Try a different foundation map. | 5 | `templates` |
+| Try a different starter template. | 5 | `templates` |
 | It stays in the same temporary demo storage. | 8 | `demo-sandbox` |
 | You’re offline. | 2 | State |
 | Planning and exports still work. | 5 | `offline-reload`, `csv-export` |
@@ -82,7 +85,7 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 
 | Copy | Characters | Result |
 | --- | ---: | --- |
-| Turn a syllabus into a study route with prerequisites and your own question references. | 87 | Verb first; under 120 |
+| Turn a pasted syllabus into a study route with prerequisites and your own question references. | 94 | Verb first; under 120 |
 
 ## Result
 
@@ -90,7 +93,7 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 - No banned marketing word appears in visitor copy.
 - The first screen names the audience, job, and first action.
 - The retired freemium, checkout, and license wording is absent.
-- Every outcome or privacy statement maps to a registered claim test.
+- Every outcome, boundary, and provenance statement maps to a registered claim test.
 
 | Concept | Term used |
 | --- | --- |
@@ -100,5 +103,6 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Foundation knowledge | prerequisite |
 | User-owned question pointer | question reference |
 | Isolated sample environment | demo |
+| Reusable editable plan | starter template |
 | Portable full-fidelity file | JSON backup |
 | Spreadsheet export | CSV |

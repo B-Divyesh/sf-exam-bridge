@@ -15,18 +15,19 @@ Use **Reset demo** to restore the sample. Use **Start for real** to discard it.
 
 ## What v1 includes
 
-- Bullet and number-aware import for 2–80 distinct syllabus topics
+- Paste a list with bullets or numbers for 2–80 distinct topics
 - Editable confidence and prerequisite checklists
 - Personal practice IDs, notes, and links with attempted status
-- Confidence-aware study ordering and progress summary
+- Study order based on your confidence and progress summary
 - Browser autosave, offline reload, JSON backup and restore, and CSV export
 - Light and dark themes, keyboard support, reduced motion, and a 390 px layout
-- Free editable foundation templates
-- No accounts, trackers, CDN scripts, hosted questions, or exam-authority affiliation
+- Free editable starter templates
+- No accounts, tracking, external scripts, hosted questions, or authority affiliation
 
-Plans live in browser `localStorage`. Clearing site data deletes them. Export a
+Plans stay in your browser. Clearing site data deletes them. Export a
 JSON backup for any plan you need to keep. Exam Bridge does not republish test
-questions. Reference only material you may use.
+questions or host coaching notes. Starter templates are editable plans, not
+official syllabuses. Exam Bridge is not endorsed by any exam authority.
 
 ## Develop and verify
 

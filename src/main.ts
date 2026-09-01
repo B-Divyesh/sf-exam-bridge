@@ -7,10 +7,12 @@ const STORAGE_KEY = isDemo ? `${DEMO_PREFIX}plan:v1` : 'exam-bridge:plan:v1';
 const THEME_KEY = isDemo ? `${DEMO_PREFIX}theme` : 'exam-bridge:theme';
 
 const templates = [
-  { name: 'Engineering foundations', note: 'A reusable starter map—not an official syllabus.', topics: ['Engineering mathematics', 'Signals and systems', 'Electric circuits', 'Control systems', 'General aptitude'] },
-  { name: 'Computer science foundations', note: 'A reusable starter map—not an official syllabus.', topics: ['Discrete mathematics', 'Programming and data structures', 'Algorithms', 'Computer organization', 'Operating systems', 'Database systems', 'Computer networks'] },
-  { name: 'Quantitative foundations', note: 'A reusable starter map—not an official syllabus.', topics: ['Arithmetic and ratios', 'Algebra', 'Geometry', 'Data interpretation', 'Probability', 'Logical reasoning'] },
+  { name: 'Engineering foundations', note: 'A reusable starter template—not an official syllabus.', topics: ['Engineering mathematics', 'Signals and systems', 'Electric circuits', 'Control systems', 'General aptitude'] },
+  { name: 'Computer science foundations', note: 'A reusable starter template—not an official syllabus.', topics: ['Discrete mathematics', 'Programming and data structures', 'Algorithms', 'Computer organization', 'Operating systems', 'Database systems', 'Computer networks'] },
+  { name: 'Quantitative foundations', note: 'A reusable starter template—not an official syllabus.', topics: ['Arithmetic and ratios', 'Algebra', 'Geometry', 'Data interpretation', 'Probability', 'Logical reasoning'] },
 ];
+
+const ROUTE_FOCUS_KEY = 'exam-bridge:route-focus';
 
 function clearDemoStorage(): void {
   for (let index = localStorage.length - 1; index >= 0; index -= 1) {
@@ -154,7 +156,7 @@ function topicCard(topic: Topic, routeIndex: number): string {
         ${customs.length ? `<ul class="custom-list">${customs.map(item => `<li>${escapeHtml(item)}<button type="button" data-action="remove-prerequisite" data-value="${escapeHtml(item)}" aria-label="Remove prerequisite ${escapeHtml(item)}">×</button></li>`).join('')}</ul>` : ''}
         <form class="inline-form" data-action="add-prerequisite"><label class="sr-only" for="pre-${topic.id}">Custom prerequisite for ${escapeHtml(topic.title)}</label><input id="pre-${topic.id}" name="prerequisite" maxlength="80" placeholder="Add your own prerequisite"><button type="submit">Add</button></form>
       </fieldset>
-      <div class="practice-block"><h4>Practice bridge</h4><p class="assist">Add a question ID, page, or link—never the copyrighted question text.</p>
+      <div class="practice-block"><h4>Question references</h4><p class="assist">Add a question ID, page, or link—never the copyrighted question text.</p>
         ${topic.practice.length ? `<ul class="practice-list">${topic.practice.map(ref => `<li data-ref-id="${escapeHtml(ref.id)}"><label><input type="checkbox" data-action="practice-done" ${ref.done ? 'checked' : ''}><span class="sr-only">Mark ${escapeHtml(ref.label)} complete</span></label><div>${safeExternalUrl(ref.url) ? `<a href="${escapeHtml(safeExternalUrl(ref.url))}" target="_blank" rel="noreferrer">${escapeHtml(ref.label)}</a>` : `<span>${escapeHtml(ref.label)}</span>`}<small>${ref.done ? 'Attempted' : 'Not attempted'}</small></div><button type="button" data-action="remove-practice" aria-label="Remove ${escapeHtml(ref.label)}">×</button></li>`).join('')}</ul>` : '<p class="empty-inline">No practice reference yet.</p>'}
         <form class="practice-form" data-action="add-practice"><label>Question ID or note<input name="label" maxlength="100" required placeholder="e.g. 2023 · Q14"></label><label>Link <span class="optional">Optional</span><input name="url" type="url" inputmode="url" placeholder="https://…"></label><button type="submit">Attach</button><p class="mini-error" role="alert"></p></form>
       </div></div></div>
@@ -169,7 +171,7 @@ function workspace(): string {
   return `<section class="workspace" aria-labelledby="workspace-title">
     <div class="workspace-top"><div><p class="eyebrow"><span>2</span> Assess and connect</p><h2 id="workspace-title">${escapeHtml(plan.examName)}</h2><p>${source ? `<a href="${escapeHtml(source)}" target="_blank" rel="noreferrer">Open attributed syllabus source ↗</a>` : 'Personal outline · no source link added'}</p></div>
       <div class="save-state" role="status" aria-live="polite"><span aria-hidden="true">●</span> ${escapeHtml(saveMessage)}</div></div>
-    <section class="route-overview" aria-labelledby="route-title"><div><p class="eyebrow"><span>3</span> Follow the route</p><h2 id="route-title">Your next pass</h2><p>Lowest-confidence topics come first. Reassess after practice and the route reorders itself.</p></div>
+    <section class="route-overview" aria-labelledby="route-title"><div><p class="eyebrow"><span>3</span> Follow the route</p><h2 id="route-title">Study route order</h2><p>Lowest-confidence topics come first. Reassess after practice and the route reorders itself.</p></div>
       <dl><div><dt>Topics</dt><dd>${stats.total}</dd></div><div><dt>Ready</dt><dd>${stats.ready}</dd></div><div><dt>Practised</dt><dd>${stats.practised}</dd></div></dl></section>
     ${plan.topics.length > MAX_TOPICS ? `<p class="plan-limit-notice" role="alert">This restored plan has ${plan.topics.length} topics. New plans are limited to ${MAX_TOPICS}; back it up before starting a new plan.</p>` : ''}
     <div class="toolbar" aria-label="Plan actions"><button type="button" data-global-action="add-topic" ${plan.topics.length >= MAX_TOPICS ? 'disabled aria-describedby="topic-limit-note"' : ''}>Add topic</button><span id="topic-limit-note" class="toolbar-note">${plan.topics.length >= MAX_TOPICS ? `Maximum ${MAX_TOPICS} topics reached.` : `${MAX_TOPICS - plan.topics.length} topic slots left.`}</span><button type="button" data-global-action="export-csv">Export CSV</button><button type="button" data-global-action="export-json">Back up JSON</button><label class="file-button">Restore JSON<input id="import-json" type="file" accept="application/json,.json"></label><button class="danger-link" type="button" data-global-action="reset">Start over</button></div>
@@ -178,9 +180,9 @@ function workspace(): string {
 }
 
 function templatesSection(): string {
-  return `<section class="templates" id="templates" aria-labelledby="templates-title"><div class="section-index"><span>+</span><div><p class="eyebrow">Reusable starting points</p><h2 id="templates-title">Begin from a foundation map</h2><p>Use an editable starter map for a permitted exam domain, then make it your own. The planner, templates, and exports stay local to this device.</p></div></div>
+  return `<section class="templates" id="templates" aria-labelledby="templates-title"><div class="section-index"><span>+</span><div><p class="eyebrow">Reusable starting points</p><h2 id="templates-title">Choose a starter template</h2><p>Use an editable starter template for a permitted exam domain, then make it your own. The planner, templates, and exports stay local to this device.</p></div></div>
     <div class="template-list">${templates.map((template, index) => `<article><div><span class="template-shape" aria-hidden="true"></span><h3>${template.name}</h3><p>${template.note}</p><small>${template.topics.length} editable topics</small></div><button type="button" data-template="${index}">Use template</button></article>`).join('')}</div>
-    <div class="access-panel"><p class="eyebrow">Free access</p><h3>${isDemo ? 'Templates work inside the demo' : 'Every template is included'}</h3><p id="free-access-note">${isDemo ? 'Try a different foundation map. It stays in the same temporary demo storage.' : 'Use every starter template without an account, card, or payment.'}</p></div>
+    <div class="access-panel"><p class="eyebrow">Free access</p><h3>${isDemo ? 'Templates work inside the demo' : 'Every template is included'}</h3><p id="free-access-note">${isDemo ? 'Try a different starter template. It stays in the same temporary demo storage.' : 'Use every starter template without an account, card, or payment.'}</p></div>
   </section>`;
 }
 
@@ -207,9 +209,25 @@ function updateRouteMetadata(): void {
 
 function render(): void {
   updateRouteMetadata();
-  document.querySelector<HTMLDivElement>('#app')!.innerHTML = `${appHeader()}${demoBanner()}<div id="offline-banner" class="offline-banner" role="status" hidden>You’re offline. Planning and exports still work.</div><main id="main" tabindex="-1">${hero()}<section id="how" class="how"><p><b>Paste the outline.</b> Rate what you know. Attach only references you’re allowed to use. Your study map stays in this browser.</p></section><div id="planner">${workspace()}</div>${templatesSection()}<section class="principles" aria-labelledby="principles-title"><p class="eyebrow">Privacy and planning limits</p><h2 id="principles-title">What Exam Bridge does not do</h2><div><p>Plans stay in this browser. Exam Bridge does not host exam questions or coaching notes.</p><p>Check the official syllabus before studying. Prerequisite suggestions are only starting points.</p><p>Exam Bridge is not endorsed by any exam authority.</p></div></section></main><footer><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Exam Bridge</span></div><p>Turn a syllabus into a study route · Original generated illustration · no tracking · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.2</p></footer><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
+  document.querySelector<HTMLDivElement>('#app')!.innerHTML = `${appHeader()}${demoBanner()}<div id="offline-banner" class="offline-banner" role="status" hidden>You’re offline. Planning and exports still work.</div><main id="main" tabindex="-1">${hero()}<section id="how" class="how"><p><b>Paste the outline.</b> Rate what you know. Attach only references you’re allowed to use. Your study map stays in this browser.</p></section><div id="planner">${workspace()}</div>${templatesSection()}<section class="principles" aria-labelledby="principles-title"><p class="eyebrow">Privacy and planning limits</p><h2 id="principles-title">What Exam Bridge does not do</h2><div><p>Plans stay in this browser. Exam Bridge does not host exam questions or coaching notes.</p><p>Check the official syllabus before studying. Prerequisite suggestions are only starting points.</p><p>Exam Bridge is not endorsed by any exam authority.</p></div></section></main><footer><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Exam Bridge</span></div><p>Turn a syllabus into a study route · Original generated illustration · no tracking · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.3</p></footer><div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
   updateNetworkStatus();
   bindEvents();
+  focusHeadingAfterRouteChange();
+}
+
+function focusHeadingAfterRouteChange(): void {
+  const navigation = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+  const shouldFocus = sessionStorage.getItem(ROUTE_FOCUS_KEY) === location.pathname || navigation?.type === 'back_forward';
+  if (!shouldFocus) return;
+  sessionStorage.removeItem(ROUTE_FOCUS_KEY);
+  window.requestAnimationFrame(() => {
+    const heading = document.querySelector<HTMLElement>('h1');
+    if (!heading) return;
+    heading.tabIndex = -1;
+    heading.focus({ preventScroll: true });
+    const announcement = document.querySelector<HTMLElement>('#route-announcer');
+    if (announcement) announcement.textContent = `${isDemo ? 'Demo' : 'Planner'} loaded: ${heading.textContent?.replace(/\s+/gu, ' ').trim() ?? ''}`;
+  });
 }
 
 function announce(message: string): void {
@@ -390,6 +408,10 @@ if (storedTheme === 'dark' || storedTheme === 'light') document.documentElement.
 render();
 window.addEventListener('online', updateNetworkStatus);
 window.addEventListener('offline', updateNetworkStatus);
+window.addEventListener('popstate', () => {
+  sessionStorage.setItem(ROUTE_FOCUS_KEY, location.pathname);
+  focusHeadingAfterRouteChange();
+});
 if ('serviceWorker' in navigator && import.meta.env.PROD) window.addEventListener('load', () => {
   void navigator.serviceWorker.register('/sw.js', { updateViaCache: 'none' })
     .then(registration => registration.update())

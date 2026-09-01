@@ -136,7 +136,7 @@ test('@claim:syllabus-route cleans headings and reorders the route by confidence
   await expect(page.locator('.topic').last().getByRole('heading', { level: 3 })).toHaveText('Engineering mathematics');
 });
 
-test('@claim:templates loads an editable foundation map inside demo storage', async ({ page }) => {
+test('@claim:templates loads an editable starter template inside demo storage', async ({ page }) => {
   await openDemo(page);
   page.once('dialog', dialog => dialog.accept());
   await page.getByRole('button', { name: 'Use template' }).first().click();
@@ -144,6 +144,63 @@ test('@claim:templates loads an editable foundation map inside demo storage', as
   await expect(page.locator('.topic')).toHaveCount(5);
   expect(await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'))).toBeNull();
   expect(await page.evaluate(() => localStorage.getItem('demo:exam-bridge:plan:v1'))).toContain('Engineering foundations');
+});
+
+test('@claim:starter-template-boundary loads an editable starter template rather than an official syllabus', async ({ page }) => {
+  await openDemo(page);
+  await expect(page.getByText('A reusable starter template—not an official syllabus.').first()).toBeVisible();
+  page.once('dialog', dialog => dialog.accept());
+  await page.getByRole('button', { name: 'Use template' }).first().click();
+  await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
+  await expect(page.getByText('Personal outline · no source link added')).toBeVisible();
+  await expect(page.locator('.topic').first().getByLabel(/Confidence/)).toBeEnabled();
+  expect(await page.evaluate(() => localStorage.getItem('demo:exam-bridge:plan:v1'))).toContain('Engineering foundations');
+  expect(await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'))).toBeNull();
+});
+
+test('@claim:hosted-content-boundary shows question references without hosting question text or coaching notes', async ({ page }) => {
+  const requests: string[] = [];
+  page.on('request', request => requests.push(request.url()));
+  await openDemo(page);
+  await expect(page.getByText('Exam Bridge does not host exam questions or coaching notes.')).toBeVisible();
+  await expect(page.getByText('2024 · Engineering Mathematics · Q7', { exact: true })).toBeVisible();
+  await expect(page.getByText('2023 · Network Theory · Q18', { exact: true })).toBeVisible();
+  await expect(page.locator('textarea')).toHaveCount(0);
+  await expect(page.locator('.practice-list').filter({ hasText: 'Q7' })).toHaveCount(1);
+  const routeText = await page.locator('.route-list').innerText();
+  expect(routeText).not.toMatch(/coaching notes|question text:/iu);
+  const origin = new URL(page.url()).origin;
+  expect(requests.filter(url => new URL(url).origin !== origin)).toEqual([]);
+  expect(requests.filter(url => /(?:question|coaching|content)\//iu.test(new URL(url).pathname))).toEqual([]);
+});
+
+test('@claim:independent-tool shows the non-endorsement boundary without authority services or branding', async ({ page }) => {
+  const requests: string[] = [];
+  page.on('request', request => requests.push(request.url()));
+  await openDemo(page);
+  await expect(page.getByText('Exam Bridge is not endorsed by any exam authority.')).toBeVisible();
+  const authorityLinks = page.locator('a[href*="authority" i], a[href*="exam" i], a[href*="gate" i]');
+  await expect(authorityLinks).toHaveCount(0);
+  const origin = new URL(page.url()).origin;
+  expect(requests.filter(url => new URL(url).origin !== origin)).toEqual([]);
+  expect(requests.filter(url => /(?:auth|authority|exam)\//iu.test(new URL(url).pathname))).toEqual([]);
+});
+
+test('@claim:generated-illustration displays the documented original generated artwork', async ({ page }) => {
+  await page.goto('/');
+  const artwork = page.locator('.hero-figure img');
+  await expect(artwork).toHaveAttribute('src', '/assets/learning-topology.webp');
+  await expect(page.locator('footer')).toContainText('Original generated illustration');
+  const provenance = await page.evaluate(async () => {
+    const response = await fetch('/art-provenance.json');
+    return { sameOrigin: new URL(response.url).origin === location.origin, body: await response.json() };
+  });
+  expect(provenance.sameOrigin).toBe(true);
+  expect(provenance.body).toMatchObject({
+    asset: '/assets/learning-topology.webp',
+    provenance: 'original generated illustration',
+    generator: expect.stringContaining('Azure OpenAI'),
+  });
 });
 
 test('@claim:free-access provides the planner, every template, CSV, and JSON without account, card, checkout, or payment', async ({ page }) => {

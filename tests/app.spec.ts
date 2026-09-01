@@ -118,10 +118,25 @@ test('moves keyboard focus into main content from the skip link', async ({ page 
   await expect(page.locator('#main')).toBeFocused();
 });
 
+test('moves focus to the new heading and announces Home → Demo and Back route changes', async ({ page }) => {
+  const headerDemo = page.getByRole('link', { name: 'Demo' });
+  const demoLink = await headerDemo.isVisible() ? headerDemo : page.getByRole('link', { name: 'Try it with sample data' });
+  await demoLink.focus();
+  await page.keyboard.press('Enter');
+  await expect(page).toHaveURL(/\/demo\/?$/);
+  await expect(page.locator('h1')).toBeFocused();
+  await expect(page.locator('#route-announcer')).toContainText('Demo loaded: Turn a syllabus into a study route.');
+
+  await page.goBack();
+  await expect(page).toHaveURL('http://127.0.0.1:4173/');
+  await expect(page.locator('h1')).toBeFocused();
+  await expect(page.locator('#route-announcer')).toContainText('Planner loaded: Turn a syllabus into a study route.');
+});
+
 test('keeps the populated route accessible and generated remove controls touch-sized', async ({ page }) => {
   await page.getByLabel(/Syllabus topics/).fill('Signals and systems\nControl systems');
   await page.getByRole('button', { name: /Map my syllabus/ }).click();
-  await expect(page.getByRole('heading', { name: 'Your next pass' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Study route order' })).toBeVisible();
 
   for (const theme of ['light', 'dark']) {
     if (theme === 'dark') await page.getByRole('button', { name: 'Switch color theme' }).click();

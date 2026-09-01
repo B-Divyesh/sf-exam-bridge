@@ -60,6 +60,12 @@ assert.match(app, /Demo — sample data, nothing is saved/u);
 assert.match(app, /demo:exam-bridge:/u);
 assert.match(app, /searchParams\(location\.search\)\.get\('demo'\) === '1'|URLSearchParams\(location\.search\)\.get\('demo'\) === '1'/u, 'the isolated ?demo=1 route must remain supported');
 assert.match(app, /Turn a syllabus into a <em>study route\.<\/em>/u, 'first-screen headline must state the tested job');
+for (const requiredHeading of ['Study route order', 'Question references', 'Choose a starter template']) {
+  assert.match(app, new RegExp(requiredHeading, 'u'), `planner must use the direct heading: ${requiredHeading}`);
+}
+assert.doesNotMatch(app, /Your next pass|Practice bridge|Begin from a foundation map|starter map/iu, 'indirect and inconsistent template wording must stay removed');
+assert.match(app, /ROUTE_FOCUS_KEY/u, 'app routes must retain their route-change focus handling');
+assert.match(await readFile('public/route-focus.js', 'utf8'), /pageshow/u, 'static routes must restore heading focus on Back and Forward');
 assert.doesNotMatch(app, /shortest path|hosted checkout|license-form|Verify license/iu, 'retired optimization and billing copy must stay removed');
 await readFile('.factory/demo.md', 'utf8');
 const copyAudit = await readFile('.factory/copy-audit.md', 'utf8');
@@ -83,5 +89,11 @@ if (/without an account|\bNo accounts\b|No account, card/iu.test(visitorCopy)) {
 const brief = JSON.parse(await readFile('.factory/brief.json', 'utf8'));
 assert.equal(brief.monetization, 'free', 'the brief must not promise unavailable freemium billing');
 assert.doesNotMatch(`${app}\n${await readFile('README.md', 'utf8')}\n${await readFile('public/privacy/index.html', 'utf8')}\n${await readFile('public/terms/index.html', 'utf8')}`, /hosted checkout|existing license|Plus license|license token/iu, 'retired billing promises must not remain in visitor copy');
+for (const id of ['starter-template-boundary', 'hosted-content-boundary', 'independent-tool', 'generated-illustration']) {
+  assert.ok(ids.includes(id), `${id} must register its visitor-facing boundary or provenance claim`);
+}
+const provenance = JSON.parse(await readFile('public/art-provenance.json', 'utf8'));
+assert.equal(provenance.asset, '/assets/learning-topology.webp', 'provenance must identify the shipped illustration');
+assert.equal(provenance.provenance, 'original generated illustration', 'provenance must identify original generated artwork');
 
 console.log(`PASS: ${claims.length} registered claims, isolated demo contract, and product 404 policy`);
