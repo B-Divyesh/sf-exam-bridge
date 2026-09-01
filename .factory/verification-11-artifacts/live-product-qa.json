@@ -1,0 +1,396 @@
+{
+  "checks": {
+    "keyboardSkip": "first Tab focuses skip link; Enter focuses main",
+    "demoEntry": "keyboard activation opened six topics, focused H1, and preserved real-plan marker",
+    "demoEditRecovery": "invalid FTP reference showed HTTP(S) guidance; corrected reference attached and Space marked it attempted",
+    "demoExports": "CSV contained 7 rows and complete HTTPS reference; JSON contained 6 topics",
+    "demoResetExit": "reset restored Control systems; exit removed demo keys and retained real marker",
+    "planValidation": "one-topic and FTP source errors were specific and focused the repair field; corrected duplicate input produced two topics",
+    "planPersistence": "confidence reordered the route and the personal reference survived reload",
+    "backupRecovery": "invalid JSON was rejected with guidance; valid JSON restored the plan and reference",
+    "topicBoundary": "81 input lines produced and saved exactly 80 topics; Add topic was disabled",
+    "mobileFirstScreen": {
+      "innerWidth": 390,
+      "scrollWidth": 390,
+      "audience": {
+        "top": 385.796875,
+        "bottom": 507.359375
+      },
+      "action": {
+        "top": 581.359375,
+        "bottom": 625.359375
+      }
+    },
+    "mobileTargets": {
+      "count": 52,
+      "minimumWidth": 44,
+      "minimumHeight": 44,
+      "motion": {
+        "animationDuration": "1e-05s",
+        "transitionDuration": "1e-05s"
+      }
+    },
+    "network": {
+      "total": 54,
+      "crossOrigin": [],
+      "nonGetOrBody": []
+    },
+    "offlineLive": {
+      "serviceWorkerControlled": true,
+      "topics": 6,
+      "statusVisible": true,
+      "consoleErrors": []
+    }
+  },
+  "requests": [
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "document",
+      "url": "https://exam-bridge.sociobot.in/"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/assets/main-B1gErBfg.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "stylesheet",
+      "url": "https://exam-bridge.sociobot.in/assets/main-GaTmjR7L.css"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "image",
+      "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "document",
+      "url": "https://exam-bridge.sociobot.in/demo"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/assets/main-B1gErBfg.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "stylesheet",
+      "url": "https://exam-bridge.sociobot.in/assets/main-GaTmjR7L.css"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "image",
+      "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "document",
+      "url": "https://exam-bridge.sociobot.in/"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/assets/main-B1gErBfg.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "stylesheet",
+      "url": "https://exam-bridge.sociobot.in/assets/main-GaTmjR7L.css"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "image",
+      "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "document",
+      "url": "https://exam-bridge.sociobot.in/"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/assets/main-B1gErBfg.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "stylesheet",
+      "url": "https://exam-bridge.sociobot.in/assets/main-GaTmjR7L.css"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "image",
+      "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "document",
+      "url": "https://exam-bridge.sociobot.in/"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/assets/main-B1gErBfg.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "stylesheet",
+      "url": "https://exam-bridge.sociobot.in/assets/main-GaTmjR7L.css"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "image",
+      "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "document",
+      "url": "https://exam-bridge.sociobot.in/"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/assets/main-B1gErBfg.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "stylesheet",
+      "url": "https://exam-bridge.sociobot.in/assets/main-GaTmjR7L.css"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "image",
+      "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "document",
+      "url": "https://exam-bridge.sociobot.in/demo"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/assets/main-B1gErBfg.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "stylesheet",
+      "url": "https://exam-bridge.sociobot.in/assets/main-GaTmjR7L.css"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "image",
+      "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "document",
+      "url": "https://exam-bridge.sociobot.in/demo"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/assets/main-B1gErBfg.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "stylesheet",
+      "url": "https://exam-bridge.sociobot.in/assets/main-GaTmjR7L.css"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "image",
+      "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "document",
+      "url": "https://exam-bridge.sociobot.in/privacy/"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "stylesheet",
+      "url": "https://exam-bridge.sociobot.in/legal.css"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "document",
+      "url": "https://exam-bridge.sociobot.in/terms/"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "stylesheet",
+      "url": "https://exam-bridge.sociobot.in/legal.css"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "document",
+      "url": "https://exam-bridge.sociobot.in/404.html"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "stylesheet",
+      "url": "https://exam-bridge.sociobot.in/legal.css"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "document",
+      "url": "https://exam-bridge.sociobot.in/demo"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/assets/main-B1gErBfg.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "stylesheet",
+      "url": "https://exam-bridge.sociobot.in/assets/main-GaTmjR7L.css"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "script",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js"
+    },
+    {
+      "method": "GET",
+      "postData": null,
+      "type": "image",
+      "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp"
+    }
+  ],
+  "consoleErrors": [],
+  "requestFailures": [],
+  "axe": {
+    "demo-light": {
+      "allViolations": [],
+      "seriousCritical": 0
+    },
+    "privacy": {
+      "allViolations": [],
+      "seriousCritical": 0
+    },
+    "terms": {
+      "allViolations": [],
+      "seriousCritical": 0
+    },
+    "not-found": {
+      "allViolations": [],
+      "seriousCritical": 0
+    },
+    "demo-dark": {
+      "allViolations": [],
+      "seriousCritical": 0
+    }
+  },
+  "status": "PASS"
+}

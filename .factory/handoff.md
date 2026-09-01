@@ -1,37 +1,64 @@
-# Exam Bridge polish round 2 handoff
+# Exam Bridge verification 11 handoff
 
 ## Result
 
-Released and verified. Review-2 findings F-2-1 through F-2-3 are repaired, as are all earlier review findings. Product repair commits are `cb02e0e` and `1a6db30`; live deployment `59569a4b-62df-435f-9754-bd8f35eb5052` serves <https://exam-bridge.sociobot.in/>.
+**FAIL.** Candidate `87d67b0c7355f3679cad3caf2e33648973e70f71` is live
+at <https://exam-bridge.sociobot.in/> and matches the tested production build,
+but it does not satisfy the original researched acceptance brief.
 
-## What changed
+## Release-blocking findings
 
-- Route changes now focus the new H1 and announce it. Home → Demo → Back is covered on desktop and mobile, while the skip link still focuses `<main>`.
-- Direct, consistent headings now name the study route, question references, and starter-template choice.
-- Four formerly unregistered statements have separate claims and exact clean-demo browser tests: starter-template boundary, hosted-content boundary, independent-tool boundary, and generated-illustration provenance.
-- Added a shipped same-origin provenance record for the generated topology artwork.
-- Kept the isolated one-click `/demo` and `?demo=1` paths, shared legal navigation, product 404, local-first storage, titles, metadata, and mobile topology layout intact.
+1. The original brief requires paid reusable planning templates alongside the
+   free planner and exports. The candidate changes the repository brief from
+   `freemium` to `free`, ships no price or paid purchase path, and the scoped
+   Sociobot checkout URL returns HTTP 404.
+2. README promises about service-worker cache renewal and returning visitors
+   receiving the current version are not registered in `.factory/claims.json`.
+   The separate update test passes, but it is not an exact tagged claim test.
 
-## Verification
+Full evidence and repair conditions are in `.factory/verification-11.md`.
 
-- Fresh remote clone at `1a6db30`: `npm ci`, every one of 14 exact commands in `.factory/claims.json`, `npm test`, and `npm run build` passed.
-- Full suite: lint; 9 unit tests; 56 Playwright desktop/mobile tests; clean-no-`dist` claim-start; service-worker upgrade; production build.
-- Output budgets: JavaScript 25.21 kB raw / 9.06 kB gzip; CSS 16.61 kB raw / 4.49 kB gzip.
-- Cold live checks passed on `/`, `/demo`, `/privacy/`, and `/terms/` with `verify-url.sh`: titles, language, one H1, main, alt text, and no console errors.
-- Cold live Home → Demo → Back focused the H1 and produced the expected polite announcements. Live demo isolation preserved a seeded real plan, reset `Control systems`, and removed all `demo:` keys on exit.
-- Live axe checks at 390 px found zero serious or critical issues on root, demo, legal routes, and 404.
-- Lighthouse mobile: Performance 100, Accessibility 100, Best Practices 100, SEO 100; FCP 1.0 s, LCP 1.2 s, CLS 0. Evidence: `.factory/polish-2-artifacts/`.
+## Confirmed working
 
-## Run locally
+- Cold first-read and one-click six-topic sample gate
+- All 14 exact registered claim commands
+- `npm ci`, `npm test`, `npm run build`, and production dependency audit
+- 9 unit tests and 56 desktop/mobile Playwright tests
+- Normal planning, duplicate cleanup, confidence ordering, personal references,
+  reload persistence, CSV, JSON backup/restore, templates, and 80-topic limit
+- Invalid-input messages and recovery for topic count, source URL, practice URL,
+  and JSON restore
+- Separate sample storage, reset, exit, and real-plan preservation
+- Live service-worker control and offline sample reload
+- Same-origin-only ordinary planning requests with no request body
+- Desktop and 390 px layouts, keyboard focus, light/dark themes, reduced motion,
+  200% desktop-equivalent reflow, 44 px targets, and zero axe WCAG A/AA findings
+  in checked states
+- Live Lighthouse 99 Performance and 100 Accessibility/Best Practices/SEO;
+  FCP 1.0 s, LCP 1.3 s, TBT 120 ms, CLS 0
+- Security headers, route metadata, product 404, caching policy, and bundle budgets
+- Byte-for-byte live match for root, sample, legal pages, JS, CSS, and service worker
+
+## Verification commands
 
 ```sh
 npm ci
+# Run all commands in .factory/claims.json individually.
 npm test
 npm run build
+npm audit --omit=dev --audit-level=high
 ```
 
-Run every exact command listed in `.factory/claims.json` from a clean clone for claim verification.
+## Evidence
 
-## Known gaps
+- `.factory/verification-11.md`
+- `.factory/verification-11-artifacts/claims/`
+- `.factory/verification-11-artifacts/live-product-qa.json`
+- `.factory/verification-11-artifacts/lighthouse-live-mobile.json`
+- `.factory/verification-11-artifacts/live-first-read-desktop.png`
+- `.factory/verification-11-artifacts/live-mobile-root-390.png`
+- `.factory/verification-11-artifacts/live-mobile-demo-390.png`
 
-None.
+No product code was changed. The next candidate should restore the researched
+paid-template path through Sociobot billing and register the service-worker
+update promise before repeating the complete verification.

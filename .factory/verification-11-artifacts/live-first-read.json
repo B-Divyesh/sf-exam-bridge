@@ -1,0 +1,88 @@
+{
+  "status": 200,
+  "url": "https://exam-bridge.sociobot.in/",
+  "headers": {
+    "cache-control": "public, must-revalidate, max-age=30",
+    "content-encoding": "br",
+    "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+    "content-type": "text/html",
+    "date": "Tue, 01 Sep 2026 20:50:01 GMT",
+    "etag": "\"28548668\"",
+    "last-modified": "Tue, 01 Sep 2026 20:37:13 GMT",
+    "permissions-policy": "camera=(), microphone=(), geolocation=()",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+    "vary": "Accept-Encoding",
+    "x-content-type-options": "nosniff",
+    "x-dns-prefetch-control": "off",
+    "x-xss-protection": "1; mode=block"
+  },
+  "title": "Exam Bridge — turn a syllabus into a study route",
+  "h1": [
+    "Turn a syllabus into a study route."
+  ],
+  "main": true,
+  "lang": "en",
+  "visibleText": "Skip to planner\nExam Bridge\nDemo\nHow it works\nTemplates\nPrivacy\n◐\n\n01 STUDY PLANNING FOR YOUR SYLLABUS\n\nTurn a syllabus into a study route.\n\nFor returning exam candidates: turn a syllabus into a route, refresh prerequisites, and connect topics to question references you own.\n\nTry it with sample data\nBuild my route\n\nThe sample opens with six realistic topics. Your current plan stays unchanged.\n\nSaved in this browser\nWorks offline after the first visit\nFree planner, backups, and exports\n concept  practice checkpoint\n\nPaste the outline. Rate what you know. Attach only references you’re allowed to use. Your study map stays in this browser.\n\n1\n\nCAPTURE\n\nStart with the official outline\n\nPaste headings only—one per line. Exam Bridge never uploads this text.\n\nPlan name \nOfficial source URL Optional\nSyllabus topics\nOne topic per line; bullets and numbering are fine.\n\n2–80 topics · duplicates are removed\nMap my syllabus\n→\n+\n\nREUSABLE STARTING POINTS\n\nChoose a starter template\n\nUse an editable starter template for a permitted exam domain, then make it your own. The planner, templates, and exports stay local to this device.\n\nEngineering foundations\n\nA reusable starter template—not an official syllabus.\n\n5 editable topics\nUse template\nComputer science foundations\n\nA reusable starter template—not an official syllabus.\n\n7 editable topics\nUse template\nQuantitative foundations\n\nA reusable starter template—not an official syllabus.\n\n6 editable topics\nUse template\n\nFREE ACCESS\n\nEvery template is included\n\nUse every starter template without an account, card, or payment.\n\nPRIVACY AND PLANNING LIMITS\n\nWhat Exam Bridge does not do\n\nPlans stay in this browser. Exam Bridge does not host exam questions or coaching notes.\n\nCheck the official syllabus before studying. Prerequisite suggestions are only starting points.\n\nExam Bridge is not endorsed by any exam authority.\n\nExam Bridge\n\nTurn a syllabus into a study route · Original generated illustration · no tracking · Privacy · Terms · Built by Param Factory · v1.0.3",
+  "buttons": [
+    "◐"
+  ],
+  "links": [
+    {
+      "text": "Exam Bridge",
+      "href": "https://exam-bridge.sociobot.in/"
+    },
+    {
+      "text": "Demo",
+      "href": "https://exam-bridge.sociobot.in/demo"
+    },
+    {
+      "text": "How it works",
+      "href": "https://exam-bridge.sociobot.in/#how"
+    },
+    {
+      "text": "Templates",
+      "href": "https://exam-bridge.sociobot.in/#templates"
+    },
+    {
+      "text": "Privacy",
+      "href": "https://exam-bridge.sociobot.in/privacy/"
+    },
+    {
+      "text": "Try it with sample data",
+      "href": "https://exam-bridge.sociobot.in/demo"
+    },
+    {
+      "text": "Build my route",
+      "href": "https://exam-bridge.sociobot.in/#planner"
+    }
+  ],
+  "requests": [
+    {
+      "method": "GET",
+      "url": "https://exam-bridge.sociobot.in/",
+      "type": "document"
+    },
+    {
+      "method": "GET",
+      "url": "https://exam-bridge.sociobot.in/assets/main-B1gErBfg.js",
+      "type": "script"
+    },
+    {
+      "method": "GET",
+      "url": "https://exam-bridge.sociobot.in/assets/main-GaTmjR7L.css",
+      "type": "stylesheet"
+    },
+    {
+      "method": "GET",
+      "url": "https://exam-bridge.sociobot.in/route-focus.js",
+      "type": "script"
+    },
+    {
+      "method": "GET",
+      "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp",
+      "type": "image"
+    }
+  ],
+  "consoleErrors": []
+}
