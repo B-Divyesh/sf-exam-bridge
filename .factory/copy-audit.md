@@ -37,6 +37,7 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | A reusable starter template—not an official syllabus. | 7 | `starter-template-boundary` |
 | One-time ₹499 license. | 3 | `paid-template-license` |
 | The free planner, CSV, and JSON tools remain available. | 9 | `free-access` |
+| A refund makes the license inactive after the next check. | 10 | `refund-revokes-license` |
 | New purchases are not open yet. | 6 | `checkout-registration-gate` |
 | The shared checkout still needs operator activation. | 7 | `checkout-registration-gate` |
 | Have a license? | 3 | Restore label |
@@ -79,6 +80,15 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Exam Bridge Plus is a one-time ₹499 license for three reusable, editable planning templates. | 14 | `paid-template-license` |
 | The purchase button appears only after the shared Sociobot checkout is activated. | 12 | `checkout-registration-gate` |
 | A successful result is cached for up to 24 hours. | 10 | `paid-template-license` |
+| A refund makes the license inactive after the next check. | 10 | `refund-revokes-license` |
+
+## Not-found page
+
+| Copy | Words | Result |
+| --- | ---: | --- |
+| This route does not exist. | 5 | Error heading |
+| Return to the planner or open the sample route. | 9 | Recovery instruction |
+| Your saved plan has not changed. | 6 | `not-found-plan-safety` |
 
 ## README sentences revised in this round
 

@@ -7,6 +7,13 @@
     "sandbox": "fresh browser context; seed a real-plan marker; enter /demo; edit and reset; assert only demo-prefixed keys change; exit and assert demo keys are removed"
   },
   {
+    "id": "not-found-plan-safety",
+    "claim": "Opening the 404 page leaves the complete saved plan unchanged.",
+    "where": "404 page",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:not-found-plan-safety",
+    "sandbox": "fresh real-planner context; create and save a two-topic plan; record its exact storage value; open the product 404; return to the planner; assert the stored bytes and rendered plan are unchanged"
+  },
+  {
     "id": "local-private",
     "claim": "Planner content stays in browser storage, and ordinary planning sends no data to third parties or trackers.",
     "where": "landing facts, planner, privacy page, README",
@@ -96,6 +103,13 @@
     "where": "templates panel, Privacy, Terms, README",
     "test": "npm run test:e2e -- --project=desktop --grep @claim:paid-template-license",
     "sandbox": "fresh real-planner context; mock one valid Sociobot response; restore a token; assert local token storage, all template controls, template use, URL stripping, and no second automatic check inside 24 hours"
+  },
+  {
+    "id": "refund-revokes-license",
+    "claim": "A refund makes the template license inactive after the next Sociobot license check.",
+    "where": "paid panel, Terms",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:refund-revokes-license",
+    "sandbox": "fresh real-planner context with a cached active license; mock a Sociobot revoked verdict; recheck the license; assert all paid template controls lock and the inactive notice appears"
   },
   {
     "id": "checkout-registration-gate",

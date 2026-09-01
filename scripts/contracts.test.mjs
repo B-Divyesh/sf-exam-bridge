@@ -24,12 +24,16 @@ assert.match(config.globalHeaders?.['Content-Security-Policy'] ?? '', /frame-anc
 assert.match(config.globalHeaders?.['Content-Security-Policy'] ?? '', /connect-src[^;]*https:\/\/api\.sociobot\.in/u, 'production license verification must be allowed by CSP');
 
 const notFound = await readFile('public/404.html', 'utf8');
+const packageJson = JSON.parse(await readFile('package.json', 'utf8'));
 assert.match(notFound, /<html lang="en">/u);
 assert.equal(notFound.match(/<h1[ >]/gu)?.length, 1, '404 must have exactly one h1');
 assert.match(notFound, /<main id="main" tabindex="-1">/u);
 assert.match(notFound, /href="\/"/u, '404 must link home');
 assert.doesNotMatch(notFound, /<(?:script|img|audio|video|iframe)\b[^>]+(?:src|href)="https?:\/\//u, '404 must not load third-party media or scripts');
 assert.doesNotMatch(notFound, /<link\b(?=[^>]*rel="stylesheet")(?=[^>]*href="https?:\/\/)[^>]*>/u, '404 must not load a third-party stylesheet');
+assert.match(notFound, new RegExp(`Built by Param Factory · v${packageJson.version.replaceAll('.', '\\.')}<`, 'u'), '404 footer version must match package.json');
+assert.match(notFound, /Your saved plan has not changed\./u, '404 must retain the registered saved-plan promise');
+assert.ok(ids.includes('not-found-plan-safety'), '404 saved-plan promise must stay registered');
 for (const [name, file] of [['404', 'public/404.html'], ['Privacy', 'public/privacy/index.html'], ['Terms', 'public/terms/index.html']]) {
   const page = await readFile(file, 'utf8');
   for (const property of ['twitter:card', 'twitter:title', 'twitter:description', 'twitter:image']) {
@@ -55,6 +59,7 @@ assert.match(playwrightConfig, /command: 'npm run build && npm run preview'/u, '
 assert.match(playwrightConfig, /reuseExistingServer: false/u, 'claim commands must not reuse an unknown preview');
 
 const app = await readFile('src/main.ts', 'utf8');
+const terms = await readFile('public/terms/index.html', 'utf8');
 assert.match(app, /Try it with sample data/u);
 assert.match(app, /Demo — sample data, nothing is saved/u);
 assert.match(app, /demo:exam-bridge:/u);
@@ -70,6 +75,9 @@ assert.doesNotMatch(app, /shortest path/iu, 'retired optimization copy must stay
 assert.match(app, /const checkoutEnabled = import\.meta\.env\.VITE_CHECKOUT_ENABLED === 'true'/u, 'checkout must default closed behind an explicit operator build flag');
 assert.match(app, /api\/v1\/products\/exam-bridge\/checkout/u, 'the enabled checkout path must stay product-scoped');
 assert.match(app, /api\/v1\/products\/exam-bridge\/verify\?license=/u, 'license verification must stay product-scoped');
+assert.match(app, /A refund makes the license inactive after the next check\./u, 'paid panel must state the registered refund outcome');
+assert.match(terms, /A refund makes the license inactive after the next check\./u, 'terms must state the registered refund outcome');
+assert.ok(ids.includes('refund-revokes-license'), 'refund outcome must stay registered');
 await readFile('.factory/demo.md', 'utf8');
 const copyAudit = await readFile('.factory/copy-audit.md', 'utf8');
 assert.match(copyAudit, /No sentence exceeds 22 words\./u);
@@ -91,7 +99,7 @@ if (/without an account|\bNo accounts\b|No account, card/iu.test(visitorCopy)) {
 }
 const brief = JSON.parse(await readFile('.factory/brief.json', 'utf8'));
 assert.equal(brief.monetization, 'freemium', 'the researched freemium brief must remain intact');
-for (const id of ['starter-template-boundary', 'hosted-content-boundary', 'independent-tool', 'generated-illustration', 'paid-template-license', 'checkout-registration-gate', 'service-worker-renewal']) {
+for (const id of ['not-found-plan-safety', 'starter-template-boundary', 'hosted-content-boundary', 'independent-tool', 'generated-illustration', 'paid-template-license', 'refund-revokes-license', 'checkout-registration-gate', 'service-worker-renewal']) {
   assert.ok(ids.includes(id), `${id} must register its visitor-facing boundary or provenance claim`);
 }
 const provenance = JSON.parse(await readFile('public/art-provenance.json', 'utf8'));

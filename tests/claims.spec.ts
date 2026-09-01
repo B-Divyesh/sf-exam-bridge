@@ -39,6 +39,25 @@ test('@claim:demo-sandbox opens, resets, and leaves an isolated sample route', a
   expect(await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'))).toBe('real-plan-marker');
 });
 
+test('@claim:not-found-plan-safety leaves the complete saved plan unchanged after a 404 visit', async ({ page }) => {
+  await page.goto('/');
+  await page.getByLabel('Plan name').fill('Saved plan before 404');
+  await page.getByLabel('Official source URL').fill('https://example.org/outline');
+  await page.getByLabel(/Syllabus topics/).fill('Signals and systems\nControl systems');
+  await page.getByRole('button', { name: /Map my syllabus/ }).click();
+  const savedBefore = await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'));
+  expect(savedBefore).not.toBeNull();
+
+  await page.goto('/404.html');
+  await expect(page.locator('.lede')).toContainText('Your saved plan has not changed.');
+  expect(await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'))).toBe(savedBefore);
+
+  await page.getByRole('link', { name: 'Open the planner' }).click();
+  await expect(page.locator('#workspace-title')).toHaveText('Saved plan before 404');
+  await expect(page.locator('.topic')).toHaveCount(2);
+  expect(await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'))).toBe(savedBefore);
+});
+
 test('@claim:local-private keeps demo edits local and makes no third-party requests', async ({ page }) => {
   const requests: { method: string; postData: string | null; url: string }[] = [];
   page.on('request', request => requests.push({ method: request.method(), postData: request.postData(), url: request.url() }));
@@ -262,6 +281,35 @@ test('@claim:paid-template-license verifies one license, caches it for 24 hours,
   await page.reload();
   await expect(page.getByRole('heading', { name: 'Template license active' })).toBeVisible();
   expect(checks).toBe(1);
+});
+
+test('@claim:refund-revokes-license removes template access after Sociobot reports a revoked license', async ({ page }) => {
+  let checks = 0;
+  await page.route('**/api/v1/products/exam-bridge/verify?license=refunded-license', async route => {
+    checks += 1;
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ valid: false, reason: 'revoked', expires_at: null }),
+    });
+  });
+  await page.goto('/');
+  await page.evaluate(() => {
+    localStorage.setItem('sb_license:exam-bridge', 'refunded-license');
+    localStorage.setItem('exam-bridge:license-verdict', JSON.stringify({ valid: true, checkedAt: Date.now(), expiresAt: null }));
+  });
+  await page.reload();
+
+  await expect(page.getByRole('heading', { name: 'Template license active' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
+  expect(checks).toBe(0);
+  await page.getByRole('button', { name: 'Recheck license' }).click();
+
+  await expect(page.getByRole('heading', { name: 'Reuse three planning templates' })).toBeVisible();
+  await expect(page.locator('.license-notice')).toHaveText('This license is not active. Check the token or buy a new license when purchases open.');
+  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Try in demo' })).toHaveCount(3);
+  expect(checks).toBe(1);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('exam-bridge:license-verdict') ?? '{}'))).toMatchObject({ valid: false });
 });
 
 test('@claim:checkout-registration-gate keeps unavailable checkout closed while showing price, previews, and license restore', async ({ page }) => {
