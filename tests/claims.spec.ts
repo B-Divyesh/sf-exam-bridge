@@ -31,11 +31,17 @@ test('@claim:demo-sandbox opens, resets, and leaves an isolated sample route', a
   await expect(page).toHaveURL('http://127.0.0.1:4173/');
   expect(await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'))).toBe('real-plan-marker');
   expect(await page.evaluate(() => Object.keys(localStorage).filter(key => key.startsWith('demo:')))).toEqual([]);
+
+  await page.goto('/?demo=1');
+  await expect(page).toHaveTitle('Demo — Exam Bridge');
+  await expect(page.getByText('Demo — sample data, nothing is saved', { exact: true })).toBeVisible();
+  await expect(page.locator('.topic')).toHaveCount(6);
+  expect(await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'))).toBe('real-plan-marker');
 });
 
 test('@claim:local-private keeps demo edits local and makes no third-party requests', async ({ page }) => {
-  const requests: string[] = [];
-  page.on('request', request => requests.push(request.url()));
+  const requests: { method: string; postData: string | null; url: string }[] = [];
+  page.on('request', request => requests.push({ method: request.method(), postData: request.postData(), url: request.url() }));
   await openDemo(page);
 
   const firstTopic = page.locator('.topic').first();
@@ -46,10 +52,11 @@ test('@claim:local-private keeps demo edits local and makes no third-party reque
 
   const storage = await page.evaluate(() => Object.fromEntries(Object.entries(localStorage)));
   expect(Object.keys(storage).every(key => key.startsWith('demo:exam-bridge:'))).toBe(true);
-  expect(Object.keys(storage)).not.toContain('sb_license:exam-bridge');
   const origin = new URL(page.url()).origin;
   expect(requests.length).toBeGreaterThan(0);
-  expect(requests.filter(url => new URL(url).origin !== origin)).toEqual([]);
+  expect(requests.filter(request => new URL(request.url).origin !== origin)).toEqual([]);
+  expect(requests.filter(request => request.method !== 'GET' || request.postData !== null)).toEqual([]);
+  expect(requests.some(request => request.url.includes('Revision%20set') || request.url.includes('Q4'))).toBe(false);
 });
 
 test('@claim:offline-reload reloads the demo after the first visit with the network disabled', async ({ browser }) => {
@@ -63,7 +70,7 @@ test('@claim:offline-reload reloads the demo after the first visit with the netw
     await context.setOffline(true);
     await page.reload({ waitUntil: 'domcontentloaded' });
     await expect(page.locator('#workspace-title')).toHaveText('GATE ECE return plan');
-    await expect(page.getByText('You’re offline. Planning and exports still work; license checks will resume when connected.')).toBeVisible();
+    await expect(page.getByText('You’re offline. Planning and exports still work.')).toBeVisible();
   } finally {
     await context.setOffline(false);
     await context.close();
@@ -139,24 +146,22 @@ test('@claim:templates loads an editable foundation map inside demo storage', as
   expect(await page.evaluate(() => localStorage.getItem('demo:exam-bridge:plan:v1'))).toContain('Engineering foundations');
 });
 
-test('@claim:account-free-planning builds a real plan and uses a template without account or card details', async ({ page }) => {
+test('@claim:free-access provides the planner, every template, CSV, and JSON without account, card, checkout, or payment', async ({ page }) => {
   const requests: string[] = [];
   page.on('request', request => requests.push(request.url()));
   await openDemo(page);
   await page.locator('.demo-banner').getByRole('link', { name: 'Start for real' }).click();
 
   await expect(page).toHaveURL('http://127.0.0.1:4173/');
-  await expect(page.locator('#paid-note')).toContainText('All starter templates are free today.');
-  await expect(page.locator('#paid-note')).toContainText('Hosted checkout is unavailable');
+  await expect(page.locator('#free-access-note')).toHaveText('Use every starter template without an account, card, or payment.');
   await expect(page.getByRole('link', { name: /checkout|buy/i })).toHaveCount(0);
-  await expect(page.locator('#paid-note')).toContainText('No card details or account are needed.');
   await expect(page.locator([
     'input[type="password"]',
     'input[autocomplete="email"]',
     'input[autocomplete="cc-number"]',
     'input[name*="card" i]',
   ].join(', '))).toHaveCount(0);
-  await page.getByLabel('Plan name').fill('Account-free return plan');
+  await page.getByLabel('Plan name').fill('Free return plan');
   await page.getByLabel(/Syllabus topics/).fill('Signals and systems\nControl systems');
   await page.getByRole('button', { name: /Map my syllabus/ }).click();
   await expect(page.locator('.topic')).toHaveCount(2);
@@ -165,6 +170,16 @@ test('@claim:account-free-planning builds a real plan and uses a template withou
   await page.getByRole('button', { name: 'Use template' }).first().click();
   await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
   await expect(page.locator('.topic')).toHaveCount(5);
+
+  const csvDownload = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Export CSV' }).click();
+  await expect((await csvDownload).suggestedFilename()).toMatch(/-route\.csv$/u);
+  const jsonDownload = page.waitForEvent('download');
+  await page.getByRole('button', { name: 'Back up JSON' }).click();
+  await expect((await jsonDownload).suggestedFilename()).toMatch(/-backup\.json$/u);
+  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
+  await expect(page.getByRole('button', { name: 'Export CSV' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'Back up JSON' })).toBeEnabled();
 
   const origin = new URL(page.url()).origin;
   expect(requests.filter(url => new URL(url).origin !== origin)).toEqual([]);

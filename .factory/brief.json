@@ -4,7 +4,7 @@
   "artifact_class": "static-web",
   "smallest_useful_product": "Paste a syllabus outline, select confidence per topic, receive a prerequisite checklist and study sequence, and attach personal links or question IDs.",
   "user": "A returning exam candidate who needs a compact concept-to-past-question bridge before committing to many textbooks or paid test prep.",
-  "monetization": "freemium",
+  "monetization": "free",
   "constraints": [
     "Do not distribute copyrighted test questions or coaching notes.",
     "Attribute syllabus sources supplied by the user.",

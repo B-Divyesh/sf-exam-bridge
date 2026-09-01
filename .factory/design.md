@@ -56,8 +56,8 @@ targets are at least 44 px. Focus uses a high-contrast double outline.
 
 Feedback is immediate and plain: save state is announced; invalid syllabus input
 points to the exact fix; destructive reset is confirmed and offers no ambiguous OK.
-Offline status is a persistent, non-blocking strip explaining that planning still
-works locally while license checks wait.
+Offline status is a persistent, non-blocking strip explaining that planning and
+exports still work locally.
 
 ## Motion
 

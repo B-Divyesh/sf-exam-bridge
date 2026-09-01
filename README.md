@@ -21,7 +21,7 @@ Use **Reset demo** to restore the sample. Use **Start for real** to discard it.
 - Confidence-aware study ordering and progress summary
 - Browser autosave, offline reload, JSON backup and restore, and CSV export
 - Light and dark themes, keyboard support, reduced motion, and a 390 px layout
-- Editable foundation templates, free while checkout is unavailable
+- Free editable foundation templates
 - No accounts, trackers, CDN scripts, hosted questions, or exam-authority affiliation
 
 Plans live in browser `localStorage`. Clearing site data deletes them. Export a
@@ -43,8 +43,8 @@ npm run build
 and the service-worker upgrade test. Browser tests cover desktop and 390 px
 mobile projects. Playwright is pinned to 1.58.2. The production build command is
 `npm run build`. Static output lands in `dist/` with `index.html` at its root.
-Each exact command in `.factory/claims.json` builds its production preview when
-needed, so it also runs after a clean `npm ci` with no existing `dist/` folder.
+Each claim command builds a production preview when needed. Run it after a clean
+`npm ci`, even when `dist/` is absent.
 
 To inspect the production build locally:
 
@@ -52,21 +52,17 @@ To inspect the production build locally:
 npm run preview
 ```
 
-## Billing behavior
+## Free access
 
-The planner, templates, and exports are free today. Hosted checkout is unavailable,
-so there is no paid template purchase or price to show. Existing license holders
-can still restore a token. It is stored as `sb_license:exam-bridge` and removed
-from the URL. After a successful verification, automatic license checks use the
-cached verdict for up to 24 hours. Local development uses the pilot API. Production
-uses the production API. The site embeds no payment provider.
+The planner, every template, CSV exports, and JSON backups are free. No account,
+card, checkout, or payment is required.
 
 ## Deployment and privacy
 
 Deploy `dist/` to Azure Static Web Apps. `staticwebapp.config.json` sets security
-headers, cache policy, demo routing, and the product 404. Each build creates a
-content-fingerprinted service-worker cache. A new release replaces the prior app
-shell. See `/privacy/` and `/terms/` for policy.
+headers, cache policy, demo routing, and the product 404. Each release gives the
+offline app a new cache name. Returning visitors receive the current version.
+See `/privacy/` and `/terms/` for policy.
 
 The testable claims are in `.factory/claims.json`. Demo details are in
 `.factory/demo.md`. Visual provenance is in `.factory/design.md`. Verification

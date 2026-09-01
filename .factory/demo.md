@@ -17,10 +17,9 @@ question text or official-source claim.
 ## Isolation and reset
 
 Demo state uses only the `demo:exam-bridge:*` local-storage namespace. Demo mode
-does not read or write the real `exam-bridge:plan:v1`, theme, or license keys. It
-does not run license verification. **Reset demo** deletes that namespace and
-restores the original sample. **Start for real** deletes the demo namespace and
-opens the normal empty or previously saved planner.
+does not read or write the real `exam-bridge:plan:v1` or theme key. **Reset demo**
+deletes that namespace and restores the original sample. **Start for real**
+deletes the demo namespace and opens the normal empty or previously saved planner.
 
 The generated service worker keeps the app shell available offline. The sample
 plan itself is bundled in the application, so `/demo` can reload offline after a

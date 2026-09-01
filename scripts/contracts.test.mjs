@@ -21,11 +21,12 @@ const config = JSON.parse(await readFile('public/staticwebapp.config.json', 'utf
 assert.equal(config.routes.find(route => route.route === '/demo')?.rewrite, '/demo/index.html', '/demo must resolve to its metadata-specific app shell');
 assert.equal(config.responseOverrides?.['404']?.rewrite, '/404.html', 'unknown routes must use the product 404');
 assert.match(config.globalHeaders?.['Content-Security-Policy'] ?? '', /frame-ancestors 'none'/u, '404 responses need the global security policy');
+assert.doesNotMatch(config.globalHeaders?.['Content-Security-Policy'] ?? '', /api\.sociobot\.in/u, 'free product must not allow a retired billing connection');
 
 const notFound = await readFile('public/404.html', 'utf8');
 assert.match(notFound, /<html lang="en">/u);
 assert.equal(notFound.match(/<h1[ >]/gu)?.length, 1, '404 must have exactly one h1');
-assert.match(notFound, /<main id="main">/u);
+assert.match(notFound, /<main id="main" tabindex="-1">/u);
 assert.match(notFound, /href="\/"/u, '404 must link home');
 assert.doesNotMatch(notFound, /<(?:script|img|audio|video|iframe)\b[^>]+(?:src|href)="https?:\/\//u, '404 must not load third-party media or scripts');
 assert.doesNotMatch(notFound, /<link\b(?=[^>]*rel="stylesheet")(?=[^>]*href="https?:\/\/)[^>]*>/u, '404 must not load a third-party stylesheet');
@@ -36,6 +37,10 @@ for (const [name, file] of [['404', 'public/404.html'], ['Privacy', 'public/priv
   }
   assert.match(page, /rel="canonical"/u, `${name} must include a canonical URL`);
   assert.match(page, /property="og:image"/u, `${name} must include an Open Graph image`);
+  assert.equal(page.match(/<h1[ >]/gu)?.length, 1, `${name} must have exactly one h1`);
+  assert.match(page, /<main id="main" tabindex="-1">/u, `${name} must expose a focusable main landmark`);
+  assert.match(page, /<nav aria-label="Primary">/u, `${name} must use the shared primary navigation`);
+  assert.match(page, /<footer class="site-footer">[\s\S]*href="\/privacy\/"[\s\S]*href="\/terms\/"/u, `${name} footer must link Privacy and Terms`);
 }
 
 const demoDocument = await readFile('demo/index.html', 'utf8');
@@ -53,6 +58,9 @@ const app = await readFile('src/main.ts', 'utf8');
 assert.match(app, /Try it with sample data/u);
 assert.match(app, /Demo — sample data, nothing is saved/u);
 assert.match(app, /demo:exam-bridge:/u);
+assert.match(app, /searchParams\(location\.search\)\.get\('demo'\) === '1'|URLSearchParams\(location\.search\)\.get\('demo'\) === '1'/u, 'the isolated ?demo=1 route must remain supported');
+assert.match(app, /Turn a syllabus into a <em>study route\.<\/em>/u, 'first-screen headline must state the tested job');
+assert.doesNotMatch(app, /shortest path|hosted checkout|license-form|Verify license/iu, 'retired optimization and billing copy must stay removed');
 await readFile('.factory/demo.md', 'utf8');
 const copyAudit = await readFile('.factory/copy-audit.md', 'utf8');
 assert.match(copyAudit, /No sentence exceeds 22 words\./u);
@@ -69,10 +77,11 @@ for (const file of ['public/privacy/index.html', 'public/terms/index.html']) {
 }
 const visitorCopy = `${app}\n${await readFile('README.md', 'utf8')}\n${await readFile('index.html', 'utf8')}\n${notFound}`;
 assert.doesNotMatch(visitorCopy, /\b(?:leverage|seamless|effortless|robust|powerful|intuitive|reimagine|supercharge|unlock|delightful|journey|ecosystem|AI-powered)\b/iu, 'visitor copy contains a banned marketing word');
-if (/No card details or account are needed|without an account|\bNo accounts\b/iu.test(visitorCopy)) {
-  assert.ok(ids.includes('account-free-planning'), 'visitor account/card-details promises must be registered as account-free-planning');
+if (/without an account|\bNo accounts\b|No account, card/iu.test(visitorCopy)) {
+  assert.ok(ids.includes('free-access'), 'visitor free-access promises must be registered as free-access');
 }
-assert.ok(ids.includes('license-cache-24h'), 'the public 24-hour license cache promise must be registered');
-assert.match(app, /LICENSE_CACHE_MS = 86_400_000/u, 'the automatic license-cache boundary must remain explicit');
+const brief = JSON.parse(await readFile('.factory/brief.json', 'utf8'));
+assert.equal(brief.monetization, 'free', 'the brief must not promise unavailable freemium billing');
+assert.doesNotMatch(`${app}\n${await readFile('README.md', 'utf8')}\n${await readFile('public/privacy/index.html', 'utf8')}\n${await readFile('public/terms/index.html', 'utf8')}`, /hosted checkout|existing license|Plus license|license token/iu, 'retired billing promises must not remain in visitor copy');
 
 console.log(`PASS: ${claims.length} registered claims, isolated demo contract, and product 404 policy`);

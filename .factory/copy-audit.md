@@ -1,124 +1,96 @@
 # Exam Bridge copy audit
 
-Audited 2026-08-30 against the rendered landing and demo pages. Counts treat
-hyphenated forms and numeric ranges as one word. Interface labels are included
-even when they are phrases rather than sentences.
+Audited 1 September 2026 against the rendered landing, demo, legal, and README
+copy. Counts treat hyphenated forms and numeric ranges as one word.
 
 ## First screen
 
-| Copy | Words |
-| --- | ---: |
-| Skip to planner | 3 |
-| Exam Bridge | 2 |
-| Demo | 1 |
-| How it works | 3 |
-| Templates | 1 |
-| Your syllabus, made navigable | 4 |
-| Find the shortest path from topic to practice. | 8 |
-| For returning exam candidates: turn a syllabus into a route, refresh prerequisites, and connect topics to question references you own. | 20 |
-| Try it with sample data | 5 |
-| Build my route | 3 |
-| The sample opens with six realistic topics. | 7 |
-| Your current plan stays unchanged. | 5 |
-| Saved in this browser | 4 |
-| Works offline after the first visit | 6 |
-| Free planner, backups, and exports | 5 |
-| concept | 1 |
-| practice checkpoint | 2 |
+| Copy | Words | Claim coverage |
+| --- | ---: | --- |
+| Study planning for your syllabus | 5 | Section label |
+| Turn a syllabus into a study route. | 7 | `syllabus-route` |
+| For returning exam candidates: turn a syllabus into a route, refresh prerequisites, and connect topics to question references you own. | 20 | Product description |
+| Try it with sample data | 5 | `demo-sandbox` |
+| Build my route | 3 | Action |
+| The sample opens with six realistic topics. | 7 | `demo-sandbox` |
+| Your current plan stays unchanged. | 5 | `demo-sandbox` |
+| Saved in this browser | 4 | `local-private` |
+| Works offline after the first visit | 6 | `offline-reload` |
+| Free planner, backups, and exports | 5 | `free-access` |
 
-## Planner and templates
+## Planner, templates, and limits
 
-| Copy | Words |
-| --- | ---: |
-| Paste the outline. | 3 |
-| Rate what you know. | 4 |
-| Attach only references you’re allowed to use. | 7 |
-| Your study map stays in this browser. | 7 |
-| Capture | 1 |
-| Start with the official outline | 5 |
-| Paste headings only—one per line. | 5 |
-| Exam Bridge never uploads this text. | 6 |
-| Plan name | 2 |
-| Official source URL | 3 |
-| Optional | 1 |
-| Syllabus topics | 2 |
-| One topic per line; bullets and numbering are fine. | 9 |
-| 2–80 topics · duplicates are removed | 6 |
-| Map my syllabus | 3 |
-| Reusable starting points | 3 |
-| Begin from a foundation map | 5 |
-| Use an editable starter map for a permitted exam domain, then make it your own. | 15 |
-| The planner, templates, and exports stay local to this device. | 10 |
-| Engineering foundations | 2 |
-| Computer science foundations | 3 |
-| Quantitative foundations | 2 |
-| A reusable starter map—not an official syllabus. | 7 |
-| 5 / 6 / 7 editable topics | 4 |
-| Use template | 2 |
-| Current template access | 3 |
-| Templates are free today | 4 |
-| All starter templates are free today. | 6 |
-| Hosted checkout is unavailable, so there is no paid template purchase. | 11 |
-| No card details or account are needed. | 7 |
-| Have an existing license? | 4 |
-| Verify | 1 |
+| Copy | Words | Claim coverage |
+| --- | ---: | --- |
+| Paste the outline. | 3 | Instruction |
+| Rate what you know. | 4 | Instruction |
+| Attach only references you’re allowed to use. | 7 | Instruction |
+| Your study map stays in this browser. | 7 | `local-private` |
+| Paste headings only—one per line. | 5 | Instruction |
+| Exam Bridge never uploads this text. | 6 | `local-private` |
+| One topic per line; bullets and numbering are fine. | 9 | `syllabus-route` |
+| Use an editable starter map for a permitted exam domain, then make it your own. | 15 | `templates` |
+| The planner, templates, and exports stay local to this device. | 10 | `local-private` |
+| A reusable starter map—not an official syllabus. | 7 | Boundary |
+| Use every starter template without an account, card, or payment. | 10 | `free-access` |
+| Plans stay in this browser. | 5 | `local-private` |
+| Exam Bridge does not host exam questions or coaching notes. | 9 | Boundary |
+| Check the official syllabus before studying. | 6 | Boundary |
+| Prerequisite suggestions are only starting points. | 6 | Boundary |
+| Exam Bridge is not endorsed by any exam authority. | 9 | Boundary |
 
-## Boundaries and footer
+## Demo and offline states
 
-| Copy | Words |
-| --- | ---: |
-| Built for honest preparation | 4 |
-| What Exam Bridge does not do | 6 |
-| Your material stays yours. | 4 |
-| Exam Bridge stores plans locally and does not host exam questions or coaching notes. | 14 |
-| You remain the judge. | 4 |
-| Prerequisite suggestions are starting points, not a substitute for an official syllabus. | 12 |
-| No affiliation implied. | 3 |
-| Exam Bridge is an independent planning tool, not endorsed by any exam authority. | 13 |
-| Original generated illustration | 3 |
-| no tracking | 2 |
-| Privacy | 1 |
-| Terms | 1 |
-| Built by Param Factory | 4 |
-
-## Demo-only copy
-
-| Copy | Words |
-| --- | ---: |
-| Demo — sample data, nothing is saved | 7 |
-| Changes use separate browser storage and never touch your real plan. | 10 |
-| Reset demo | 2 |
-| Start for real | 3 |
-| Explore the sample route | 4 |
-| Explore six realistic topics. | 4 |
-| Changes stay in the temporary demo sandbox. | 7 |
-| Included in the sample | 4 |
-| Templates work inside the demo | 5 |
-| Try a different foundation map. | 5 |
-| It stays in the same temporary demo storage. | 8 |
+| Copy | Words | Claim coverage |
+| --- | ---: | --- |
+| Demo — sample data, nothing is saved | 7 | `demo-sandbox` |
+| Changes use separate browser storage and never touch your real plan. | 10 | `demo-sandbox` |
+| Reset demo | 2 | Action |
+| Start for real | 3 | Action |
+| Explore six realistic topics. | 4 | `demo-sandbox` |
+| Changes stay in the temporary demo sandbox. | 7 | `demo-sandbox` |
+| Try a different foundation map. | 5 | `templates` |
+| It stays in the same temporary demo storage. | 8 | `demo-sandbox` |
+| You’re offline. | 2 | State |
+| Planning and exports still work. | 5 | `offline-reload`, `csv-export` |
 
 ## Legal pages
 
-| Copy | Words |
-| --- | ---: |
-| If you restore an existing Exam Bridge Plus license, its token goes to the Sociobot billing API. | 15 |
-| We only check whether the license is active. | 8 |
-| We cache the result and time locally for up to 24 hours. | 12 |
-| Hosted checkout is currently unavailable. | 4 |
-| Hosted checkout is unavailable, so Exam Bridge receives no card details. | 10 |
-| The planner, local saving, exports, and editable templates are free today. | 11 |
-| Hosted checkout is unavailable. | 4 |
-| No paid template purchase is offered. | 6 |
-| Accessibility, export, privacy, and safety features are never gated. | 9 |
-| Existing Exam Bridge Plus license holders may restore and verify a license. | 12 |
-| This does not change access while templates are free. | 10 |
+| Copy | Words | Result |
+| --- | ---: | --- |
+| Exam Bridge works without an account and keeps planner content in your browser. | 12 | `free-access`, `local-private` |
+| Your plan name, topics, confidence choices, prerequisites, practice references, and theme stay in browser storage. | 15 | `local-private` |
+| They are not sent to Exam Bridge. | 7 | `local-private` |
+| The demo uses separate keys beginning with demo:exam-bridge:. | 8 | `demo-sandbox` |
+| It never reads or changes your real plan. | 8 | `demo-sandbox` |
+| The app loads no third-party scripts, fonts, advertisements, or behavioral analytics. | 11 | `local-private` |
+| Exam Bridge organizes study plans. | 5 | Plain description |
+| It does not guarantee results or represent an exam authority. | 10 | Boundary |
+| The planner, templates, CSV exports, and JSON backups are free. | 10 | `free-access` |
+| No account, card, checkout, or payment is required. | 8 | `free-access` |
+
+## README sentences revised in this round
+
+| Copy | Words | Result |
+| --- | ---: | --- |
+| Each claim command builds a production preview when needed. | 9 | Clear |
+| Run it after a clean npm ci, even when dist is absent. | 11 | Clear |
+| Each release gives the offline app a new cache name. | 10 | Clear |
+| Returning visitors receive the current version. | 6 | Clear |
+
+## Catalog description
+
+| Copy | Characters | Result |
+| --- | ---: | --- |
+| Turn a syllabus into a study route with prerequisites and your own question references. | 87 | Verb first; under 120 |
 
 ## Result
 
 - No sentence exceeds 22 words.
-- No banned marketing word appears in rendered copy.
-- The first screen names returning exam candidates, the job, and the next action.
-- Terminology is consistent.
+- No banned marketing word appears in visitor copy.
+- The first screen names the audience, job, and first action.
+- The retired freemium, checkout, and license wording is absent.
+- Every outcome or privacy statement maps to a registered claim test.
 
 | Concept | Term used |
 | --- | --- |
