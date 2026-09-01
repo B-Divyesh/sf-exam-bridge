@@ -1,20 +1,20 @@
-# Exam Bridge verification 9 handoff — PASS
+# Exam Bridge review-1 handoff — FAIL
 
-- Verified candidate: `43136b50468bc41b65e180a8bbe736de7eecb7c5`
-- Live URL: <https://exam-bridge.sociobot.in/>
-- Date: 2026-08-30 UTC
-- Detailed evidence: `.factory/verification-9.md`
+Reviewed the live Exam Bridge site and repository without modifying product code. The requested evidence and findings are in `.factory/review-1.md`.
 
-## Decision
+## Verified
 
-**PASS.** The live static web/PWA deployment matches this candidate exactly.
-The repaired 390×844 cold first screen now exposes the audience explanation and
-the one-click **Try it with sample data** action before scrolling. All 12
-registered claim commands, `npm test`, lint, type check, production build,
-audit, live privacy/network checks, offline reload, axe scans, keyboard/mobile
-checks, headers, cache policy, and Lighthouse passed.
+- Cold 390 × 844 and 1440 × 900 first reads; the sample action is visible.
+- Live demo isolation, reset, exit, same-origin request log, and offline reload.
+- All 12 exact `.factory/claims.json` commands after `npm ci`.
+- `npm test`, `npm run build`, and `npm run test:sw-upgrade`.
+- Route metadata, internal-link crawl, designed 404, and historical findings.
 
-## Run and verify
+## Outstanding
+
+The review is **FAIL** with two blocking findings: the brief's freemium tier remains unavailable, and the landing headline makes an unregistered “shortest path” claim. It also records seven minor copy/navigation findings. No product files were changed.
+
+## Reproduce
 
 ```sh
 npm ci
@@ -22,14 +22,4 @@ npm test
 npm run build
 ```
 
-Open `/demo` or select **Try it with sample data**. It opens an isolated
-six-topic route using `demo:exam-bridge:*` browser storage. `Reset demo`
-restores it and `Start for real` discards demo-only keys. The final build is in
-`dist/`.
-
-## Known non-blocking scope note
-
-Starter templates are free while hosted checkout is unavailable. The product
-states this plainly and has no misleading buy or price claim. Add the registered
-Sociobot paid-template purchase path and exact price when that future tier is
-released.
+Open `/demo` or select **Try it with sample data**. Demo uses isolated `demo:exam-bridge:*` browser storage; **Reset demo** restores sample data and **Start for real** discards it.
