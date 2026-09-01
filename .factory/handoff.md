@@ -19,8 +19,9 @@ returned HTTP 404 from the product-scoped Sociobot checkout with
 `{"error":"enabled factory product","status":404}`. The production build
 therefore keeps the explicit operator gate closed: it renders no checkout link,
 makes no checkout request, and continues to show the ₹499 price, three sample
-previews, and license restore form. No shared Sociobot resource was read or
-changed.
+previews, and license restore form. No shared Sociobot infrastructure, setting,
+or secret was inspected or changed; only the public product checkout response
+was reproduced.
 
 ## Repairs
 
@@ -50,6 +51,8 @@ changed.
   intentional duplicate mobile service-worker case skipped.
 - `npm run build`: PASS; `dist/` contains the production site.
 - `npm audit --omit=dev --audit-level=high`: 0 vulnerabilities.
+- Package/consumer testing is not applicable to this static-web artifact; the
+  exact deployable `dist/` output is covered by build, browser, and hash checks.
 - Exact new claim commands: both PASS with one test each.
 - Checkout-gate claim: PASS; exact price, unavailable status, previews, restore
   form, and absence of checkout links and requests were asserted.
@@ -80,9 +83,28 @@ configuration:
 
 `public/staticwebapp.config.json` remains part of the artifact. It defines the
 real 404 response, route rewrites, restrictive CSP, HSTS, permissions policy,
-referrer policy, MIME sniffing protection, and cache policies. Post-deploy route,
-header, live identity, 390 px, console, and Lighthouse evidence is recorded
-below after deployment.
+referrer policy, MIME sniffing protection, and cache policies.
+
+- Deployment `77fc0600-0a5a-4188-9bf9-0c0d9f92115a` succeeded on the existing
+  `sf-exam-bridge` Static Web App in `eastus2`; the custom domain reported Ready
+  and returned HTTP 200 over managed TLS.
+- Root, `/demo`, `/privacy/`, `/terms/`, `/404.html`, `/sw.js`, JavaScript, and
+  CSS have exact local/live SHA-256 matches. The values are recorded in
+  `.factory/repair-11-artifacts/live-identity.txt`.
+- A new unknown URL returns HTTP 404 with the designed page, unchanged-plan
+  promise, and footer `v1.0.4`. Root returns HTTP 200; all tested public routes
+  return the expected status.
+- Live headers include header-delivered `frame-ancestors 'none'`, HSTS,
+  `nosniff`, strict referrer and permissions policies. HTML uses
+  `public, must-revalidate, max-age=30`, hashed assets use one-year immutable
+  caching, the service worker uses `no-cache`, and root conditionals return 304.
+- Live outcome smoke tests pass: a real plan's exact bytes survive an HTTP 404
+  visit, and a controlled `revoked` verdict changes three paid controls to zero
+  while restoring three demo preview links.
+- Live URL checks on every route report no console errors at desktop or 390 px.
+  The root has no horizontal overflow, checkout link, or third-party request.
+- Live mobile Lighthouse: Performance 100, Accessibility 100, Best Practices
+  100, SEO 100; FCP 1.0 s, LCP 1.2 s, TBT 20 ms, CLS 0, with no run warnings.
 
 ## Known external gate and next step
 

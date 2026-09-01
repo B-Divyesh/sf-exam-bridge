@@ -1,0 +1,27 @@
+{
+  "checkoutGate": {
+    "status": "New purchases are not open yet. The shared checkout still needs operator activation.",
+    "buyOrCheckoutLinks": 0,
+    "thirdPartyRequests": [],
+    "consoleErrors": []
+  },
+  "mobile": {
+    "viewport": "390x844",
+    "horizontalOverflow": false
+  },
+  "notFound": {
+    "httpStatus": 404,
+    "footerVersion": "v1.0.4",
+    "hasUnchangedPlanPromise": true,
+    "storageUnchanged": true,
+    "renderedPlanTitle": "Live saved plan before 404",
+    "renderedTopicCount": 2
+  },
+  "refundRevocation": {
+    "controlledSociobotChecks": 1,
+    "paidTemplateControlsBefore": 3,
+    "paidTemplateControlsAfter": 0,
+    "demoPreviewLinksAfter": 3,
+    "notice": "This license is not active. Check the token or buy a new license when purchases open."
+  }
+}
