@@ -248,10 +248,15 @@ function updateRouteMetadata(): void {
 }
 
 function render(): void {
+  const app = document.querySelector<HTMLDivElement>('#app')!;
+  app.setAttribute('aria-busy', 'true');
+  delete app.dataset.appMode;
   updateRouteMetadata();
-  document.querySelector<HTMLDivElement>('#app')!.innerHTML = `${appHeader()}${demoBanner()}<div id="offline-banner" class="offline-banner" role="status" hidden>You’re offline. Planning and exports still work; license checks wait for a connection.</div><main id="main" tabindex="-1">${hero()}<section id="how" class="how"><p><b>Paste the outline.</b> Rate what you know. Attach only references you’re allowed to use. Your study map stays in this browser.</p></section><div id="planner">${workspace()}</div>${templatesSection()}<section class="principles" aria-labelledby="principles-title"><p class="eyebrow">Privacy and planning limits</p><h2 id="principles-title">What Exam Bridge does not do</h2><div><p>Plans stay in this browser. Exam Bridge does not host exam questions or coaching notes.</p><p>Check the official syllabus before studying. Prerequisite suggestions are only starting points.</p><p>Exam Bridge is not endorsed by any exam authority.</p></div></section></main><footer><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Exam Bridge</span></div><p>Turn a syllabus into a study route · Original generated illustration · no tracking · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.4</p></footer><div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
+  app.innerHTML = `${appHeader()}${demoBanner()}<div id="offline-banner" class="offline-banner" role="status" hidden>You’re offline. Planning and exports still work; license checks wait for a connection.</div><main id="main" tabindex="-1">${hero()}<section id="how" class="how"><p><b>Paste the outline.</b> Rate what you know. Attach only references you’re allowed to use. Your study map stays in this browser.</p></section><div id="planner">${workspace()}</div>${templatesSection()}<section class="principles" aria-labelledby="principles-title"><p class="eyebrow">Privacy and planning limits</p><h2 id="principles-title">What Exam Bridge does not do</h2><div><p>Plans stay in this browser. Exam Bridge does not host exam questions or coaching notes.</p><p>Check the official syllabus before studying. Prerequisite suggestions are only starting points.</p><p>Exam Bridge is not endorsed by any exam authority.</p></div></section></main><footer><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Exam Bridge</span></div><p>Turn a syllabus into a study route · Original generated illustration · no tracking · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.5</p></footer><div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
   updateNetworkStatus();
   bindEvents();
+  app.dataset.appMode = isDemo ? 'demo' : 'real';
+  app.setAttribute('aria-busy', 'false');
   focusHeadingAfterRouteChange();
 }
 

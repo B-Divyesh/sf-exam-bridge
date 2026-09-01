@@ -5,7 +5,19 @@ import AxeBuilder from '@axe-core/playwright';
 async function openDemo(page: import('@playwright/test').Page): Promise<void> {
   await page.goto('/demo');
   await expect(page).toHaveTitle('Demo — Exam Bridge');
+  await expect(page.locator('#app')).toHaveAttribute('data-app-mode', 'demo');
+  await expect(page.locator('#app')).toHaveAttribute('aria-busy', 'false');
   await expect(page.getByText('Demo — sample data, nothing is saved', { exact: true })).toBeVisible();
+}
+
+async function leaveDemoForReadyPlanner(page: import('@playwright/test').Page): Promise<void> {
+  await Promise.all([
+    page.waitForURL('http://127.0.0.1:4173/', { waitUntil: 'load' }),
+    page.locator('.demo-banner').getByRole('link', { name: 'Start for real' }).click(),
+  ]);
+  await expect(page.locator('#app')).toHaveAttribute('data-app-mode', 'real');
+  await expect(page.locator('#app')).toHaveAttribute('aria-busy', 'false');
+  await expect(page.locator('#setup-form')).toBeVisible();
 }
 
 test('@claim:demo-sandbox opens, resets, and leaves an isolated sample route', async ({ page }) => {
@@ -226,7 +238,7 @@ test('@claim:free-access provides the planner, CSV, and JSON without account, ca
   const requests: string[] = [];
   page.on('request', request => requests.push(request.url()));
   await openDemo(page);
-  await page.locator('.demo-banner').getByRole('link', { name: 'Start for real' }).click();
+  await leaveDemoForReadyPlanner(page);
 
   await expect(page).toHaveURL('http://127.0.0.1:4173/');
   await expect(page.getByRole('link', { name: /checkout|buy/i })).toHaveCount(0);
@@ -236,9 +248,18 @@ test('@claim:free-access provides the planner, CSV, and JSON without account, ca
     'input[autocomplete="cc-number"]',
     'input[name*="card" i]',
   ].join(', '))).toHaveCount(0);
-  await page.getByLabel('Plan name').fill('Free return plan');
-  await page.getByLabel(/Syllabus topics/).fill('Signals and systems\nControl systems');
+  const planName = page.getByLabel('Plan name');
+  const syllabus = page.getByLabel(/Syllabus topics/);
+  await planName.fill('Free return plan');
+  await syllabus.fill('Signals and systems\nControl systems');
+  await expect(planName).toHaveValue('Free return plan');
+  await expect(syllabus).toHaveValue('Signals and systems\nControl systems');
   await page.getByRole('button', { name: /Map my syllabus/ }).click();
+  await expect.poll(() => page.evaluate(() => {
+    const stored = localStorage.getItem('exam-bridge:plan:v1');
+    return stored ? JSON.parse(stored).topics.map((topic: { title: string }) => topic.title) : [];
+  })).toEqual(['Signals and systems', 'Control systems']);
+  await expect(page.locator('#workspace-title')).toHaveText('Free return plan');
   await expect(page.locator('.topic')).toHaveCount(2);
 
   const csvDownload = page.waitForEvent('download');
