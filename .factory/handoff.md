@@ -1,4 +1,30 @@
-# Exam Bridge repair 11 handoff
+# Exam Bridge verification 13 handoff
+
+- Candidate: `5a00b5a4f22ce0b0878f63365a98b0eb6f5024be`
+- URL: <https://exam-bridge.sociobot.in/>
+- Result: **FAIL**
+- Full evidence: `.factory/verification-13.md`
+
+All 19 claim commands passed independently from the clean checkout. The build,
+live planner and demo behavior, privacy request log, offline reload,
+accessibility, mobile behavior, headers, cache policy, and candidate/live hashes
+also passed.
+
+The candidate is not releasable because the first normal full `npm test` run
+failed the registered `@claim:free-access` browser test after mapping a valid
+two-topic syllabus: it never rendered the expected topic cards within five
+seconds. The immediate repeat passed, so this is intermittent, but the required
+quality gate is not reliable. Reproduce under normal two-worker Playwright,
+remove the race, and show repeatable `npm test` passes before release.
+
+Observed license-verify allowance: 30 requests in the active window; request 31
+returned 429 with `Retry-After: 3`. The server does not expose that header to
+browser JavaScript, so the UI uses its existing safe fallback wording. This
+external integration limitation is documented in the verification report.
+
+---
+
+# Prior repair 11 handoff
 
 - Work order: `exam-bridge-repair-11`
 - Independent report: `e71336709e4f246ee203fb1df50c21352a93c79d`
