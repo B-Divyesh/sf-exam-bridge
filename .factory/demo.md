@@ -14,6 +14,9 @@ levels, selected prerequisites, attempted and pending question references, and a
 unstarted topic. The sample uses question IDs only and contains no copyrighted
 question text or official-source claim.
 
+All three paid planning templates can be used inside the demo. This previews the
+template feature without a license, checkout request, or change to real storage.
+
 ## Isolation and reset
 
 Demo state uses only the `demo:exam-bridge:*` local-storage namespace. Demo mode

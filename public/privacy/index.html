@@ -41,15 +41,21 @@
     <h2>Demo storage</h2>
     <p>The demo uses separate keys beginning with <code>demo:exam-bridge:</code>. It never reads or changes your real plan.</p>
     <p>Reset demo restores the sample. Start for real deletes the demo keys.</p>
+    <h2>License checks</h2>
+    <p>If you enter a license, its token stays in local storage under <code>sb_license:exam-bridge</code>.</p>
+    <p>Exam Bridge sends that token only to Sociobot’s billing API to check whether it is active.</p>
+    <p>A successful result is cached for up to 24 hours. Demo mode never reads or verifies a license.</p>
     <h2>Network and analytics</h2>
     <p>The app loads no third-party scripts, fonts, advertisements, or behavioral analytics.</p>
+    <p>License checks are the only optional cross-origin requests made by the app.</p>
     <p>Standard hosting logs may contain an IP address, browser information, requested path, and timestamp. We do not use these logs to profile you.</p>
     <h2>Your choices</h2>
     <p>Export your plan as CSV or JSON at any time. Use Start over to delete the current plan.</p>
+    <p>Remove Exam Bridge site data in browser settings to erase plans, theme choices, licenses, and cached verdicts.</p>
     <h2>Contact</h2>
     <p>For privacy questions, contact <a href="mailto:privacy@sociobot.in">privacy@sociobot.in</a>.</p>
   </main>
-  <footer class="site-footer"><span>Turn a syllabus into a study route.</span><span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.3</span></footer>
+  <footer class="site-footer"><span>Turn a syllabus into a study route.</span><span><a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.4</span></footer>
   <script src="/route-focus.js" defer></script>
 </body>
 </html>

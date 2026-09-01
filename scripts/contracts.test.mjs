@@ -21,7 +21,7 @@ const config = JSON.parse(await readFile('public/staticwebapp.config.json', 'utf
 assert.equal(config.routes.find(route => route.route === '/demo')?.rewrite, '/demo/index.html', '/demo must resolve to its metadata-specific app shell');
 assert.equal(config.responseOverrides?.['404']?.rewrite, '/404.html', 'unknown routes must use the product 404');
 assert.match(config.globalHeaders?.['Content-Security-Policy'] ?? '', /frame-ancestors 'none'/u, '404 responses need the global security policy');
-assert.doesNotMatch(config.globalHeaders?.['Content-Security-Policy'] ?? '', /api\.sociobot\.in/u, 'free product must not allow a retired billing connection');
+assert.match(config.globalHeaders?.['Content-Security-Policy'] ?? '', /connect-src[^;]*https:\/\/api\.sociobot\.in/u, 'production license verification must be allowed by CSP');
 
 const notFound = await readFile('public/404.html', 'utf8');
 assert.match(notFound, /<html lang="en">/u);
@@ -66,7 +66,10 @@ for (const requiredHeading of ['Study route order', 'Question references', 'Choo
 assert.doesNotMatch(app, /Your next pass|Practice bridge|Begin from a foundation map|starter map/iu, 'indirect and inconsistent template wording must stay removed');
 assert.match(app, /ROUTE_FOCUS_KEY/u, 'app routes must retain their route-change focus handling');
 assert.match(await readFile('public/route-focus.js', 'utf8'), /pageshow/u, 'static routes must restore heading focus on Back and Forward');
-assert.doesNotMatch(app, /shortest path|hosted checkout|license-form|Verify license/iu, 'retired optimization and billing copy must stay removed');
+assert.doesNotMatch(app, /shortest path/iu, 'retired optimization copy must stay removed');
+assert.match(app, /const checkoutEnabled = import\.meta\.env\.VITE_CHECKOUT_ENABLED === 'true'/u, 'checkout must default closed behind an explicit operator build flag');
+assert.match(app, /api\/v1\/products\/exam-bridge\/checkout/u, 'the enabled checkout path must stay product-scoped');
+assert.match(app, /api\/v1\/products\/exam-bridge\/verify\?license=/u, 'license verification must stay product-scoped');
 await readFile('.factory/demo.md', 'utf8');
 const copyAudit = await readFile('.factory/copy-audit.md', 'utf8');
 assert.match(copyAudit, /No sentence exceeds 22 words\./u);
@@ -87,9 +90,8 @@ if (/without an account|\bNo accounts\b|No account, card/iu.test(visitorCopy)) {
   assert.ok(ids.includes('free-access'), 'visitor free-access promises must be registered as free-access');
 }
 const brief = JSON.parse(await readFile('.factory/brief.json', 'utf8'));
-assert.equal(brief.monetization, 'free', 'the brief must not promise unavailable freemium billing');
-assert.doesNotMatch(`${app}\n${await readFile('README.md', 'utf8')}\n${await readFile('public/privacy/index.html', 'utf8')}\n${await readFile('public/terms/index.html', 'utf8')}`, /hosted checkout|existing license|Plus license|license token/iu, 'retired billing promises must not remain in visitor copy');
-for (const id of ['starter-template-boundary', 'hosted-content-boundary', 'independent-tool', 'generated-illustration']) {
+assert.equal(brief.monetization, 'freemium', 'the researched freemium brief must remain intact');
+for (const id of ['starter-template-boundary', 'hosted-content-boundary', 'independent-tool', 'generated-illustration', 'paid-template-license', 'checkout-registration-gate', 'service-worker-renewal']) {
   assert.ok(ids.includes(id), `${id} must register its visitor-facing boundary or provenance claim`);
 }
 const provenance = JSON.parse(await readFile('public/art-provenance.json', 'utf8'));

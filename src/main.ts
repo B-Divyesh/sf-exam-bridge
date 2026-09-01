@@ -5,6 +5,14 @@ const DEMO_PREFIX = 'demo:exam-bridge:';
 const isDemo = location.pathname.replace(/\/+$/, '') === '/demo' || new URLSearchParams(location.search).get('demo') === '1';
 const STORAGE_KEY = isDemo ? `${DEMO_PREFIX}plan:v1` : 'exam-bridge:plan:v1';
 const THEME_KEY = isDemo ? `${DEMO_PREFIX}theme` : 'exam-bridge:theme';
+const LICENSE_KEY = 'sb_license:exam-bridge';
+const LICENSE_CACHE_KEY = 'exam-bridge:license-verdict';
+const LICENSE_CACHE_MS = 24 * 60 * 60 * 1000;
+const billingBase = location.hostname === 'exam-bridge.sociobot.in' ? 'https://api.sociobot.in' : 'https://pilot-api.sociobot.in';
+const checkoutUrl = `${billingBase}/api/v1/products/exam-bridge/checkout`;
+// The shared billing operator enables this only after registering and checking
+// the scoped product. False is the safe default and never exposes a dead link.
+const checkoutEnabled = import.meta.env.VITE_CHECKOUT_ENABLED === 'true';
 
 const templates = [
   { name: 'Engineering foundations', note: 'A reusable starter template—not an official syllabus.', topics: ['Engineering mathematics', 'Signals and systems', 'Electric circuits', 'Control systems', 'General aptitude'] },
@@ -56,6 +64,10 @@ if (isDemo && !plan) {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(plan)); } catch { /* The sample still works for this visit. */ }
 }
 let saveMessage = isDemo ? 'Sample route loaded in the demo sandbox.' : plan ? 'Plan restored from this device.' : 'Nothing saved yet.';
+let paidUnlocked = isDemo || cachedLicenseIsValid();
+let licenseNotice = !isDemo && localStorage.getItem(LICENSE_KEY) && !paidUnlocked
+  ? 'The saved license is not active on this device.'
+  : '';
 
 function escapeHtml(value: string): string {
   return value.replace(/[&<>'"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' })[char] ?? char);
@@ -89,6 +101,25 @@ function savePlan(message = 'Saved on this device.'): void {
   } catch {
     saveMessage = 'Could not save. Your browser storage may be full; export a backup now.';
   }
+}
+
+type LicenseVerdict = { valid?: boolean; checkedAt?: number; expiresAt?: string | null };
+
+function readLicenseVerdict(): LicenseVerdict {
+  try {
+    return JSON.parse(localStorage.getItem(LICENSE_CACHE_KEY) || '{}') as LicenseVerdict;
+  } catch { return {}; }
+}
+
+function cachedLicenseIsValid(): boolean {
+  const cached = readLicenseVerdict();
+  const hasExpired = cached.expiresAt ? Date.parse(cached.expiresAt) <= Date.now() : false;
+  return Boolean(localStorage.getItem(LICENSE_KEY) && cached.valid && !hasExpired);
+}
+
+function licenseCheckIsDue(): boolean {
+  const checkedAt = readLicenseVerdict().checkedAt;
+  return typeof checkedAt !== 'number' || Date.now() - checkedAt >= LICENSE_CACHE_MS;
 }
 
 function progressStats(): { ready: number; practised: number; total: number } {
@@ -180,9 +211,18 @@ function workspace(): string {
 }
 
 function templatesSection(): string {
-  return `<section class="templates" id="templates" aria-labelledby="templates-title"><div class="section-index"><span>+</span><div><p class="eyebrow">Reusable starting points</p><h2 id="templates-title">Choose a starter template</h2><p>Use an editable starter template for a permitted exam domain, then make it your own. The planner, templates, and exports stay local to this device.</p></div></div>
-    <div class="template-list">${templates.map((template, index) => `<article><div><span class="template-shape" aria-hidden="true"></span><h3>${template.name}</h3><p>${template.note}</p><small>${template.topics.length} editable topics</small></div><button type="button" data-template="${index}">Use template</button></article>`).join('')}</div>
-    <div class="access-panel"><p class="eyebrow">Free access</p><h3>${isDemo ? 'Templates work inside the demo' : 'Every template is included'}</h3><p id="free-access-note">${isDemo ? 'Try a different starter template. It stays in the same temporary demo storage.' : 'Use every starter template without an account, card, or payment.'}</p></div>
+  const canUseTemplates = isDemo || paidUnlocked;
+  const cards = templates.map((template, index) => `<article><div><span class="template-shape" aria-hidden="true"></span><h3>${template.name}</h3><p>${template.note}</p><small>${template.topics.length} editable topics</small></div>${canUseTemplates ? `<button type="button" data-template="${index}">Use template</button>` : '<a class="button secondary" href="/demo#templates">Try in demo</a>'}</article>`).join('');
+  const purchaseAction = checkoutEnabled
+    ? `<a class="button primary" href="${checkoutUrl}" rel="noreferrer">Buy template license</a>`
+    : '<p class="purchase-status" id="purchase-status" role="status">New purchases are not open yet. The shared checkout still needs operator activation.</p>';
+  const access = isDemo
+    ? '<div class="access-panel demo-access"><p class="eyebrow">Paid template preview</p><h3>Try every template in the demo</h3><p>Sample use needs no license and stays in temporary demo storage.</p></div>'
+    : `<div class="access-panel"><div><p class="eyebrow">Exam Bridge Plus</p><h3>${paidUnlocked ? 'Template license active' : 'Reuse three planning templates'}</h3><p id="paid-note">One-time ₹499 license. The free planner, CSV, and JSON tools remain available.</p><p>Sociobot/Dodo is the merchant of record. Refunds are handled there and revoke the license.</p>${licenseNotice ? `<p class="license-notice">${escapeHtml(licenseNotice)}</p>` : ''}${paidUnlocked ? '<button class="button secondary" id="recheck-license" type="button">Recheck license</button>' : purchaseAction}</div>
+      <form id="license-form"><label for="license-token">Have a license?</label><div><input id="license-token" name="license" autocomplete="off" required placeholder="Paste license token"><button type="submit">Verify license</button></div><p id="license-status" role="status" aria-live="polite"></p></form></div>`;
+  return `<section class="templates" id="templates" aria-labelledby="templates-title"><div class="section-index"><span>+</span><div><p class="eyebrow">Reusable starting points</p><h2 id="templates-title">Choose a starter template</h2><p>Preview all three in the demo. A one-time ₹499 license lets you reuse them in your own plans.</p></div></div>
+    <div class="template-list">${cards}</div>
+    ${access}
   </section>`;
 }
 
@@ -209,7 +249,7 @@ function updateRouteMetadata(): void {
 
 function render(): void {
   updateRouteMetadata();
-  document.querySelector<HTMLDivElement>('#app')!.innerHTML = `${appHeader()}${demoBanner()}<div id="offline-banner" class="offline-banner" role="status" hidden>You’re offline. Planning and exports still work.</div><main id="main" tabindex="-1">${hero()}<section id="how" class="how"><p><b>Paste the outline.</b> Rate what you know. Attach only references you’re allowed to use. Your study map stays in this browser.</p></section><div id="planner">${workspace()}</div>${templatesSection()}<section class="principles" aria-labelledby="principles-title"><p class="eyebrow">Privacy and planning limits</p><h2 id="principles-title">What Exam Bridge does not do</h2><div><p>Plans stay in this browser. Exam Bridge does not host exam questions or coaching notes.</p><p>Check the official syllabus before studying. Prerequisite suggestions are only starting points.</p><p>Exam Bridge is not endorsed by any exam authority.</p></div></section></main><footer><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Exam Bridge</span></div><p>Turn a syllabus into a study route · Original generated illustration · no tracking · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.3</p></footer><div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
+  document.querySelector<HTMLDivElement>('#app')!.innerHTML = `${appHeader()}${demoBanner()}<div id="offline-banner" class="offline-banner" role="status" hidden>You’re offline. Planning and exports still work; license checks wait for a connection.</div><main id="main" tabindex="-1">${hero()}<section id="how" class="how"><p><b>Paste the outline.</b> Rate what you know. Attach only references you’re allowed to use. Your study map stays in this browser.</p></section><div id="planner">${workspace()}</div>${templatesSection()}<section class="principles" aria-labelledby="principles-title"><p class="eyebrow">Privacy and planning limits</p><h2 id="principles-title">What Exam Bridge does not do</h2><div><p>Plans stay in this browser. Exam Bridge does not host exam questions or coaching notes.</p><p>Check the official syllabus before studying. Prerequisite suggestions are only starting points.</p><p>Exam Bridge is not endorsed by any exam authority.</p></div></section></main><footer><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Exam Bridge</span></div><p>Turn a syllabus into a study route · Original generated illustration · no tracking · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.4</p></footer><div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
   updateNetworkStatus();
   bindEvents();
   focusHeadingAfterRouteChange();
@@ -382,9 +422,19 @@ function bindEvents(): void {
   document.querySelector('#theme-toggle')?.addEventListener('click', toggleTheme);
   document.querySelectorAll<HTMLButtonElement>('[data-template]').forEach(button => button.addEventListener('click', () => {
     const template = templates[Number(button.dataset.template)];
+    if (!isDemo && !paidUnlocked) return;
     if (plan && !window.confirm('Replace your current plan? Export a backup first if you need it.')) return;
     plan = createPlan(template.name, '', template.topics); savePlan('Template saved as a new local plan.'); rerenderPlanner(); document.querySelector('#workspace-title')?.scrollIntoView({ behavior: 'smooth' });
   }));
+  document.querySelector<HTMLFormElement>('#license-form')?.addEventListener('submit', event => {
+    event.preventDefault();
+    const token = String(new FormData(event.currentTarget as HTMLFormElement).get('license') ?? '').trim();
+    if (token) void verifyLicense(token, true);
+  });
+  document.querySelector('#recheck-license')?.addEventListener('click', () => {
+    const token = localStorage.getItem(LICENSE_KEY);
+    if (token) void verifyLicense(token, true);
+  });
 }
 
 function slug(value: string): string { return value.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') || 'exam-bridge'; }
@@ -403,9 +453,51 @@ function updateNetworkStatus(): void {
   const banner = document.querySelector<HTMLElement>('#offline-banner'); if (banner) banner.hidden = navigator.onLine;
 }
 
+async function verifyLicense(token: string, userInitiated = false): Promise<void> {
+  const status = document.querySelector<HTMLElement>('#license-status');
+  localStorage.setItem(LICENSE_KEY, token);
+  if (status) status.textContent = 'Checking license…';
+  try {
+    const response = await fetch(`${billingBase}/api/v1/products/exam-bridge/verify?license=${encodeURIComponent(token)}`);
+    if (response.status === 429) {
+      const retryAfter = response.headers.get('Retry-After');
+      if (status) status.textContent = retryAfter
+        ? `Too many checks. Try again in ${retryAfter} seconds.`
+        : 'Too many checks. Try again later.';
+      return;
+    }
+    if (!response.ok) throw new Error('service');
+    const result = await response.json() as { valid: boolean; expires_at?: string | null };
+    localStorage.setItem(LICENSE_CACHE_KEY, JSON.stringify({ valid: result.valid, checkedAt: Date.now(), expiresAt: result.expires_at ?? null }));
+    paidUnlocked = result.valid;
+    licenseNotice = result.valid ? '' : 'This license is not active. Check the token or buy a new license when purchases open.';
+    render();
+    announce(result.valid ? 'Template license verified.' : 'License not active.');
+  } catch {
+    if (status) status.textContent = 'License verification could not connect. Your free planner still works.';
+    if (userInitiated) announce('License check could not connect.');
+  }
+}
+
+function initializeLicense(): void {
+  if (isDemo) return;
+  const query = new URLSearchParams(location.search);
+  const returned = query.get('license');
+  if (returned) {
+    localStorage.setItem(LICENSE_KEY, returned);
+    query.delete('license');
+    history.replaceState({}, '', `${location.pathname}${query.size ? `?${query}` : ''}${location.hash}`);
+    void verifyLicense(returned);
+    return;
+  }
+  const token = localStorage.getItem(LICENSE_KEY);
+  if (token && licenseCheckIsDue()) void verifyLicense(token);
+}
+
 const storedTheme = localStorage.getItem(THEME_KEY);
 if (storedTheme === 'dark' || storedTheme === 'light') document.documentElement.dataset.theme = storedTheme;
 render();
+initializeLicense();
 window.addEventListener('online', updateNetworkStatus);
 window.addEventListener('offline', updateNetworkStatus);
 window.addEventListener('popstate', () => {

@@ -21,6 +21,13 @@
     "sandbox": "dedicated fresh browser context; open /demo; wait for service-worker control; set context offline; reload and assert the sample route"
   },
   {
+    "id": "service-worker-renewal",
+    "claim": "A returning visitor receives the current app version, and the replaced version still reloads offline.",
+    "where": "README deployment section",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:service-worker-renewal",
+    "sandbox": "dedicated browser context and isolated local server; install the exact legacy worker, replace the served distribution, request an update, assert the current bundle and cache, then reload offline"
+  },
+  {
     "id": "csv-export",
     "claim": "Exports the complete study route as CSV without payment.",
     "where": "landing facts, planner toolbar, privacy page, README",
@@ -43,8 +50,8 @@
   },
   {
     "id": "templates",
-    "claim": "Loads editable foundation templates without setup or payment.",
-    "where": "templates section, terms page, README",
+    "claim": "Previews all three editable paid templates in the isolated demo without payment.",
+    "where": "templates section, demo guide, README",
     "test": "npm run test:e2e -- --project=desktop --grep @claim:templates",
     "sandbox": "fresh /demo context; select a template; assert five editable topics and demo-only storage"
   },
@@ -78,10 +85,24 @@
   },
   {
     "id": "free-access",
-    "claim": "The planner, every template, CSV exports, and JSON backups are free and require no account, card, checkout, or payment.",
+    "claim": "The planner, CSV exports, and JSON backups are free and require no account, card, checkout, or payment.",
     "where": "landing facts, templates panel, Terms, README",
     "test": "npm run test:e2e -- --project=desktop --grep @claim:free-access",
-    "sandbox": "fresh /demo context; leave for the real planner; build a plan; load a template; download CSV and JSON; assert no account, card, payment, gated control, checkout, or cross-origin request"
+    "sandbox": "fresh context; build a real plan; download CSV and JSON; assert those controls stay enabled without account, card, payment, checkout, or cross-origin request"
+  },
+  {
+    "id": "paid-template-license",
+    "claim": "A one-time ₹499 license enables all three reusable planning templates after Sociobot verification.",
+    "where": "templates panel, Privacy, Terms, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:paid-template-license",
+    "sandbox": "fresh real-planner context; mock one valid Sociobot response; restore a token; assert local token storage, all template controls, template use, URL stripping, and no second automatic check inside 24 hours"
+  },
+  {
+    "id": "checkout-registration-gate",
+    "claim": "New purchases stay closed until the shared checkout is activated, without hiding the price or license restore path.",
+    "where": "templates panel, README",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:checkout-registration-gate",
+    "sandbox": "default production build with checkout flag absent; assert exact price, unavailability status, restore form, demo preview links, and no checkout link or request"
   },
   {
     "id": "accessible-responsive",
