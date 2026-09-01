@@ -1,0 +1,18 @@
+{
+  "url": "https://exam-bridge.sociobot.in/",
+  "viewport": "390x844",
+  "reducedMotion": true,
+  "route": "demo to real planner",
+  "title": "Exam Bridge — turn a syllabus into a study route",
+  "topics": 2,
+  "storedTopics": [
+    "Signals and systems",
+    "Control systems"
+  ],
+  "horizontalOverflowPx": 0,
+  "checkoutLinks": 0,
+  "purchaseStatus": "New purchases are not open yet. The shared checkout still needs operator activation.",
+  "appMode": "real",
+  "ariaBusy": "false",
+  "crossOriginRequests": []
+}

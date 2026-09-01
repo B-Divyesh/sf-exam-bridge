@@ -1,0 +1,14 @@
+{
+  "url": "https://exam-bridge.sociobot.in/terms/",
+  "loadMs": 800,
+  "errors": [],
+  "a11y": {
+    "title": "Terms — Exam Bridge",
+    "lang": "en",
+    "h1": 1,
+    "main": true,
+    "imgsMissingAlt": 0,
+    "buttonsUnlabeled": 0,
+    "textLength": 1560
+  }
+}

@@ -1,3 +1,97 @@
+# Exam Bridge repair 12 handoff
+
+- Work order: `exam-bridge-repair-12`
+- Independent report: `856aab88fa52af3910d9efa5c0abda4ed9f8800a`
+- Failed candidate: `5a00b5a4f22ce0b0878f63365a98b0eb6f5024be`
+- Repair implementation: `ce518fd1ee6f19f4aff2c5785ebf73c6eaa13d23`
+- Product: static Vite + TypeScript PWA
+- Production URL: <https://exam-bridge.sociobot.in/>
+- Verified: 1 September 2026 UTC
+
+## Outcome
+
+The release-blocking `@claim:free-access` race is repaired. Leaving the demo now
+has an explicit application-ready boundary: the shell begins with `aria-busy=true`
+and publishes its `real` or `demo` mode only after the correct DOM and event
+handlers are installed. The claim waits for the full navigation and that state,
+checks the exact two input values, and asserts the two persisted topic titles
+before checking the two rendered cards. It does not use retries or reduce the
+normal two-worker concurrency.
+
+The free planner still exports CSV and JSON without an account or payment. New
+purchases remain honestly closed because the product checkout is not registered.
+The ₹499 price, three demo previews, and existing-license restore path remain
+visible. No checkout link or checkout request is emitted while the gate is closed.
+
+## Reproduction and regression evidence
+
+The verifier's first clean `npm test` at the failed candidate reproduced the
+problem at `tests/claims.spec.ts:242`: after the two-topic submission it observed
+zero `.topic` cards. Its immediate retry passed. Before editing, this worker ran
+the same clean gate once and repeated the exact claim 80 times with two workers;
+all local attempts passed, confirming that the reported failure was intermittent
+rather than deterministic.
+
+After the repair:
+
+- The exact `@claim:free-access` command passed in isolation.
+- The repository `npm test` passed: lint, TypeScript, production build, 19-claim
+  contract, 9 unit tests, clean-start claim test, and the two-worker Playwright
+  suite. Browser result: 69 passed and the intentionally duplicated mobile
+  service-worker case skipped.
+- Two consecutive clean clones of `ce518fd` each ran `npm ci` and then the full
+  `npm test`; both completed with the same 69 passed / 1 skipped browser result.
+- Both clean installs added 141 locked packages and reported zero vulnerabilities.
+- `npm audit --omit=dev --audit-level=high`: zero vulnerabilities.
+- The complete browser suite covers desktop and Pixel 5/mobile behavior, keyboard
+  focus, reduced motion, light/dark axe scans, 44-pixel targets, 390 px overflow,
+  local-only planning, offline reload, service-worker replacement, and all 19
+  registered claim outcomes.
+- Package/consumer testing is not applicable to this static-web artifact.
+
+## Local browser and performance evidence
+
+`verify-url.sh` passed `/`, `/demo/`, `/privacy/`, `/terms/`, and `/404.html` at
+desktop and 390 px. Every route has its correct title, `lang=en`, one `h1`, a
+`main`, labelled buttons and images, and zero console/page errors. Screenshots and
+JSON reports are under `.factory/repair-12-artifacts/`.
+
+Local mobile Lighthouse: Performance 100, Accessibility 100, Best Practices 100,
+SEO 100; FCP 0.9 s, LCP 1.5 s, TBT 20 ms, CLS 0. Production output is 28.35 kB
+JavaScript (10.13 kB gzip), 17.43 kB CSS (4.65 kB gzip), and a 19.70 kB hero.
+
+## Deployment and live verification
+
+`/opt/fleet/lib/deploy-static.sh exam-bridge dist` deployed the exact build to the
+existing `sf-exam-bridge` Static Web App in `eastus2`. Deployment
+`31700be7-beaf-46a9-882b-4c0c1090673c` succeeded; the custom domain is Ready and
+serves managed HTTPS.
+
+- Root, demo, Privacy, Terms, 404, service worker, JavaScript, CSS, and hero
+  SHA-256 values match the local `dist/` byte for byte. Exact values are in
+  `.factory/repair-12-artifacts/live-identity.txt`.
+- Live `verify-url.sh` checks pass for every public route with zero console errors.
+- A new unknown URL returns HTTP 404 and the designed page with footer `v1.0.5`.
+- Root HTML uses 30-second revalidation and returned 304 to `If-None-Match`.
+  Hashed assets use one-year immutable caching; `sw.js` uses `no-cache`.
+- Live headers include HSTS, `nosniff`, strict-origin referrer policy, permissions
+  policy, and response-header CSP with `frame-ancestors 'none'`.
+- A fresh live 390 px reduced-motion run went demo → real planner → exact two-topic
+  save. It rendered two cards, stored both titles, had zero horizontal overflow,
+  made no cross-origin request, and exposed no checkout link.
+- Live mobile Lighthouse: Performance 100, Accessibility 100, Best Practices 100,
+  SEO 100; FCP 0.9 s, LCP 1.1 s, TBT 20 ms, CLS 0, with no run warnings.
+
+## Known external gate
+
+The public product-scoped checkout still returns HTTP 404. This is the expected
+operator gate, not a product regression. An authorized billing operator must
+register the `exam-bridge` ₹499 one-time product and its return URL before a future
+build sets `VITE_CHECKOUT_ENABLED=true`. No shared infrastructure, application
+settings, secrets, or other product resources were read or changed.
+
+---
+
 # Exam Bridge verification 13 handoff
 
 - Candidate: `5a00b5a4f22ce0b0878f63365a98b0eb6f5024be`
