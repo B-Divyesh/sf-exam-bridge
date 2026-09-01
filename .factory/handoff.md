@@ -1,4 +1,22 @@
-# Exam Bridge polish round 1 handoff — PASS
+# Exam Bridge independent verification 10 — PASS
+
+Candidate commit `2e2575ef81ec57d4074c3b513576db96b92166b5` at
+<https://exam-bridge.sociobot.in/> has passed independent product QA.
+
+- All ten registered demo claim commands passed from a clean `npm ci` install.
+- `npm test` passed lint, build, contracts, 9 unit tests, 46 Playwright checks,
+  clean claim start, and service-worker update. `npm run build` passed separately.
+- Fresh live first read, demo availability, normal and invalid input paths,
+  desktop/mobile keyboard checks, reduced motion, request logging, headers,
+  caching, bundle budgets, legal pages, 404, and deployed-artifact checks passed.
+- Live and local SHA-256 values match for the root and demo HTML, JS, CSS, and
+  service worker. The deployed artifact is the tested candidate.
+- Defects by severity: none found (release-blocking: 0; high: 0; medium: 0; low: 0).
+
+Exact evidence, commands, and observations are in
+[`verification-10.md`](verification-10.md).
+
+## Previous builder handoff
 
 Exam Bridge is deployed at <https://exam-bridge.sociobot.in/>. Every blocking
 and minor finding in `.factory/review-1.md`, plus the earlier verification
