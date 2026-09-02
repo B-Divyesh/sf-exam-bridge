@@ -1,0 +1,345 @@
+{
+  "base": "https://exam-bridge.sociobot.in",
+  "identity": [
+    {
+      "path": "/",
+      "status": 200,
+      "localSha256": "564ac3ac99c6f150823fa4b15f3a56dd0e7103128f5c69aa5f64102afa90eb8a",
+      "liveSha256": "564ac3ac99c6f150823fa4b15f3a56dd0e7103128f5c69aa5f64102afa90eb8a",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/html"
+    },
+    {
+      "path": "/demo",
+      "status": 200,
+      "localSha256": "646b83663099d789279b0c248dacceac0d2fb4e83f9e802b5bc0fccf83bd7b9b",
+      "liveSha256": "646b83663099d789279b0c248dacceac0d2fb4e83f9e802b5bc0fccf83bd7b9b",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/html"
+    },
+    {
+      "path": "/privacy/",
+      "status": 200,
+      "localSha256": "f84bafae308b8e1eb96bd6924c8b29e566da99defe8696cfc6e6b8358c515b7d",
+      "liveSha256": "f84bafae308b8e1eb96bd6924c8b29e566da99defe8696cfc6e6b8358c515b7d",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/html"
+    },
+    {
+      "path": "/terms/",
+      "status": 200,
+      "localSha256": "0c934ed31cb7427102cd738d7a36436ee5ddf48dbb125f8774aa7ce629b0244b",
+      "liveSha256": "0c934ed31cb7427102cd738d7a36436ee5ddf48dbb125f8774aa7ce629b0244b",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/html"
+    },
+    {
+      "path": "/404.html",
+      "status": 200,
+      "localSha256": "2da333838b06f3b872f26fa78353a014213b50e7edb65a012fa96b898bf86fb3",
+      "liveSha256": "2da333838b06f3b872f26fa78353a014213b50e7edb65a012fa96b898bf86fb3",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/html"
+    },
+    {
+      "path": "/sw.js",
+      "status": 200,
+      "localSha256": "2f330787d6c87e76c1a410588da49367f6ff8e68e75e1a2ea62737ba93582dce",
+      "liveSha256": "2f330787d6c87e76c1a410588da49367f6ff8e68e75e1a2ea62737ba93582dce",
+      "match": true,
+      "cacheControl": "no-cache",
+      "contentType": "text/javascript"
+    },
+    {
+      "path": "/route-focus.js",
+      "status": 200,
+      "localSha256": "a1cd658a29e5fdea5bdf8c46f4d3b359328e00727bbff4015c7fe7963c874f42",
+      "liveSha256": "a1cd658a29e5fdea5bdf8c46f4d3b359328e00727bbff4015c7fe7963c874f42",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "text/javascript"
+    },
+    {
+      "path": "/assets/main-D8axh8tw.js",
+      "status": 200,
+      "localSha256": "4d33d83dcc099328896f2238641197fad1eb78ce1ca0ad74b15e57b17fe0b0e9",
+      "liveSha256": "4d33d83dcc099328896f2238641197fad1eb78ce1ca0ad74b15e57b17fe0b0e9",
+      "match": true,
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentType": "text/javascript"
+    },
+    {
+      "path": "/assets/main-FgJze33N.css",
+      "status": 200,
+      "localSha256": "22486df4e4a4dcbc78cf47d18ae59ec2eecb674eee7f35b7d2978e61ed174167",
+      "liveSha256": "22486df4e4a4dcbc78cf47d18ae59ec2eecb674eee7f35b7d2978e61ed174167",
+      "match": true,
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentType": "text/css"
+    },
+    {
+      "path": "/assets/learning-topology.webp",
+      "status": 200,
+      "localSha256": "2b89e36f3b6404b94b7f87de69906ef6d45668f9a7c13e81190dbcb1f88b3441",
+      "liveSha256": "2b89e36f3b6404b94b7f87de69906ef6d45668f9a7c13e81190dbcb1f88b3441",
+      "match": true,
+      "cacheControl": "public, max-age=31536000, immutable",
+      "contentType": "image/webp"
+    },
+    {
+      "path": "/manifest.webmanifest",
+      "status": 200,
+      "localSha256": "6fa5c8e733f5505af1a94051882771c02ce1587473012e639f77ad2b89f83965",
+      "liveSha256": "6fa5c8e733f5505af1a94051882771c02ce1587473012e639f77ad2b89f83965",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30",
+      "contentType": "application/octet-stream"
+    }
+  ],
+  "missing": {
+    "status": 404,
+    "sha256": "2da333838b06f3b872f26fa78353a014213b50e7edb65a012fa96b898bf86fb3",
+    "matches404": true,
+    "contentType": "text/html"
+  },
+  "headers": {
+    "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+    "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "x-content-type-options": "nosniff",
+    "permissions-policy": "camera=(), microphone=(), geolocation=()",
+    "cache-control": "public, must-revalidate, max-age=30"
+  },
+  "crawled": [
+    {
+      "source": "/",
+      "url": "https://exam-bridge.sociobot.in/",
+      "status": 200
+    },
+    {
+      "source": "/",
+      "url": "https://exam-bridge.sociobot.in/icon.svg",
+      "status": 200
+    },
+    {
+      "source": "/",
+      "url": "https://exam-bridge.sociobot.in/apple-touch-icon.png",
+      "status": 200
+    },
+    {
+      "source": "/",
+      "url": "https://exam-bridge.sociobot.in/manifest.webmanifest",
+      "status": 200
+    },
+    {
+      "source": "/",
+      "url": "https://exam-bridge.sociobot.in/assets/main-FgJze33N.css",
+      "status": 200
+    },
+    {
+      "source": "/demo",
+      "url": "https://exam-bridge.sociobot.in/demo",
+      "status": 200
+    },
+    {
+      "source": "/demo",
+      "url": "https://exam-bridge.sociobot.in/icon.svg",
+      "status": 200
+    },
+    {
+      "source": "/demo",
+      "url": "https://exam-bridge.sociobot.in/apple-touch-icon.png",
+      "status": 200
+    },
+    {
+      "source": "/demo",
+      "url": "https://exam-bridge.sociobot.in/manifest.webmanifest",
+      "status": 200
+    },
+    {
+      "source": "/demo",
+      "url": "https://exam-bridge.sociobot.in/assets/main-FgJze33N.css",
+      "status": 200
+    },
+    {
+      "source": "/privacy/",
+      "url": "https://exam-bridge.sociobot.in/privacy/",
+      "status": 200
+    },
+    {
+      "source": "/privacy/",
+      "url": "https://exam-bridge.sociobot.in/icon.svg",
+      "status": 200
+    },
+    {
+      "source": "/privacy/",
+      "url": "https://exam-bridge.sociobot.in/apple-touch-icon.png",
+      "status": 200
+    },
+    {
+      "source": "/privacy/",
+      "url": "https://exam-bridge.sociobot.in/legal.css",
+      "status": 200
+    },
+    {
+      "source": "/privacy/",
+      "url": "https://exam-bridge.sociobot.in/",
+      "status": 200
+    },
+    {
+      "source": "/privacy/",
+      "url": "https://exam-bridge.sociobot.in/",
+      "status": 200
+    },
+    {
+      "source": "/privacy/",
+      "url": "https://exam-bridge.sociobot.in/demo",
+      "status": 200
+    },
+    {
+      "source": "/privacy/",
+      "url": "https://exam-bridge.sociobot.in/privacy/",
+      "status": 200
+    },
+    {
+      "source": "/privacy/",
+      "url": "https://exam-bridge.sociobot.in/terms/",
+      "status": 200
+    },
+    {
+      "source": "/privacy/",
+      "url": "https://exam-bridge.sociobot.in/privacy/",
+      "status": 200
+    },
+    {
+      "source": "/privacy/",
+      "url": "https://exam-bridge.sociobot.in/terms/",
+      "status": 200
+    },
+    {
+      "source": "/terms/",
+      "url": "https://exam-bridge.sociobot.in/terms/",
+      "status": 200
+    },
+    {
+      "source": "/terms/",
+      "url": "https://exam-bridge.sociobot.in/icon.svg",
+      "status": 200
+    },
+    {
+      "source": "/terms/",
+      "url": "https://exam-bridge.sociobot.in/apple-touch-icon.png",
+      "status": 200
+    },
+    {
+      "source": "/terms/",
+      "url": "https://exam-bridge.sociobot.in/legal.css",
+      "status": 200
+    },
+    {
+      "source": "/terms/",
+      "url": "https://exam-bridge.sociobot.in/",
+      "status": 200
+    },
+    {
+      "source": "/terms/",
+      "url": "https://exam-bridge.sociobot.in/",
+      "status": 200
+    },
+    {
+      "source": "/terms/",
+      "url": "https://exam-bridge.sociobot.in/demo",
+      "status": 200
+    },
+    {
+      "source": "/terms/",
+      "url": "https://exam-bridge.sociobot.in/privacy/",
+      "status": 200
+    },
+    {
+      "source": "/terms/",
+      "url": "https://exam-bridge.sociobot.in/terms/",
+      "status": 200
+    },
+    {
+      "source": "/terms/",
+      "url": "https://exam-bridge.sociobot.in/privacy/",
+      "status": 200
+    },
+    {
+      "source": "/terms/",
+      "url": "https://exam-bridge.sociobot.in/terms/",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/404.html",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/icon.svg",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/apple-touch-icon.png",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/legal.css",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/demo",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/privacy/",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/terms/",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/demo",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/privacy/",
+      "status": 200
+    },
+    {
+      "source": "/404.html",
+      "url": "https://exam-bridge.sociobot.in/terms/",
+      "status": 200
+    }
+  ]
+}

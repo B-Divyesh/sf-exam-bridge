@@ -1,0 +1,82 @@
+{
+  "geometry": [
+    {
+      "viewport": {
+        "name": "desktop",
+        "width": 1440,
+        "height": 900
+      },
+      "actionBottom": 534.046875,
+      "factsBottom": 676.703125,
+      "illustrationTop": 184.49563598632812,
+      "workspaceTop": 80.734375,
+      "overviewBottom": 520.796875,
+      "firstTopicTop": 663.3932495117188,
+      "scrollY": 0,
+      "topics": 6,
+      "focused": false,
+      "errors": [],
+      "externalRequests": []
+    },
+    {
+      "viewport": {
+        "name": "mobile",
+        "width": 390,
+        "height": 844
+      },
+      "actionBottom": 559.359375,
+      "factsBottom": 834.15625,
+      "illustrationTop": 853.3101196289062,
+      "workspaceTop": 152.796875,
+      "overviewBottom": 714.609375,
+      "firstTopicTop": 945.5167846679688,
+      "scrollY": 0,
+      "topics": 6,
+      "focused": false,
+      "errors": [],
+      "externalRequests": []
+    }
+  ],
+  "functional": {
+    "topics": 2,
+    "csvRows": 3,
+    "jsonTopics": 2,
+    "persisted": true,
+    "keyboardFocusPreserved": true,
+    "checkoutDisabled": true,
+    "errors": [],
+    "externalRequests": [],
+    "nonGetRequests": []
+  },
+  "accessibility": [
+    {
+      "viewport": "desktop",
+      "theme": "light",
+      "seriousCritical": 0,
+      "totalViolations": 0
+    },
+    {
+      "viewport": "desktop",
+      "theme": "dark",
+      "seriousCritical": 0,
+      "totalViolations": 0
+    },
+    {
+      "viewport": "mobile",
+      "theme": "light",
+      "seriousCritical": 0,
+      "totalViolations": 0
+    },
+    {
+      "viewport": "mobile",
+      "theme": "dark",
+      "seriousCritical": 0,
+      "totalViolations": 0
+    }
+  ],
+  "offline": {
+    "controlled": true,
+    "topics": 6,
+    "banner": true
+  }
+}

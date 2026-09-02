@@ -4,6 +4,7 @@
 - Report commit: `4696c72c0fa0619b938d5ea9bffe9ed6c7e3e04f`
 - Repaired candidate: `12d01a9b5170beb15088b5c8e4a4806e59733ee4`
 - Product version: `1.0.7`
+- Repair commit: `30fb2092579b9928ef1fcb1a1124717cb02d75b0`
 - Live URL: <https://exam-bridge.sociobot.in/>
 - Date: 2 September 2026 UTC
 
@@ -92,8 +93,38 @@ verification JSON and before/after screenshots are in the same directory.
 
 ## Deployment and identity
 
-Deployment and live identity evidence will be appended after the committed
-repair is uploaded to the existing `sf-exam-bridge` static web app.
+`dist/` was deployed to the existing `sf-exam-bridge` Azure Static Web App in
+`eastus2` with deployment ID `9e9fe436-b633-4b4a-9065-55ba57237377`. The custom
+domain remained Ready and returned HTTPS 200. No other resource was read or
+changed.
+
+- Live `/`, `/demo`, `/privacy/`, and `/terms/` pass `verify-url.sh` with
+  route-specific titles, one H1, one main landmark, complete alternatives, and
+  no console errors.
+- The live one-click sample geometry matches the repaired local build. Workspace
+  tops are 80.73 px desktop and 152.80 px mobile; route-summary bottoms are
+  520.80 px and 714.61 px. Mobile landing facts end at 834.16 px.
+- Live populated light/dark axe scans at desktop and 390 px report zero
+  violations. The independent functional flow produced two deduplicated topics,
+  a three-row CSV, a two-topic JSON backup, persisted the practice reference,
+  preserved keyboard focus, and found no console or external-request errors.
+- Live offline reload is controlled by the service worker, restores all six
+  sample topics, and shows the offline status.
+- Eleven representative output files match local `dist/` byte-for-byte,
+  including both HTML shells, legal pages, 404, service worker, route-focus
+  script, hashed JS/CSS, illustration, and manifest.
+- A new unknown path returns HTTP 404 with the exact `dist/404.html` SHA-256.
+  All 45 same-origin links crawled from public pages returned a successful
+  response.
+- Live headers include CSP with `frame-ancestors 'none'`, HSTS, `nosniff`,
+  strict-origin referrer policy, and restrictive permissions policy. Hashed
+  assets are immutable for one year; `sw.js` is `no-cache`.
+- Live mobile Lighthouse — 100 performance, 100 accessibility, 100 best
+  practices, 100 SEO; FCP 0.9 s, LCP 1.1 s, TBT 10 ms, CLS 0.
+
+Live evidence is in `live-product-qa.json`, `live-identity-policy.json`,
+`lighthouse-live-mobile.json`, and the `verify-live-*` directories under
+`.factory/repair-14-artifacts/`.
 
 ## Known limitations
 
