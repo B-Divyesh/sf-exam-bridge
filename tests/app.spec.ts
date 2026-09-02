@@ -193,7 +193,8 @@ test('keeps all effective route, shell, and footer targets at least 44px at 390p
   const boxes = await targets.evaluateAll(elements => elements
     .filter(element => {
       const style = getComputedStyle(element);
-      return style.display !== 'none' && style.visibility !== 'hidden';
+      const rect = element.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
     })
     .map(element => {
       const rect = element.getBoundingClientRect();
@@ -222,55 +223,44 @@ test('renders a semantic three-step How it works section after the product', asy
   })).toBe(true);
 });
 
-test('labels the future paid tier unavailable and keeps the free planner available', async ({ page }) => {
-  await expect(page.getByRole('link', { name: /checkout|buy/i })).toHaveCount(0);
-  await expect(page.locator('#purchase-status')).toHaveText('Paid tier not yet available. No purchase or checkout is offered.');
-  await expect(page.locator('input[name="license"]')).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Try in demo' })).toHaveCount(3);
-  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(0);
+test('offers three free template actions with unique result names', async ({ page }) => {
+  await expect(page.getByRole('heading', { name: 'Use any template without payment' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Use Engineering foundations template' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Use Computer science foundations template' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Use Quantitative foundations template' })).toBeVisible();
+  await expect(page.locator('input[name="license"]')).toHaveCount(0);
   await page.getByLabel(/Syllabus topics/).fill('Signals and systems\nControl systems');
   await page.getByRole('button', { name: /Map my syllabus/ }).click();
   await expect(page.locator('.topic')).toHaveCount(2);
 });
 
-test('stores and strips a returned license before verifying it', async ({ page }) => {
-  await page.route('**/api/v1/products/exam-bridge/verify?license=returned-license', route => route.fulfill({
-    contentType: 'application/json',
-    body: JSON.stringify({ valid: true, reason: 'ok', expires_at: null }),
-  }));
-  await page.goto('/?license=returned-license');
-  await expect(page).toHaveURL('http://127.0.0.1:4173/');
-  await expect(page.getByRole('heading', { name: 'Existing template license active' })).toBeVisible();
-  expect(await page.evaluate(() => localStorage.getItem('sb_license:exam-bridge'))).toBe('returned-license');
-});
-
-test('locks an invalid license and explains verification rate limits', async ({ page }) => {
-  await page.route('**/api/v1/products/exam-bridge/verify?license=invalid-license', route => route.fulfill({
-    contentType: 'application/json',
-    body: JSON.stringify({ valid: false, reason: 'invalid', expires_at: null }),
-  }));
-  await page.goto('/');
-  await page.getByLabel('Have a license?').fill('invalid-license');
-  await page.getByRole('button', { name: 'Verify license' }).click();
-  await expect(page.locator('.license-notice')).toContainText('not active');
-  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(0);
-
-  await page.unroute('**/api/v1/products/exam-bridge/verify?license=invalid-license');
-  await page.route('**/api/v1/products/exam-bridge/verify?license=rate-limited', route => route.fulfill({
-    status: 429,
-    headers: { 'Access-Control-Expose-Headers': 'Retry-After', 'Retry-After': '60' },
-    contentType: 'application/json',
-    body: JSON.stringify({ error: 'rate limit' }),
-  }));
-  await page.getByLabel('Have a license?').fill('rate-limited');
-  await page.getByRole('button', { name: 'Verify license' }).click();
-  await expect(page.locator('#license-status')).toHaveText('Too many checks. Try again in 60 seconds.');
-});
-
-test('does not expose a checkout or current purchase offer', async ({ page }) => {
+test('removes the retired purchase and license path', async ({ page }) => {
   await expect(page.locator('a[href*="checkout" i], form[action*="checkout" i]')).toHaveCount(0);
-  await expect(page.getByText('Paid tier not yet available. No purchase or checkout is offered.')).toBeVisible();
-  await expect(page.getByText(/₹499|one-time purchase|merchant of record/iu)).toHaveCount(0);
+  await expect(page.locator('input[name="license"], #recheck-license, #license-form')).toHaveCount(0);
+  await expect(page.getByText(/Paid templates|Paid tier|Exam Bridge Plus/iu)).toHaveCount(0);
+});
+
+test('keeps mobile navigation available on every public route', async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  for (const route of ['/', '/demo']) {
+    await page.goto(route);
+    const menu = page.getByRole('button', { name: 'Menu' });
+    await expect(menu).toBeVisible();
+    await menu.click();
+    const nav = page.locator('#primary-nav');
+    await expect(nav).toHaveAttribute('data-open', 'true');
+    for (const name of ['Demo', 'How it works', 'Templates', 'Privacy']) {
+      await expect(nav.getByRole('link', { name, exact: true })).toBeVisible();
+    }
+    await page.keyboard.press('Escape');
+    await expect(menu).toBeFocused();
+  }
+  for (const route of ['/privacy/', '/terms/']) {
+    await page.goto(route);
+    for (const name of ['Planner', 'Demo', 'Privacy', 'Terms']) {
+      await expect(page.locator('header').getByRole('link', { name, exact: true })).toBeVisible();
+    }
+  }
 });
 
 test('serves demo-specific metadata before application JavaScript runs', async ({ request }) => {

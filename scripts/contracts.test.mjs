@@ -21,7 +21,8 @@ const config = JSON.parse(await readFile('public/staticwebapp.config.json', 'utf
 assert.equal(config.routes.find(route => route.route === '/demo')?.rewrite, '/demo/index.html', '/demo must resolve to its metadata-specific app shell');
 assert.equal(config.responseOverrides?.['404']?.rewrite, '/404.html', 'unknown routes must use the product 404');
 assert.match(config.globalHeaders?.['Content-Security-Policy'] ?? '', /frame-ancestors 'none'/u, '404 responses need the global security policy');
-assert.match(config.globalHeaders?.['Content-Security-Policy'] ?? '', /connect-src[^;]*https:\/\/api\.sociobot\.in/u, 'production license verification must be allowed by CSP');
+assert.match(config.globalHeaders?.['Content-Security-Policy'] ?? '', /connect-src 'self'/u, 'the local-first planner must allow same-origin connections only');
+assert.doesNotMatch(config.globalHeaders?.['Content-Security-Policy'] ?? '', /sociobot\.in/u, 'the removed billing path must not remain in the CSP');
 
 const notFound = await readFile('public/404.html', 'utf8');
 const packageJson = JSON.parse(await readFile('package.json', 'utf8'));
@@ -72,15 +73,16 @@ assert.match(app, /<section id="how"[^>]*aria-labelledby="how-title"[^>]*>[\s\S]
 assert.ok(app.indexOf('${howItWorksSection()}') > app.indexOf('<div id="planner">${workspace()}</div>'), 'How it works must render after the product');
 assert.doesNotMatch(app, /Your next pass|Practice bridge|Begin from a foundation map|starter map/iu, 'indirect and inconsistent template wording must stay removed');
 assert.match(app, /ROUTE_FOCUS_KEY/u, 'app routes must retain their route-change focus handling');
+assert.match(app, /id="menu-toggle"/u, 'main routes must expose a labelled mobile navigation menu');
+assert.match(app, /id="primary-nav"/u, 'main routes must retain primary navigation destinations on mobile');
+assert.match(app, /Use \$\{template\.name\} template/u, 'template actions must name the result they produce');
+for (const templateName of ['Engineering foundations', 'Computer science foundations', 'Quantitative foundations']) {
+  assert.match(app, new RegExp(`name: '${templateName}'`, 'u'), `the result-naming action must have a distinct ${templateName} template`);
+}
 assert.match(await readFile('public/route-focus.js', 'utf8'), /pageshow/u, 'static routes must restore heading focus on Back and Forward');
 assert.doesNotMatch(app, /shortest path/iu, 'retired optimization copy must stay removed');
-assert.doesNotMatch(app, /VITE_CHECKOUT_ENABLED|api\/v1\/products\/exam-bridge\/checkout|checkoutUrl|checkoutEnabled/u, 'an unavailable checkout must not be present or build-flagged');
-assert.match(app, /Paid tier not yet available\. No purchase or checkout is offered\./u, 'the app must state the unavailable paid-tier boundary exactly');
-assert.doesNotMatch(app, /₹499|one-time purchase|merchant of record/iu, 'the unavailable tier must not present current price or purchase terms');
-assert.match(app, /api\/v1\/products\/exam-bridge\/verify\?license=/u, 'license verification must stay product-scoped');
-assert.match(terms, /The paid template tier is not yet available\. Exam Bridge does not currently offer a purchase or checkout\./u, 'terms must state the unavailable paid-tier boundary');
-assert.match(terms, /Template access closes if Sociobot reports that existing license as revoked\./u, 'terms must state the existing-license revocation outcome');
-assert.ok(ids.includes('existing-license-revocation'), 'existing-license revocation must stay registered');
+assert.doesNotMatch(app, /VITE_CHECKOUT_ENABLED|api\/v1\/products\/exam-bridge\/(?:checkout|verify)|checkoutUrl|checkoutEnabled|license-form|paidUnlocked/u, 'a removed billing path must not remain in application code');
+assert.match(terms, /The planner, starter templates, CSV exports, and JSON backups are free\./u, 'terms must state the complete free scope');
 await readFile('.factory/demo.md', 'utf8');
 const copyAudit = await readFile('.factory/copy-audit.md', 'utf8');
 assert.match(copyAudit, /No sentence exceeds 22 words\./u);
@@ -101,8 +103,8 @@ if (/without an account|\bNo accounts\b|No account, card/iu.test(visitorCopy)) {
   assert.ok(ids.includes('free-access'), 'visitor free-access promises must be registered as free-access');
 }
 const brief = JSON.parse(await readFile('.factory/brief.json', 'utf8'));
-assert.equal(brief.monetization, 'freemium', 'the researched freemium brief must remain intact');
-for (const id of ['not-found-plan-safety', 'starter-template-boundary', 'hosted-content-boundary', 'independent-tool', 'generated-illustration', 'existing-license-access', 'existing-license-revocation', 'paid-tier-unavailable', 'service-worker-renewal']) {
+assert.equal(brief.monetization, 'free', 'the brief must not promise a paid tier without a working purchase path');
+for (const id of ['not-found-plan-safety', 'starter-template-boundary', 'hosted-content-boundary', 'independent-tool', 'generated-illustration', 'free-access', 'service-worker-renewal']) {
   assert.ok(ids.includes(id), `${id} must register its visitor-facing boundary or provenance claim`);
 }
 const provenance = JSON.parse(await readFile('public/art-provenance.json', 'utf8'));

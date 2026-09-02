@@ -15,9 +15,9 @@ levels, selected prerequisites, attempted and pending question references, and a
 unstarted topic. The sample uses question IDs only and contains no copyrighted
 question text or official-source claim.
 
-All three future paid-tier templates can be previewed inside the demo without a
-license. The paid tier is not yet available. Template changes stay in demo
-storage and never change a real plan.
+All three starter templates can be used inside the demo. Template changes stay
+in demo storage and never change a real plan. The same editable templates are
+free in the real planner.
 
 ## Isolation and reset
 

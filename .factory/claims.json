@@ -57,7 +57,7 @@
   },
   {
     "id": "templates",
-    "claim": "Previews all three editable starter templates in the isolated demo without payment.",
+    "claim": "Uses all three editable starter templates in the isolated demo.",
     "where": "templates section, demo guide, README",
     "test": "npm run test:e2e -- --project=desktop --grep @claim:templates",
     "sandbox": "fresh /demo context; select a template; assert five editable topics and demo-only storage"
@@ -92,38 +92,17 @@
   },
   {
     "id": "free-access",
-    "claim": "The planner, CSV exports, and JSON backups are free and require no account, card, checkout, or payment.",
+    "claim": "The planner, starter templates, CSV exports, and JSON backups are free and require no account, card, checkout, payment, or license.",
     "where": "landing facts, templates panel, Terms, README",
     "test": "npm run test:e2e -- --project=desktop --grep @claim:free-access",
     "sandbox": "fresh context; build a real plan; download CSV and JSON; assert those controls stay enabled without account, card, payment, checkout, or cross-origin request"
-  },
-  {
-    "id": "existing-license-access",
-    "claim": "A valid existing license enables all three reusable planning templates after product-scoped Sociobot verification.",
-    "where": "templates panel, Privacy, Terms, README",
-    "test": "npm run test:e2e -- --project=desktop --grep @claim:existing-license-access",
-    "sandbox": "fresh real-planner context; mock one valid Sociobot response; paste a token; assert local token storage, all template controls, template use, and cached offline access without a second check inside 24 hours"
-  },
-  {
-    "id": "existing-license-revocation",
-    "claim": "Template access closes after Sociobot reports an existing license as revoked.",
-    "where": "template panel, Terms",
-    "test": "npm run test:e2e -- --project=desktop --grep @claim:existing-license-revocation",
-    "sandbox": "fresh real-planner context with a cached active license; mock a Sociobot revoked verdict; recheck the license; assert all paid template controls lock and the inactive notice appears"
-  },
-  {
-    "id": "paid-tier-unavailable",
-    "claim": "The paid template tier is not yet available, and the app offers no price, purchase action, checkout link, or checkout request.",
-    "where": "templates panel, Privacy, Terms, README",
-    "test": "npm run test:e2e -- --project=desktop --grep @claim:paid-tier-unavailable",
-    "sandbox": "fresh default production build; assert the exact unavailable status, no price or purchase language, no checkout link, form, request, or build flag, plus working demo previews and existing-license restore"
   },
   {
     "id": "accessible-responsive",
     "claim": "Supports keyboard use, light and dark themes, reduced motion, 44-pixel targets, and a 390-pixel screen.",
     "where": "interface, design document, README",
     "test": "npm run test:e2e -- --project=desktop --grep @claim:accessible-responsive",
-    "sandbox": "fresh /demo context at 390x844 with reduced motion; use skip link by keyboard; scan both themes with axe; assert no overflow and every visible target is at least 44px"
+    "sandbox": "fresh /demo context at 390x844 with reduced motion; use the keyboard-operable mobile menu and skip link; scan both themes with axe; assert no overflow and every visible target is at least 44px"
   },
   {
     "id": "topic-cap",

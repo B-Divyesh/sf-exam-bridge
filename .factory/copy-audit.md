@@ -37,18 +37,12 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Choose a starter template | 4 | Clear templates heading |
 | Start with a reusable plan, then edit it to match your official outline. | 12 | `templates` |
 | A reusable starter template—not an official syllabus. | 7 | `starter-template-boundary` |
-| Future paid template preview | 4 | `templates` |
-| Try every template in the demo | 6 | `templates` |
-| Sample use needs no license and stays in temporary demo storage. | 11 | `templates`, `demo-sandbox` |
-| Exam Bridge Plus | 3 | Paid tier name |
-| Paid templates are not yet available | 6 | `paid-tier-unavailable` |
-| Existing template license active | 4 | `existing-license-access` |
-| Paid tier not yet available. | 5 | `paid-tier-unavailable` |
-| No purchase or checkout is offered. | 6 | `paid-tier-unavailable` |
-| The free planner, CSV, and JSON tools remain available. | 9 | `free-access` |
-| Existing license holders can verify access below. | 7 | `existing-license-access` |
-| Have a license? | 3 | Restore field label |
-| Verify license | 2 | Restore action |
+| Free starter templates | 3 | `free-access` |
+| Use any template without payment | 5 | `free-access` |
+| Each template stays editable and saves only in this browser. | 10 | `templates`, `local-private` |
+| Use Engineering foundations template | 4 | Result-naming action |
+| Use Computer science foundations template | 5 | Result-naming action |
+| Use Quantitative foundations template | 4 | Result-naming action |
 | Plans stay in this browser. | 5 | `local-private` |
 | Exam Bridge does not host exam questions or coaching notes. | 9 | `hosted-content-boundary` |
 | Check the official syllabus before studying. | 6 | Boundary |
@@ -67,7 +61,7 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Changes stay in the temporary demo sandbox. | 7 | `demo-sandbox` |
 | Its populated workspace is visible immediately on desktop and 390 px screens. | 11 | `demo-sandbox` |
 | You’re offline. | 2 | State |
-| Planning and exports still work; license checks wait for a connection. | 11 | `offline-reload`, `free-access` |
+| Planning and exports still work in this browser. | 9 | `offline-reload`, `free-access` |
 
 ## Legal pages
 
@@ -79,18 +73,11 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | The demo uses separate keys beginning with demo:exam-bridge:. | 8 | `demo-sandbox` |
 | It never reads or changes your real plan. | 8 | `demo-sandbox` |
 | The app loads no third-party scripts, fonts, advertisements, or behavioral analytics. | 12 | `local-private` |
-| License checks are the only optional cross-origin requests made by the app. | 12 | `existing-license-access` |
-| The paid tier is not yet available. | 7 | `paid-tier-unavailable` |
-| The current app has no checkout link and makes no checkout request. | 12 | `paid-tier-unavailable` |
+| The planner does not send your plan to an external service. | 11 | `local-private` |
 | Exam Bridge organizes study plans. | 5 | Plain description |
 | It does not guarantee results or represent an exam authority. | 10 | Boundary |
-| The planner, CSV exports, and JSON backups are free. | 9 | `free-access` |
-| They need no account, card, checkout, or payment. | 8 | `free-access` |
-| The paid template tier is not yet available. | 8 | `paid-tier-unavailable` |
-| Exam Bridge does not currently offer a purchase or checkout. | 10 | `paid-tier-unavailable` |
-| An existing valid license can be restored on another device. | 10 | `existing-license-access` |
-| The app checks it through the Sociobot billing API. | 9 | `existing-license-access` |
-| Template access closes if Sociobot reports that existing license as revoked. | 11 | `existing-license-revocation` |
+| The planner, starter templates, CSV exports, and JSON backups are free. | 10 | `free-access` |
+| They need no account, card, checkout, payment, or license. | 10 | `free-access` |
 
 ## Not-found page
 
@@ -109,25 +96,24 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Each release gives the offline app a new cache name. | 10 | Clear |
 | Returning visitors receive the current version. | 6 | Clear |
 | That replacement reloads offline after it is cached. | 8 | `service-worker-renewal` |
-| Three reusable templates to preview; the paid tier is not yet available. | 11 | `templates`, `paid-tier-unavailable` |
-| The paid template tier is not yet available. | 8 | `paid-tier-unavailable` |
-| Exam Bridge offers no purchase or checkout. | 7 | `paid-tier-unavailable` |
-| Existing license holders can paste a token on the home page. | 11 | `existing-license-access` |
+| Three reusable starter templates, free to use and edit. | 9 | `free-access` |
+| The planner, starter templates, CSV exports, and JSON backups are free. | 10 | `free-access` |
+| No account, card, checkout, payment, or license is needed. | 10 | `free-access` |
 
 ## Catalog description
 
 | Copy | Characters | Result |
 | --- | ---: | --- |
-| Turn a pasted syllabus into a study route with prerequisites and your own question references. | 94 | Verb first; under 120 |
+| Turn syllabus headings into a study route with prerequisites and your own question references. | 90 | Verb first; under 120 |
 
 ## Result
 
-- Automated extraction checked 469 rendered and README text units across `/`,
-  `/demo`, `/privacy/`, `/terms/`, `/404.html`, and `README.md`.
+- Reviewed current rendered and README copy across `/`, `/demo`, `/privacy/`,
+  `/terms/`, `/404.html`, and `README.md`.
 - No sentence exceeds 22 words.
 - No banned marketing word appears in visitor copy.
 - The first screen names the audience, job, and first action.
-- The paid tier is clearly marked not yet available, with no price or purchase path.
+- The complete planner is free, so it presents no unavailable tier or purchase path.
 - Every outcome, boundary, and provenance statement maps to a registered claim test.
 
 | Concept | Term used |

@@ -120,7 +120,7 @@ test('@claim:offline-reload reloads the demo after the first visit with the netw
     await context.setOffline(true);
     await page.reload({ waitUntil: 'domcontentloaded' });
     await expect(page.locator('#workspace-title')).toHaveText('GATE ECE return plan');
-    await expect(page.getByText('You’re offline. Planning and exports still work; license checks wait for a connection.')).toBeVisible();
+    await expect(page.getByText('You’re offline. Planning and exports still work in this browser.')).toBeVisible();
   } finally {
     await context.setOffline(false);
     await context.close();
@@ -164,7 +164,7 @@ test('@claim:json-backup-restore exports and restores the complete sample plan',
   const backup = await readFile(path!);
 
   page.once('dialog', dialog => dialog.accept());
-  await page.getByRole('button', { name: 'Use template' }).first().click();
+  await page.getByRole('button', { name: 'Use Engineering foundations template' }).click();
   await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
   await page.locator('#import-json').setInputFiles({ name: 'sample-backup.json', mimeType: 'application/json', buffer: backup });
   await expect(page.locator('.topic')).toHaveCount(6);
@@ -186,21 +186,27 @@ test('@claim:syllabus-route cleans headings and reorders the route by confidence
   await expect(page.locator('.topic').last().getByRole('heading', { level: 3 })).toHaveText('Engineering mathematics');
 });
 
-test('@claim:templates loads an editable starter template inside demo storage', async ({ page }) => {
+test('@claim:templates loads every editable starter template inside demo storage', async ({ page }) => {
   await openDemo(page);
-  page.once('dialog', dialog => dialog.accept());
-  await page.getByRole('button', { name: 'Use template' }).first().click();
-  await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
-  await expect(page.locator('.topic')).toHaveCount(5);
+  for (const [button, title, count] of [
+    ['Use Engineering foundations template', 'Engineering foundations', 5],
+    ['Use Computer science foundations template', 'Computer science foundations', 7],
+    ['Use Quantitative foundations template', 'Quantitative foundations', 6],
+  ] as const) {
+    page.once('dialog', dialog => dialog.accept());
+    await page.getByRole('button', { name: button }).click();
+    await expect(page.locator('#workspace-title')).toHaveText(title);
+    await expect(page.locator('.topic')).toHaveCount(count);
+  }
   expect(await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'))).toBeNull();
-  expect(await page.evaluate(() => localStorage.getItem('demo:exam-bridge:plan:v1'))).toContain('Engineering foundations');
+  expect(await page.evaluate(() => localStorage.getItem('demo:exam-bridge:plan:v1'))).toContain('Quantitative foundations');
 });
 
 test('@claim:starter-template-boundary loads an editable starter template rather than an official syllabus', async ({ page }) => {
   await openDemo(page);
   await expect(page.getByText('A reusable starter template—not an official syllabus.').first()).toBeVisible();
   page.once('dialog', dialog => dialog.accept());
-  await page.getByRole('button', { name: 'Use template' }).first().click();
+  await page.getByRole('button', { name: 'Use Engineering foundations template' }).click();
   await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
   await expect(page.getByText('Personal outline · no source link added')).toBeVisible();
   await expect(page.locator('.topic').first().getByLabel(/Confidence/)).toBeEnabled();
@@ -253,7 +259,7 @@ test('@claim:generated-illustration displays the documented original generated a
   });
 });
 
-test('@claim:free-access provides the planner, CSV, and JSON without account, card, checkout, or payment', async ({ page }) => {
+test('@claim:free-access provides the planner, templates, CSV, and JSON without account, card, checkout, payment, or license', async ({ page }) => {
   const requests: string[] = [];
   page.on('request', request => requests.push(request.url()));
   await openDemo(page);
@@ -287,97 +293,25 @@ test('@claim:free-access provides the planner, CSV, and JSON without account, ca
   const jsonDownload = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Back up JSON' }).click();
   await expect((await jsonDownload).suggestedFilename()).toMatch(/-backup\.json$/u);
-  await expect(page.getByRole('link', { name: 'Try in demo' })).toHaveCount(3);
+  await expect(page.getByRole('button', { name: 'Use Engineering foundations template' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'Use Computer science foundations template' })).toBeEnabled();
+  await expect(page.getByRole('button', { name: 'Use Quantitative foundations template' })).toBeEnabled();
+  for (const [button, title, count] of [
+    ['Use Engineering foundations template', 'Engineering foundations', 5],
+    ['Use Computer science foundations template', 'Computer science foundations', 7],
+    ['Use Quantitative foundations template', 'Quantitative foundations', 6],
+  ] as const) {
+    page.once('dialog', dialog => dialog.accept());
+    await page.getByRole('button', { name: button }).click();
+    await expect(page.locator('#workspace-title')).toHaveText(title);
+    await expect(page.locator('.topic')).toHaveCount(count);
+  }
   await expect(page.getByRole('button', { name: 'Export CSV' })).toBeEnabled();
   await expect(page.getByRole('button', { name: 'Back up JSON' })).toBeEnabled();
 
   const origin = new URL(page.url()).origin;
   expect(requests.filter(url => new URL(url).origin !== origin)).toEqual([]);
   expect(requests.filter(url => /\/(?:auth|login|checkout|payment)(?:[/?#]|$)/iu.test(new URL(url).pathname))).toEqual([]);
-});
-
-test('@claim:existing-license-access verifies one existing license, caches it for 24 hours, and enables every reusable template', async ({ page }) => {
-  let checks = 0;
-  await page.route('**/api/v1/products/exam-bridge/verify?license=valid-template-license', async route => {
-    checks += 1;
-    await route.fulfill({
-      contentType: 'application/json',
-      body: JSON.stringify({ valid: true, reason: 'ok', expires_at: null }),
-    });
-  });
-  await page.goto('/');
-
-  await expect(page.locator('#purchase-status')).toHaveText('Paid tier not yet available. No purchase or checkout is offered.');
-  await page.getByLabel('Have a license?').fill('valid-template-license');
-  await page.getByRole('button', { name: 'Verify license' }).click();
-  await expect(page.getByRole('heading', { name: 'Existing template license active' })).toBeVisible();
-  expect(checks).toBe(1);
-  expect(await page.evaluate(() => localStorage.getItem('sb_license:exam-bridge'))).toBe('valid-template-license');
-  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
-
-  await page.getByRole('button', { name: 'Use template' }).first().click();
-  await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
-  await expect(page.locator('.topic')).toHaveCount(5);
-  await page.evaluate(async () => { await navigator.serviceWorker.ready; });
-  await page.reload();
-  await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller));
-  await expect(page.getByRole('heading', { name: 'Existing template license active' })).toBeVisible();
-  expect(checks).toBe(1);
-  try {
-    await page.context().setOffline(true);
-    await page.reload({ waitUntil: 'domcontentloaded' });
-    await expect(page.getByRole('heading', { name: 'Existing template license active' })).toBeVisible();
-    await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
-    expect(checks).toBe(1);
-  } finally {
-    await page.context().setOffline(false);
-  }
-});
-
-test('@claim:existing-license-revocation removes template access after Sociobot reports a revoked license', async ({ page }) => {
-  let checks = 0;
-  await page.route('**/api/v1/products/exam-bridge/verify?license=refunded-license', async route => {
-    checks += 1;
-    await route.fulfill({
-      contentType: 'application/json',
-      body: JSON.stringify({ valid: false, reason: 'revoked', expires_at: null }),
-    });
-  });
-  await page.goto('/');
-  await page.evaluate(() => {
-    localStorage.setItem('sb_license:exam-bridge', 'refunded-license');
-    localStorage.setItem('exam-bridge:license-verdict', JSON.stringify({ valid: true, checkedAt: Date.now(), expiresAt: null }));
-  });
-  await page.reload();
-
-  await expect(page.getByRole('heading', { name: 'Existing template license active' })).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
-  expect(checks).toBe(0);
-  await page.getByRole('button', { name: 'Recheck license' }).click();
-
-  await expect(page.getByRole('heading', { name: 'Paid templates are not yet available' })).toBeVisible();
-  await expect(page.locator('.license-notice')).toHaveText('This license is not active. Check the token or keep using the free planner.');
-  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(0);
-  await expect(page.getByRole('link', { name: 'Try in demo' })).toHaveCount(3);
-  expect(checks).toBe(1);
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('exam-bridge:license-verdict') ?? '{}'))).toMatchObject({ valid: false });
-});
-
-test('@claim:paid-tier-unavailable exposes no purchase path while preserving free tools, previews, and existing-license restore', async ({ page }) => {
-  const requests: string[] = [];
-  page.on('request', request => requests.push(request.url()));
-  await page.goto('/');
-
-  await expect(page.getByRole('heading', { name: 'Paid templates are not yet available' })).toBeVisible();
-  await expect(page.locator('#purchase-status')).toHaveText('Paid tier not yet available. No purchase or checkout is offered.');
-  await expect(page.locator('a[href*="checkout" i], form[action*="checkout" i]')).toHaveCount(0);
-  await expect(page.getByText(/₹499|one-time purchase|merchant of record/iu)).toHaveCount(0);
-  await expect(page.getByLabel('Have a license?')).toBeVisible();
-  await expect(page.getByRole('button', { name: 'Verify license' })).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Try in demo' })).toHaveCount(3);
-  const origin = new URL(page.url()).origin;
-  expect(requests.filter(url => new URL(url).origin !== origin)).toEqual([]);
-  expect(requests.filter(url => /\/checkout(?:[/?#]|$)/iu.test(new URL(url).pathname))).toEqual([]);
 });
 
 test('@claim:accessible-responsive supports keyboard, themes, reduced motion, and 390px screens', async ({ page }) => {
@@ -389,6 +323,11 @@ test('@claim:accessible-responsive supports keyboard, themes, reduced motion, an
   await expect(page.getByRole('link', { name: 'Skip to planner' })).toBeFocused();
   await page.keyboard.press('Enter');
   await expect(page.locator('#main')).toBeFocused();
+  await page.getByRole('button', { name: 'Menu' }).click();
+  await expect(page.locator('#primary-nav')).toHaveAttribute('data-open', 'true');
+  for (const name of ['Demo', 'How it works', 'Templates', 'Privacy']) {
+    await expect(page.locator('#primary-nav').getByRole('link', { name, exact: true })).toBeVisible();
+  }
   expect(await page.evaluate(() => ({ width: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth }))).toEqual({ width: 390, scroll: 390 });
   const animationSeconds = await page.locator('.topic').first().evaluate(element => Number.parseFloat(getComputedStyle(element).animationDuration));
   expect(animationSeconds).toBeLessThanOrEqual(0.00001);
@@ -402,12 +341,24 @@ test('@claim:accessible-responsive supports keyboard, themes, reduced motion, an
   const undersized = await page.locator('a, button, .file-button, .check-list label, .practice-list li > label').evaluateAll(elements => elements
     .filter(element => {
       const style = getComputedStyle(element);
-      return style.display !== 'none' && style.visibility !== 'hidden';
+      const rect = element.getBoundingClientRect();
+      return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
     })
     .map(element => {
       const rect = element.getBoundingClientRect();
       return { name: (element as HTMLElement).innerText || element.getAttribute('aria-label'), width: rect.width, height: rect.height };
-    })
+  })
     .filter(target => target.width < 44 || target.height < 44));
   expect(undersized).toEqual([]);
+  await page.locator('#primary-nav').getByRole('link', { name: 'Demo', exact: true }).focus();
+  await page.keyboard.press('Escape');
+  await expect(page.getByRole('button', { name: 'Menu' })).toBeFocused();
+  await page.setViewportSize({ width: 393, height: 851 });
+  expect(await page.evaluate(() => ({ width: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth }))).toEqual({ width: 393, scroll: 393 });
+  const actionBoxes = await page.locator('.demo-actions > *').evaluateAll(elements => elements.map(element => {
+    const box = element.getBoundingClientRect();
+    return { left: box.left, right: box.right, width: box.width };
+  }));
+  expect(actionBoxes).toHaveLength(2);
+  expect(actionBoxes.every(box => box.left >= 0 && box.right <= 393 && box.width >= 44)).toBe(true);
 });

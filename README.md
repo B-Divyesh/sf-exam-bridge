@@ -22,7 +22,7 @@ Use **Reset demo** to restore the sample. Use **Start for real** to discard it.
 - Study order based on your confidence and progress summary
 - Browser autosave, offline reload, JSON backup and restore, and CSV export
 - Light and dark themes, keyboard support, reduced motion, and a 390 px layout
-- Three reusable templates to preview; the paid tier is not yet available
+- Three reusable starter templates, free to use and edit
 - No accounts, tracking, external scripts, hosted questions, or authority affiliation
 
 Plans stay in your browser. Clearing site data deletes them. Export a
@@ -54,15 +54,11 @@ To inspect the production build locally:
 npm run preview
 ```
 
-## Free access and future paid tier
+## Free access
 
-The planner, CSV exports, and JSON backups are free. No account, card, checkout,
-or payment is required for them. The demo previews all three editable templates.
-
-The paid template tier is not yet available. Exam Bridge offers no purchase or
-checkout. Existing license holders can paste a token on the home page. It is stored
-as `sb_license:exam-bridge` and sent only to the Sociobot verification endpoint.
-A valid verdict is cached for up to 24 hours.
+The planner, starter templates, CSV exports, and JSON backups are free. No account,
+card, checkout, payment, or license is needed. The demo previews all three editable
+templates before you start your own plan.
 
 ## Deployment and privacy
 
