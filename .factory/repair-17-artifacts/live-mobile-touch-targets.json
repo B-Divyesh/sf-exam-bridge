@@ -1,0 +1,14 @@
+{
+  "url": "https://exam-bridge.sociobot.in/demo",
+  "target": "Algebra and complex numbers",
+  "targetBox": {
+    "x": 75,
+    "y": 398.0625,
+    "width": 290,
+    "height": 48
+  },
+  "allTargetsMeet44": true,
+  "minimumWidth": 44,
+  "minimumHeight": 44,
+  "targetCount": 53
+}

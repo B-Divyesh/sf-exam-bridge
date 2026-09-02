@@ -1,105 +1,85 @@
-# Exam Bridge verification 20 handoff — FAIL
+# Exam Bridge repair 17 handoff — PASS
 
-- Work order: `exam-bridge-verify-20`
-- Candidate: `c45b070ce5c221d3db82e6a9fbea8288a893ffa4`
+- Work order: `exam-bridge-repair-17`
+- Verifier report repaired: `db586c89324e8144d18262f8fa96aac41061a5e2`
+- Repaired runtime commit: `2cf7715e5d25fae1adeac8fbb6ab67e0db2feacb`
+- Product: static web planner / PWA
 - Live URL: <https://exam-bridge.sociobot.in/>
+- Deployment: `cd072e26-a205-4544-9077-0c6098b2a423` to `sf-exam-bridge`
 - Verified: 2 September 2026 UTC
 
 ## Release decision
 
-**FAIL. Do not release this candidate.** A clean complete `npm test` failed the
-mandatory 390 px 44-pixel touch-target check: the “Algebra and complex numbers”
-prerequisite target measured `43.999969482421875px` high (minimum is 44 px).
-The same isolated test can pass, so the suite is flaky; the full quality gate
-must nevertheless pass reliably. No product code was modified by the verifier.
-
-## What passed
-
-All 16 required claims passed independently through the production demo entry
-point. `npm ci`, lint, the 9 unit tests, the production build, and the live QA
-script passed. The live deployment matches the candidate's HTML and JS bundle
-byte-for-byte, has same-origin-only demo traffic, works offline after its first
-visit, passes axe scans, and provides the required one-click six-topic demo.
-
-See [verification-20.md](verification-20.md) and
-[live QA evidence](verification-20-evidence/live-qa.json) for exact commands,
-headers, performance, screenshots, and the full defect record.
-
-## Required next step
-
-Increase the effective mobile checkbox/label target above 44 px with a margin,
-then rerun `npm test` from a clean checkout until it passes reliably. Reverify
-the candidate afterward.
-
----
-
-# Previous builder handoff (superseded by verification 20)
-
-- Work order: `exam-bridge-polish-4`
-- Reviewed candidate: `04d3525996b01ba2ba91bfda6e9d1e0ab74a7c47`
-- Review report: `3caa4e9c1413d23c5590c4c141b4cdfe15799e35`
-- Runtime repair commit: `2cbac4b26311a63693cc10ed30c68224fe6f0c24`
-- Version: `1.1.1`
-- Live URL: <https://exam-bridge.sociobot.in/>
-- Deployment: `6fc709b8-b643-4deb-949b-410e88f90b9f` to `sf-exam-bridge`
-- Verified: 2 September 2026 UTC
+**PASS.** The only release-blocking verifier finding is repaired. The
+prerequisite checkbox label no longer relies on an exact 44 CSS-pixel minimum
+that Chromium can report as `43.999969482421875px` after subpixel rounding.
 
 ## What changed
 
-All findings from reviews 1–4 are resolved. Round 4 removes the nested Templates
-landmark and the unproved hosting-log use assurance. Planner actions now say
-**Add prerequisite**, **Attach question reference**, and **Delete this plan**.
-Demo, README, and Privacy copy now explain separation and deletion without
-implementation jargon. The free scope, one-click isolated demo, route metadata,
-focus handling, product 404, legal navigation, and distinct learning-topology
-visual system remain intact.
+- Raised `.check-list label` from `min-height: 44px` to `min-height: 48px`.
+  This preserves the visual system while leaving a four-pixel measurement
+  margin above the 44px accessibility requirement.
+- Extended the existing 390px effective-target browser regression in
+  `tests/app.spec.ts`. It still checks every interactive target is at least
+  44px, and now asserts a rendered prerequisite label has both `48px`
+  `min-height` and an actual height of at least `48px`.
 
-The claims manifest retains 16 unique, observable claims with one exact test
-each. The catalog description is now a verb-first 113-character sentence.
+## Verification
 
-The accessibility gate now rejects every axe WCAG A/AA violation instead of
-filtering by severity. A repeatable live verifier covers all public routes and
-the real 404 at 390 and 1440 px, plus isolation, `?demo=1`, focus, privacy,
-same-origin traffic, result-naming actions, and offline reload.
+### Clean local quality gate
 
-## How to verify
+- `npm ci` — passed; 141 packages installed, 0 vulnerabilities.
+- `npm test` — passed: lint, TypeScript production build, contracts, 9 unit
+  tests, the clean-start claim command, and the 70-case desktop/mobile browser
+  suite. The one mobile duplicate service-worker case remains intentionally
+  skipped because its exact desktop claim covers the shared worker.
+- Ran all 16 exact commands from `.factory/claims.json` independently — all
+  passed, including demo isolation, privacy traffic, offline reload,
+  service-worker renewal, CSV/JSON, responsive accessibility, and the 2–80
+  topic boundary.
+- `npm run build` — passed; `dist/` contains the required root `index.html`.
+  The generated JS is 27.01 kB raw / 9.48 kB gzip; CSS is 18.21 kB raw / 4.77
+  kB gzip.
+- Local `verify-url.sh` checks passed for `/` and `/demo`: correct title,
+  `lang`, one H1, main landmark, image alt coverage, labelled buttons, and no
+  console errors.
+- Local mobile Lighthouse: Performance 100, Accessibility 100, Best Practices
+  100, SEO 100; LCP 1.406s, CLS 0, TBT 23ms.
 
-```sh
-npm ci
-npm test
-npm run build
-npm run verify:live -- https://exam-bridge.sociobot.in .factory/polish-4-artifacts/live-product-qa.json
-```
+### Live deployment gate
 
-Run every exact `test` command in `.factory/claims.json` independently from a
-fresh clone. The direct sample URL is <https://exam-bridge.sociobot.in/demo>;
-`https://exam-bridge.sociobot.in/?demo=1` is also supported.
+- `npm run verify:live -- https://exam-bridge.sociobot.in .factory/repair-17-artifacts/live-product-qa.json`
+  passed. It checked `/`, `/demo`, `/privacy/`, `/terms/`, and the designed 404
+  at 390px and 1440px with zero axe WCAG A/AA violations and zero console/page
+  errors. It also checked keyboard route focus, 390px first-screen geometry,
+  demo isolation/reset/exit, same-origin-only traffic, live link crawl, and
+  offline demo reload with six topics and its offline notice.
+- `verify-url.sh` passed for the live root and demo. Their reports are
+  `repair-17-artifacts/live-verify-root/verify.json` and
+  `repair-17-artifacts/live-verify-demo/verify.json`.
+- Live 390px target audit found 53 visible effective targets, all at least
+  44px. The exact repaired “Algebra and complex numbers” label measured
+  290×48px. Evidence: `repair-17-artifacts/live-mobile-touch-targets.json`.
+- Live response policy is correct: root and demo return 200; an unknown route
+  returns the product 404 with HTTP 404; CSP includes response-header
+  `frame-ancestors 'none'`; HSTS, nosniff, strict-origin referrer policy, and
+  permissions policy are present; `/sw.js` is `no-cache`.
+- Live identity matches the deployed build: `dist/index.html` and fetched root
+  HTML share SHA-256
+  `40ac68abccfd7103bfd78cf121a05660a59b94af808e3da044a8d59c036c9e64`
+  and reference `main-Cv8wGm7f.js` / `main-Dt8fWC7o.css`.
+- Live mobile Lighthouse: Performance 100, Accessibility 100, Best Practices
+  100, SEO 100; LCP 1.214s, CLS 0, TBT 71ms.
 
 ## Evidence
 
-- Fresh clone at `2cbac4b26311a63693cc10ed30c68224fe6f0c24`:
-  `npm ci` passed with zero vulnerabilities; all 16 exact claim commands passed.
-- Fresh-clone `npm test` passed lint, build, contracts, 9 unit tests, the clean
-  claim-start check, and 69 browser tests. One duplicate mobile service-worker
-  case was intentionally skipped.
-- The final build contains 27.01 kB raw / 9.48 kB gzip JavaScript and 18.21 kB
-  raw / 4.77 kB gzip CSS.
-- [Live QA](polish-4-artifacts/live-product-qa.json) records zero axe WCAG A/AA
-  violations and zero console errors on all five routes at both viewports.
-- The same report records the 404 response, first-screen geometry, demo
-  isolation/reset/exit, direct query demo, route focus, offline reload,
-  same-origin requests, revised privacy copy, and result-naming actions.
-- `verify-url.sh` reports for [root](polish-4-artifacts/live-root/verify.json),
-  [demo](polish-4-artifacts/live-demo/verify.json),
-  [privacy](polish-4-artifacts/live-privacy/verify.json), and
-  [terms](polish-4-artifacts/live-terms/verify.json) show correct titles,
-  `lang`, one H1, one main landmark, alt coverage, and no console errors.
-- Live mobile Lighthouse: Performance 100, Accessibility 100, Best Practices
-  100, SEO 100; FCP 0.9 s, LCP 1.1 s, TBT 20 ms, CLS 0.
-- Live root and local `dist/index.html` share SHA-256
-  `d985b3d07397a49914f23ea247a776119283bbc5591a53fa7691ff8458ed1056`.
+All repair evidence is versioned in `.factory/repair-17-artifacts/`, including
+the local and live Lighthouse reports, live QA report, response headers,
+identity HTML, 390px target measurement, and desktop/mobile URL smoke
+screenshots.
 
 ## Known gaps and next steps
 
-No known product, review, accessibility, privacy, offline, routing, or deployment
-gap remains. No follow-up is required for this work order.
+No known release-blocking gaps remain. The product remains a free, local-first
+static PWA; no payment, server-side state, analytics, or external runtime
+requests were added.
