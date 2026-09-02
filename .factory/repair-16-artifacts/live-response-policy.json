@@ -1,0 +1,14 @@
+{
+  "rootStatus": 200,
+  "unknownStatus": 404,
+  "headers": {
+    "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in https://pilot-api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+    "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+    "x-content-type-options": "nosniff",
+    "referrer-policy": "strict-origin-when-cross-origin",
+    "permissions-policy": "camera=(), microphone=(), geolocation=()",
+    "cache-control": "public, must-revalidate, max-age=30"
+  },
+  "assetCacheControl": "public, max-age=31536000, immutable",
+  "workerCacheControl": "no-cache"
+}

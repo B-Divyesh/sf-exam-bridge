@@ -1,0 +1,65 @@
+[
+  {
+    "path": "/",
+    "status": 200,
+    "localSha256": "b7e62882c31241e9b65c2a9edde1529214c626c03c6ad605f219cc501a197482",
+    "liveSha256": "b7e62882c31241e9b65c2a9edde1529214c626c03c6ad605f219cc501a197482",
+    "match": true
+  },
+  {
+    "path": "/demo",
+    "status": 200,
+    "localSha256": "9672ba656d66a202db64d8d4b69f3b416dc7eeca87b140a8ed74a693d7216ce7",
+    "liveSha256": "9672ba656d66a202db64d8d4b69f3b416dc7eeca87b140a8ed74a693d7216ce7",
+    "match": true
+  },
+  {
+    "path": "/privacy/",
+    "status": 200,
+    "localSha256": "95452d7b928b48454027c219a18874f8cc36633499e4fe565b61b38d7313fe8b",
+    "liveSha256": "95452d7b928b48454027c219a18874f8cc36633499e4fe565b61b38d7313fe8b",
+    "match": true
+  },
+  {
+    "path": "/terms/",
+    "status": 200,
+    "localSha256": "497f16ecf1f3fd69557214712352c0988cd64fa355d53185f40df5d184770ee6",
+    "liveSha256": "497f16ecf1f3fd69557214712352c0988cd64fa355d53185f40df5d184770ee6",
+    "match": true
+  },
+  {
+    "path": "/404.html",
+    "status": 200,
+    "localSha256": "9a2f87b9fde8793a13dfd5ac4d01d5221d844ad0dc9577e57fe2d6f3f438e35a",
+    "liveSha256": "9a2f87b9fde8793a13dfd5ac4d01d5221d844ad0dc9577e57fe2d6f3f438e35a",
+    "match": true
+  },
+  {
+    "path": "/sw.js",
+    "status": 200,
+    "localSha256": "6b79410ecdeff7e29e92d99f327bb8917f5109606dc0f2bf06584078340c2d24",
+    "liveSha256": "6b79410ecdeff7e29e92d99f327bb8917f5109606dc0f2bf06584078340c2d24",
+    "match": true
+  },
+  {
+    "path": "/assets/main-BYstB7AN.js",
+    "status": 200,
+    "localSha256": "e6023beb6eec922b9c425b659c7c697055d43531c80808d415e20c785df1bba5",
+    "liveSha256": "e6023beb6eec922b9c425b659c7c697055d43531c80808d415e20c785df1bba5",
+    "match": true
+  },
+  {
+    "path": "/assets/main-BmT7zjvM.css",
+    "status": 200,
+    "localSha256": "8de4b8524483af7d6602acdbfba0998c91afbd2c12aeb2d2e976a2a16900d877",
+    "liveSha256": "8de4b8524483af7d6602acdbfba0998c91afbd2c12aeb2d2e976a2a16900d877",
+    "match": true
+  },
+  {
+    "path": "/assets/learning-topology.webp",
+    "status": 200,
+    "localSha256": "2b89e36f3b6404b94b7f87de69906ef6d45668f9a7c13e81190dbcb1f88b3441",
+    "liveSha256": "2b89e36f3b6404b94b7f87de69906ef6d45668f9a7c13e81190dbcb1f88b3441",
+    "match": true
+  }
+]

@@ -1,0 +1,31 @@
+{
+  "root": {
+    "status": "Paid tier not yet available. No purchase or checkout is offered.",
+    "checkoutControls": 0,
+    "firstFocus": "Skip to planner",
+    "skipTarget": "main",
+    "geometry": {
+      "innerWidth": 390,
+      "clientWidth": 390,
+      "scrollWidth": 390
+    },
+    "seriousAxeViolations": 0,
+    "consoleErrors": [],
+    "foreignRequests": []
+  },
+  "demo": {
+    "topics": 6,
+    "storageKeys": [
+      "demo:exam-bridge:plan:v1"
+    ],
+    "offlineTitle": "GATE ECE return plan",
+    "offlineNotice": "You’re offline. Planning and exports still work; license checks wait for a connection.",
+    "geometry": {
+      "innerWidth": 390,
+      "clientWidth": 390,
+      "scrollWidth": 390
+    },
+    "seriousAxeViolations": 0,
+    "consoleErrors": []
+  }
+}
