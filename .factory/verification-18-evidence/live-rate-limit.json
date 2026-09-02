@@ -1,0 +1,13 @@
+{
+  "endpoint": "https://api.sociobot.in/api/v1/products/exam-bridge/verify",
+  "method": "GET",
+  "client": "one sequential verifier client",
+  "successfulInvalidVerdicts": 30,
+  "firstLimitedRequest": 31,
+  "firstLimitedStatus": 429,
+  "retryAfter": "4",
+  "xRateLimitAfter": "4",
+  "allowOrigin": "https://exam-bridge.sociobot.in",
+  "checkoutStatus": 404,
+  "checkoutBody": {"error": "enabled factory product", "status": 404}
+}

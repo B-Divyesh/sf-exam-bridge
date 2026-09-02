@@ -1,0 +1,19 @@
+Root /: HTTP 200
+Cache-Control: public, must-revalidate, max-age=30
+Strict-Transport-Security: max-age=10886400; includeSubDomains; preload
+Referrer-Policy: strict-origin-when-cross-origin
+X-Content-Type-Options: nosniff
+Permissions-Policy: camera=(), microphone=(), geolocation=()
+Content-Security-Policy: default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in https://pilot-api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'
+
+Hashed JavaScript /assets/main-BYstB7AN.js: HTTP 200
+Cache-Control: public, max-age=31536000, immutable
+Content-Length: 29307
+
+Service worker /sw.js: HTTP 200
+Cache-Control: no-cache
+Content-Length: 1326
+
+Unknown route /verification-18-not-found: HTTP 404
+Cache-Control: public, must-revalidate, max-age=30
+Content-Length: 3055

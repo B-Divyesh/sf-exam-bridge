@@ -1,0 +1,11 @@
+{
+  "routesChecked": [
+    {"path": "/", "status": 200},
+    {"path": "/demo", "status": 200},
+    {"path": "/privacy/", "status": 200},
+    {"path": "/terms/", "status": 200}
+  ],
+  "sameOriginLinkFailures": [],
+  "allowedNonHttpLinks": ["mailto:privacy@sociobot.in", "mailto:support@sociobot.in"],
+  "unknownRoute": {"path": "/verification-18-not-found", "status": 404}
+}

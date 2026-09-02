@@ -1,0 +1,37 @@
+{
+  "candidate": "2146cc6f935002773445d9323cfc6d6f79f3d42c",
+  "url": "https://exam-bridge.sociobot.in/",
+  "desktop": {
+    "status": 200,
+    "firstFocus": "Skip to planner",
+    "focusOutline": "3px solid rgb(7, 95, 170)",
+    "oneTopicError": "Add at least two distinct topic lines so there is a route to build.",
+    "sourceUrlError": "Use a complete http:// or https:// URL for the syllabus source.",
+    "practiceUrlError": "Use a complete http:// or https:// link.",
+    "deduplicatedTopicCount": 2,
+    "csvBytes": 206,
+    "jsonTopicCount": 2,
+    "unknownRouteStatus": 404,
+    "storagePreservedAcross404": true,
+    "ordinaryOutsideRequests": 0,
+    "ordinaryConsoleOrPageErrors": [],
+    "axeLightSeriousCritical": [],
+    "axeDarkSeriousCritical": []
+  },
+  "mobileDemo": {
+    "viewport": "390x844",
+    "sampleActionBottom": 559,
+    "factsBottom": 834,
+    "pathAfterOneClick": "/demo",
+    "topicCount": 6,
+    "storageKeys": ["demo:exam-bridge:plan:v1"],
+    "scrollWidth": 390,
+    "clientWidth": 390,
+    "animationDuration": "0.00001s",
+    "offlineReload": true,
+    "outsideRequests": 0,
+    "consoleOrPageErrors": [],
+    "axeSeriousCritical": []
+  },
+  "interactionDurationMs": 24
+}
