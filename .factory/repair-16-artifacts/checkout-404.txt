@@ -1,0 +1,7 @@
+Reproduced: 2 September 2026 UTC
+Request: GET https://api.sociobot.in/api/v1/products/exam-bridge/checkout
+HTTP status: 404
+Response body: {"error":"enabled factory product","status":404}
+
+The request used only the product-scoped Sociobot route. No shared service,
+another product, storage account, database, key vault, or staging slot was read.

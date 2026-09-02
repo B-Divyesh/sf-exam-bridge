@@ -9,10 +9,6 @@ const LICENSE_KEY = 'sb_license:exam-bridge';
 const LICENSE_CACHE_KEY = 'exam-bridge:license-verdict';
 const LICENSE_CACHE_MS = 24 * 60 * 60 * 1000;
 const billingBase = location.hostname === 'exam-bridge.sociobot.in' ? 'https://api.sociobot.in' : 'https://pilot-api.sociobot.in';
-const checkoutUrl = `${billingBase}/api/v1/products/exam-bridge/checkout`;
-// An authorized billing operator enables this only after registering and
-// checking the scoped product. The safe default never exposes a dead link.
-const checkoutEnabled = import.meta.env.VITE_CHECKOUT_ENABLED === 'true';
 
 const templates = [
   { name: 'Engineering foundations', note: 'A reusable starter template—not an official syllabus.', topics: ['Engineering mathematics', 'Signals and systems', 'Electric circuits', 'Control systems', 'General aptitude'] },
@@ -213,12 +209,9 @@ function workspace(): string {
 function templatesSection(): string {
   const canUseTemplates = isDemo || paidUnlocked;
   const cards = templates.map((template, index) => `<article><div><span class="template-shape" aria-hidden="true"></span><h3>${template.name}</h3><p>${template.note}</p><small>${template.topics.length} editable topics</small></div>${canUseTemplates ? `<button type="button" data-template="${index}">Use template</button>` : '<a class="button secondary" href="/demo#templates">Try in demo</a>'}</article>`).join('');
-  const purchaseAction = checkoutEnabled
-    ? `<a class="button primary" href="${checkoutUrl}" rel="noreferrer">Buy template license</a>`
-    : '<p class="purchase-status" id="purchase-status" role="status">New purchases are not open yet. Checkout needs operator activation.</p>';
   const access = isDemo
-    ? '<div class="access-panel demo-access"><p class="eyebrow">Paid template preview</p><h3>Try every template in the demo</h3><p>Sample use needs no license and stays in temporary demo storage.</p></div>'
-    : `<div class="access-panel"><div><p class="eyebrow">Exam Bridge Plus</p><h3>${paidUnlocked ? 'Template license active' : 'Reuse three planning templates'}</h3><p id="paid-note">One-time ₹499 license. The free planner, CSV, and JSON tools remain available.</p><p>Sociobot/Dodo is the merchant of record. A refund makes the license inactive after the next check.</p>${licenseNotice ? `<p class="license-notice">${escapeHtml(licenseNotice)}</p>` : ''}${paidUnlocked ? '<button class="button secondary" id="recheck-license" type="button">Recheck license</button>' : purchaseAction}</div>
+    ? '<div class="access-panel demo-access"><p class="eyebrow">Future paid template preview</p><h3>Try every template in the demo</h3><p>Sample use needs no license and stays in temporary demo storage.</p></div>'
+    : `<div class="access-panel"><div><p class="eyebrow">Exam Bridge Plus</p><h3>${paidUnlocked ? 'Existing template license active' : 'Paid templates are not yet available'}</h3><p id="purchase-status" class="purchase-status" role="status">Paid tier not yet available. No purchase or checkout is offered.</p><p id="paid-note">The free planner, CSV, and JSON tools remain available.</p><p>Existing license holders can verify access below.</p>${licenseNotice ? `<p class="license-notice">${escapeHtml(licenseNotice)}</p>` : ''}${paidUnlocked ? '<button class="button secondary" id="recheck-license" type="button">Recheck license</button>' : ''}</div>
       <form id="license-form"><label for="license-token">Have a license?</label><div><input id="license-token" name="license" autocomplete="off" required placeholder="Paste license token"><button type="submit">Verify license</button></div><p id="license-status" role="status" aria-live="polite"></p></form></div>`;
   return `<section class="templates" id="templates" aria-labelledby="templates-title"><div class="section-index"><span>+</span><div><p class="eyebrow">Reusable starting points</p><h2 id="templates-title">Choose a starter template</h2><p>Start with a reusable plan, then edit it to match your official outline.</p></div></div>
     <div class="template-list">${cards}</div>
@@ -263,7 +256,7 @@ function render(): void {
   app.setAttribute('aria-busy', 'true');
   delete app.dataset.appMode;
   updateRouteMetadata();
-  app.innerHTML = `${appHeader()}${demoBanner()}<div id="offline-banner" class="offline-banner" role="status" hidden>You’re offline. Planning and exports still work; license checks wait for a connection.</div><main id="main" tabindex="-1">${hero()}<div id="planner">${workspace()}</div>${howItWorksSection()}${templatesSection()}<section class="principles" aria-labelledby="principles-title"><p class="eyebrow">Privacy and planning limits</p><h2 id="principles-title">What Exam Bridge does not do</h2><div><p>Plans stay in this browser. Exam Bridge does not host exam questions or coaching notes.</p><p>Check the official syllabus before studying. Prerequisite suggestions are only starting points.</p><p>Exam Bridge is not endorsed by any exam authority.</p></div></section></main><footer><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Exam Bridge</span></div><p>Turn a syllabus into a study route · Original generated illustration · no tracking · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.8</p></footer><div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
+  app.innerHTML = `${appHeader()}${demoBanner()}<div id="offline-banner" class="offline-banner" role="status" hidden>You’re offline. Planning and exports still work; license checks wait for a connection.</div><main id="main" tabindex="-1">${hero()}<div id="planner">${workspace()}</div>${howItWorksSection()}${templatesSection()}<section class="principles" aria-labelledby="principles-title"><p class="eyebrow">Privacy and planning limits</p><h2 id="principles-title">What Exam Bridge does not do</h2><div><p>Plans stay in this browser. Exam Bridge does not host exam questions or coaching notes.</p><p>Check the official syllabus before studying. Prerequisite suggestions are only starting points.</p><p>Exam Bridge is not endorsed by any exam authority.</p></div></section></main><footer><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Exam Bridge</span></div><p>Turn a syllabus into a study route · Original generated illustration · no tracking · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.9</p></footer><div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
   updateNetworkStatus();
   bindEvents();
   app.dataset.appMode = isDemo ? 'demo' : 'real';
@@ -499,7 +492,7 @@ async function verifyLicense(token: string, userInitiated = false): Promise<void
     const result = await response.json() as { valid: boolean; expires_at?: string | null };
     localStorage.setItem(LICENSE_CACHE_KEY, JSON.stringify({ valid: result.valid, checkedAt: Date.now(), expiresAt: result.expires_at ?? null }));
     paidUnlocked = result.valid;
-    licenseNotice = result.valid ? '' : 'This license is not active. Check the token or buy a new license when purchases open.';
+    licenseNotice = result.valid ? '' : 'This license is not active. Check the token or keep using the free planner.';
     render();
     announce(result.valid ? 'Template license verified.' : 'License not active.');
   } catch {

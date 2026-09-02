@@ -74,12 +74,13 @@ assert.doesNotMatch(app, /Your next pass|Practice bridge|Begin from a foundation
 assert.match(app, /ROUTE_FOCUS_KEY/u, 'app routes must retain their route-change focus handling');
 assert.match(await readFile('public/route-focus.js', 'utf8'), /pageshow/u, 'static routes must restore heading focus on Back and Forward');
 assert.doesNotMatch(app, /shortest path/iu, 'retired optimization copy must stay removed');
-assert.match(app, /const checkoutEnabled = import\.meta\.env\.VITE_CHECKOUT_ENABLED === 'true'/u, 'checkout must default closed behind an explicit operator build flag');
-assert.match(app, /api\/v1\/products\/exam-bridge\/checkout/u, 'the enabled checkout path must stay product-scoped');
+assert.doesNotMatch(app, /VITE_CHECKOUT_ENABLED|api\/v1\/products\/exam-bridge\/checkout|checkoutUrl|checkoutEnabled/u, 'an unavailable checkout must not be present or build-flagged');
+assert.match(app, /Paid tier not yet available\. No purchase or checkout is offered\./u, 'the app must state the unavailable paid-tier boundary exactly');
+assert.doesNotMatch(app, /₹499|one-time purchase|merchant of record/iu, 'the unavailable tier must not present current price or purchase terms');
 assert.match(app, /api\/v1\/products\/exam-bridge\/verify\?license=/u, 'license verification must stay product-scoped');
-assert.match(app, /A refund makes the license inactive after the next check\./u, 'paid panel must state the registered refund outcome');
-assert.match(terms, /A refund makes the license inactive after the next check\./u, 'terms must state the registered refund outcome');
-assert.ok(ids.includes('refund-revokes-license'), 'refund outcome must stay registered');
+assert.match(terms, /The paid template tier is not yet available\. Exam Bridge does not currently offer a purchase or checkout\./u, 'terms must state the unavailable paid-tier boundary');
+assert.match(terms, /Template access closes if Sociobot reports that existing license as revoked\./u, 'terms must state the existing-license revocation outcome');
+assert.ok(ids.includes('existing-license-revocation'), 'existing-license revocation must stay registered');
 await readFile('.factory/demo.md', 'utf8');
 const copyAudit = await readFile('.factory/copy-audit.md', 'utf8');
 assert.match(copyAudit, /No sentence exceeds 22 words\./u);
@@ -101,7 +102,7 @@ if (/without an account|\bNo accounts\b|No account, card/iu.test(visitorCopy)) {
 }
 const brief = JSON.parse(await readFile('.factory/brief.json', 'utf8'));
 assert.equal(brief.monetization, 'freemium', 'the researched freemium brief must remain intact');
-for (const id of ['not-found-plan-safety', 'starter-template-boundary', 'hosted-content-boundary', 'independent-tool', 'generated-illustration', 'paid-template-license', 'refund-revokes-license', 'checkout-registration-gate', 'service-worker-renewal']) {
+for (const id of ['not-found-plan-safety', 'starter-template-boundary', 'hosted-content-boundary', 'independent-tool', 'generated-illustration', 'existing-license-access', 'existing-license-revocation', 'paid-tier-unavailable', 'service-worker-renewal']) {
   assert.ok(ids.includes(id), `${id} must register its visitor-facing boundary or provenance claim`);
 }
 const provenance = JSON.parse(await readFile('public/art-provenance.json', 'utf8'));

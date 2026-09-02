@@ -22,7 +22,7 @@ Use **Reset demo** to restore the sample. Use **Start for real** to discard it.
 - Study order based on your confidence and progress summary
 - Browser autosave, offline reload, JSON backup and restore, and CSV export
 - Light and dark themes, keyboard support, reduced motion, and a 390 px layout
-- Three reusable templates with a one-time ₹499 license
+- Three reusable templates to preview; the paid tier is not yet available
 - No accounts, tracking, external scripts, hosted questions, or authority affiliation
 
 Plans stay in your browser. Clearing site data deletes them. Export a
@@ -54,21 +54,15 @@ To inspect the production build locally:
 npm run preview
 ```
 
-## Free and paid access
+## Free access and future paid tier
 
 The planner, CSV exports, and JSON backups are free. No account, card, checkout,
 or payment is required for them. The demo previews all three editable templates.
 
-Exam Bridge Plus is a one-time ₹499 license for those reusable templates.
-Existing license holders can paste a token on the home page. The token is stored
+The paid template tier is not yet available. Exam Bridge offers no purchase or
+checkout. Existing license holders can paste a token on the home page. It is stored
 as `sb_license:exam-bridge` and sent only to the Sociobot verification endpoint.
 A valid verdict is cached for up to 24 hours.
-
-New purchases are not open because the scoped checkout is not registered yet.
-The default build therefore shows no buy link. After the billing operator confirms
-the product, price, return URL, and live checkout, build with
-`VITE_CHECKOUT_ENABLED=true`. That exposes only the hosted Sociobot checkout link.
-The site never embeds a payment provider.
 
 ## Deployment and privacy
 

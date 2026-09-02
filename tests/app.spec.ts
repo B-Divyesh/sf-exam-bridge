@@ -222,9 +222,9 @@ test('renders a semantic three-step How it works section after the product', asy
   })).toBe(true);
 });
 
-test('keeps checkout operator-gated and the free planner available', async ({ page }) => {
+test('labels the future paid tier unavailable and keeps the free planner available', async ({ page }) => {
   await expect(page.getByRole('link', { name: /checkout|buy/i })).toHaveCount(0);
-  await expect(page.locator('#purchase-status')).toContainText('operator activation');
+  await expect(page.locator('#purchase-status')).toHaveText('Paid tier not yet available. No purchase or checkout is offered.');
   await expect(page.locator('input[name="license"]')).toBeVisible();
   await expect(page.getByRole('link', { name: 'Try in demo' })).toHaveCount(3);
   await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(0);
@@ -240,7 +240,7 @@ test('stores and strips a returned license before verifying it', async ({ page }
   }));
   await page.goto('/?license=returned-license');
   await expect(page).toHaveURL('http://127.0.0.1:4173/');
-  await expect(page.getByRole('heading', { name: 'Template license active' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Existing template license active' })).toBeVisible();
   expect(await page.evaluate(() => localStorage.getItem('sb_license:exam-bridge'))).toBe('returned-license');
 });
 
@@ -267,9 +267,10 @@ test('locks an invalid license and explains verification rate limits', async ({ 
   await expect(page.locator('#license-status')).toHaveText('Too many checks. Try again in 60 seconds.');
 });
 
-test('does not expose checkout in the default build', async ({ page }) => {
+test('does not expose a checkout or current purchase offer', async ({ page }) => {
   await expect(page.locator('a[href*="checkout" i], form[action*="checkout" i]')).toHaveCount(0);
-  await expect(page.getByText('New purchases are not open yet. Checkout needs operator activation.')).toBeVisible();
+  await expect(page.getByText('Paid tier not yet available. No purchase or checkout is offered.')).toBeVisible();
+  await expect(page.getByText(/₹499|one-time purchase|merchant of record/iu)).toHaveCount(0);
 });
 
 test('serves demo-specific metadata before application JavaScript runs', async ({ request }) => {

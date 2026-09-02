@@ -296,7 +296,7 @@ test('@claim:free-access provides the planner, CSV, and JSON without account, ca
   expect(requests.filter(url => /\/(?:auth|login|checkout|payment)(?:[/?#]|$)/iu.test(new URL(url).pathname))).toEqual([]);
 });
 
-test('@claim:paid-template-license verifies one license, caches it for 24 hours, and enables every reusable template', async ({ page }) => {
+test('@claim:existing-license-access verifies one existing license, caches it for 24 hours, and enables every reusable template', async ({ page }) => {
   let checks = 0;
   await page.route('**/api/v1/products/exam-bridge/verify?license=valid-template-license', async route => {
     checks += 1;
@@ -307,10 +307,10 @@ test('@claim:paid-template-license verifies one license, caches it for 24 hours,
   });
   await page.goto('/');
 
-  await expect(page.locator('#paid-note')).toContainText('One-time ₹499 license');
+  await expect(page.locator('#purchase-status')).toHaveText('Paid tier not yet available. No purchase or checkout is offered.');
   await page.getByLabel('Have a license?').fill('valid-template-license');
   await page.getByRole('button', { name: 'Verify license' }).click();
-  await expect(page.getByRole('heading', { name: 'Template license active' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Existing template license active' })).toBeVisible();
   expect(checks).toBe(1);
   expect(await page.evaluate(() => localStorage.getItem('sb_license:exam-bridge'))).toBe('valid-template-license');
   await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
@@ -321,12 +321,12 @@ test('@claim:paid-template-license verifies one license, caches it for 24 hours,
   await page.evaluate(async () => { await navigator.serviceWorker.ready; });
   await page.reload();
   await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller));
-  await expect(page.getByRole('heading', { name: 'Template license active' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Existing template license active' })).toBeVisible();
   expect(checks).toBe(1);
   try {
     await page.context().setOffline(true);
     await page.reload({ waitUntil: 'domcontentloaded' });
-    await expect(page.getByRole('heading', { name: 'Template license active' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Existing template license active' })).toBeVisible();
     await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
     expect(checks).toBe(1);
   } finally {
@@ -334,7 +334,7 @@ test('@claim:paid-template-license verifies one license, caches it for 24 hours,
   }
 });
 
-test('@claim:refund-revokes-license removes template access after Sociobot reports a revoked license', async ({ page }) => {
+test('@claim:existing-license-revocation removes template access after Sociobot reports a revoked license', async ({ page }) => {
   let checks = 0;
   await page.route('**/api/v1/products/exam-bridge/verify?license=refunded-license', async route => {
     checks += 1;
@@ -350,32 +350,34 @@ test('@claim:refund-revokes-license removes template access after Sociobot repor
   });
   await page.reload();
 
-  await expect(page.getByRole('heading', { name: 'Template license active' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Existing template license active' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
   expect(checks).toBe(0);
   await page.getByRole('button', { name: 'Recheck license' }).click();
 
-  await expect(page.getByRole('heading', { name: 'Reuse three planning templates' })).toBeVisible();
-  await expect(page.locator('.license-notice')).toHaveText('This license is not active. Check the token or buy a new license when purchases open.');
+  await expect(page.getByRole('heading', { name: 'Paid templates are not yet available' })).toBeVisible();
+  await expect(page.locator('.license-notice')).toHaveText('This license is not active. Check the token or keep using the free planner.');
   await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(0);
   await expect(page.getByRole('link', { name: 'Try in demo' })).toHaveCount(3);
   expect(checks).toBe(1);
   expect(await page.evaluate(() => JSON.parse(localStorage.getItem('exam-bridge:license-verdict') ?? '{}'))).toMatchObject({ valid: false });
 });
 
-test('@claim:checkout-registration-gate keeps unavailable checkout closed while showing price, previews, and license restore', async ({ page }) => {
+test('@claim:paid-tier-unavailable exposes no purchase path while preserving free tools, previews, and existing-license restore', async ({ page }) => {
   const requests: string[] = [];
   page.on('request', request => requests.push(request.url()));
   await page.goto('/');
 
-  await expect(page.locator('#paid-note')).toContainText('One-time ₹499 license');
-  await expect(page.locator('#purchase-status')).toHaveText('New purchases are not open yet. Checkout needs operator activation.');
-  await expect(page.getByRole('link', { name: /buy|checkout/i })).toHaveCount(0);
+  await expect(page.getByRole('heading', { name: 'Paid templates are not yet available' })).toBeVisible();
+  await expect(page.locator('#purchase-status')).toHaveText('Paid tier not yet available. No purchase or checkout is offered.');
+  await expect(page.locator('a[href*="checkout" i], form[action*="checkout" i]')).toHaveCount(0);
+  await expect(page.getByText(/₹499|one-time purchase|merchant of record/iu)).toHaveCount(0);
   await expect(page.getByLabel('Have a license?')).toBeVisible();
   await expect(page.getByRole('button', { name: 'Verify license' })).toBeVisible();
   await expect(page.getByRole('link', { name: 'Try in demo' })).toHaveCount(3);
   const origin = new URL(page.url()).origin;
   expect(requests.filter(url => new URL(url).origin !== origin)).toEqual([]);
+  expect(requests.filter(url => /\/checkout(?:[/?#]|$)/iu.test(new URL(url).pathname))).toEqual([]);
 });
 
 test('@claim:accessible-responsive supports keyboard, themes, reduced motion, and 390px screens', async ({ page }) => {

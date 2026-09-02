@@ -57,7 +57,7 @@
   },
   {
     "id": "templates",
-    "claim": "Previews all three editable paid templates in the isolated demo without payment.",
+    "claim": "Previews all three editable starter templates in the isolated demo without payment.",
     "where": "templates section, demo guide, README",
     "test": "npm run test:e2e -- --project=desktop --grep @claim:templates",
     "sandbox": "fresh /demo context; select a template; assert five editable topics and demo-only storage"
@@ -98,25 +98,25 @@
     "sandbox": "fresh context; build a real plan; download CSV and JSON; assert those controls stay enabled without account, card, payment, checkout, or cross-origin request"
   },
   {
-    "id": "paid-template-license",
-    "claim": "A one-time ₹499 license enables all three reusable planning templates after Sociobot verification.",
+    "id": "existing-license-access",
+    "claim": "A valid existing license enables all three reusable planning templates after product-scoped Sociobot verification.",
     "where": "templates panel, Privacy, Terms, README",
-    "test": "npm run test:e2e -- --project=desktop --grep @claim:paid-template-license",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:existing-license-access",
     "sandbox": "fresh real-planner context; mock one valid Sociobot response; paste a token; assert local token storage, all template controls, template use, and cached offline access without a second check inside 24 hours"
   },
   {
-    "id": "refund-revokes-license",
-    "claim": "A refund makes the template license inactive after the next Sociobot license check.",
-    "where": "paid panel, Terms",
-    "test": "npm run test:e2e -- --project=desktop --grep @claim:refund-revokes-license",
+    "id": "existing-license-revocation",
+    "claim": "Template access closes after Sociobot reports an existing license as revoked.",
+    "where": "template panel, Terms",
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:existing-license-revocation",
     "sandbox": "fresh real-planner context with a cached active license; mock a Sociobot revoked verdict; recheck the license; assert all paid template controls lock and the inactive notice appears"
   },
   {
-    "id": "checkout-registration-gate",
-    "claim": "New purchases stay closed until the shared checkout is activated, without hiding the price or license restore path.",
+    "id": "paid-tier-unavailable",
+    "claim": "The paid template tier is not yet available, and the app offers no price, purchase action, checkout link, or checkout request.",
     "where": "templates panel, Privacy, Terms, README",
-    "test": "npm run test:e2e -- --project=desktop --grep @claim:checkout-registration-gate",
-    "sandbox": "default production build with checkout flag absent; assert exact price, unavailability status, restore form, demo preview links, and no checkout link or request"
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:paid-tier-unavailable",
+    "sandbox": "fresh default production build; assert the exact unavailable status, no price or purchase language, no checkout link, form, request, or build flag, plus working demo previews and existing-license restore"
   },
   {
     "id": "accessible-responsive",
