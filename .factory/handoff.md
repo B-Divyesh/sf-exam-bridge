@@ -19,6 +19,9 @@ implementation jargon. The free scope, one-click isolated demo, route metadata,
 focus handling, product 404, legal navigation, and distinct learning-topology
 visual system remain intact.
 
+The claims manifest retains 16 unique, observable claims with one exact test
+each. The catalog description is now a verb-first 113-character sentence.
+
 The accessibility gate now rejects every axe WCAG A/AA violation instead of
 filtering by severity. A repeatable live verifier covers all public routes and
 the real 404 at 390 and 1440 px, plus isolation, `?demo=1`, focus, privacy,

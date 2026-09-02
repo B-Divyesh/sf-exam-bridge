@@ -59,6 +59,8 @@
 - Live `verify-url.sh` passed all four public routes with zero console errors.
 - Live cold QA passed all findings, route focus, same-origin traffic, demo
   isolation, direct query demo, 404, and offline reload.
+- `.factory/claims.json` contains 16 unique claims with one exact tagged test
+  each. The catalog description is verb-first and 113 characters.
 - Live Lighthouse mobile: Performance 100, Accessibility 100, Best Practices
   100, SEO 100; FCP 0.9 s, LCP 1.1 s, TBT 20 ms, CLS 0. Evidence:
   [Lighthouse JSON](polish-4-artifacts/lighthouse-live-mobile.json).
