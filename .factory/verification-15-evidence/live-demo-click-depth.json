@@ -1,0 +1,46 @@
+[
+  {
+    "viewport": {
+      "name": "desktop",
+      "width": 1440,
+      "height": 900
+    },
+    "beforeSecondClick": {
+      "scrollY": 0,
+      "workspaceTop": 1032.734375,
+      "firstTopicTop": 1611.796875,
+      "workspaceVisible": false,
+      "topicVisible": false
+    },
+    "afterSecondClick": {
+      "scrollY": 1029,
+      "workspaceTop": 3.734375,
+      "firstTopicTop": 590.796875,
+      "workspaceVisible": true,
+      "topicVisible": true
+    },
+    "topics": 6
+  },
+  {
+    "viewport": {
+      "name": "mobile",
+      "width": 390,
+      "height": 844
+    },
+    "beforeSecondClick": {
+      "scrollY": 0,
+      "workspaceTop": 1662.796875,
+      "firstTopicTop": 2453.609375,
+      "workspaceVisible": false,
+      "topicVisible": false
+    },
+    "afterSecondClick": {
+      "scrollY": 1604,
+      "workspaceTop": 58.796875,
+      "firstTopicTop": 857.609375,
+      "workspaceVisible": true,
+      "topicVisible": false
+    },
+    "topics": 6
+  }
+]

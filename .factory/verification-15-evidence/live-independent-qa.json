@@ -1,0 +1,310 @@
+{
+  "checkedAt": "2026-09-02T00:47:07.303Z",
+  "base": "https://exam-bridge.sociobot.in",
+  "desktop": {
+    "rootStatus": 200,
+    "title": "Exam Bridge — turn a syllabus into a study route",
+    "h1": [
+      "Turn a syllabus into a study route."
+    ],
+    "firstAction": "Try it with sample data",
+    "demo": {
+      "url": "https://exam-bridge.sociobot.in/demo",
+      "banner": true,
+      "topics": 6,
+      "storage": [
+        "demo:exam-bridge:plan:v1"
+      ],
+      "resetFirstTopic": "Control systems",
+      "storageAfterExit": []
+    },
+    "oneTopicError": "Add at least two distinct topic lines so there is a route to build.",
+    "oneTopicFocus": true,
+    "sourceError": "Use a complete http:// or https:// URL for the syllabus source.",
+    "sourceFocus": true,
+    "plan": {
+      "title": "Verification route",
+      "topicCount": 2,
+      "topics": [
+        "Signals and systems",
+        "Control systems"
+      ],
+      "storageKey": "exam-bridge:plan:v1"
+    },
+    "practiceError": "Use a complete http:// or https:// link.",
+    "practiceAttached": "https://example.org/questions/17",
+    "exports": {
+      "csvName": "verification-route-route.csv",
+      "csvLines": [
+        "\"Order\",\"Topic\",\"Confidence\",\"Prerequisites\",\"Practice references\",\"Completed references\"",
+        "\"1\",\"Signals and systems\",\"new\",\"\",\"2024 · Q17 (https://example.org/questions/17)\",\"0\"",
+        "\"2\",\"Control systems\",\"new\",\"\",\"\",\"0\""
+      ],
+      "jsonName": "verification-route-backup.json",
+      "jsonTopics": 2
+    },
+    "invalidRestore": {
+      "message": "That file is not a valid Exam Bridge backup.",
+      "storageUnchanged": true,
+      "topicsRemain": 2
+    },
+    "reload": {
+      "title": "Verification route",
+      "referenceVisible": true
+    },
+    "keyboardPractice": {
+      "focused": true,
+      "checked": true,
+      "attempted": true
+    },
+    "axe": {
+      "lightViolations": 0,
+      "lightSeriousCritical": [],
+      "darkViolations": 0,
+      "darkSeriousCritical": []
+    },
+    "keyboardSkip": {
+      "skipFocused": true,
+      "style": {
+        "outline": "rgb(7, 95, 170) solid 3px",
+        "outlineColor": "rgb(7, 95, 170)",
+        "outlineWidth": "3px",
+        "outlineOffset": "3px"
+      },
+      "mainFocused": true
+    },
+    "requests": [
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-rktGLo3-.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-BvICWTJR.css",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/route-focus.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-rktGLo3-.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-BvICWTJR.css",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/route-focus.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/demo",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-rktGLo3-.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-BvICWTJR.css",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/route-focus.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-rktGLo3-.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-BvICWTJR.css",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/route-focus.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-rktGLo3-.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-BvICWTJR.css",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/route-focus.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-rktGLo3-.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-BvICWTJR.css",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/route-focus.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-rktGLo3-.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-BvICWTJR.css",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/route-focus.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp",
+        "postData": null
+      }
+    ],
+    "crossOrigin": [],
+    "nonGetOrBody": [],
+    "consoleErrors": [],
+    "pageErrors": []
+  },
+  "mobile": {
+    "firstViewport": {
+      "scrollY": 0,
+      "ledeBox": {
+        "x": 12,
+        "y": 385.796875,
+        "width": 366,
+        "height": 121.5625
+      },
+      "actionBox": {
+        "x": 12,
+        "y": 581.359375,
+        "width": 366,
+        "height": 44
+      },
+      "withinViewport": true
+    },
+    "demo": {
+      "topics": 6,
+      "dimensions": {
+        "innerWidth": 390,
+        "clientWidth": 390,
+        "scrollWidth": 390
+      },
+      "minTarget": {
+        "width": 44,
+        "height": 44
+      },
+      "undersized": [],
+      "reducedMotion": {
+        "animationDuration": "1e-05s",
+        "transitionDuration": "1e-05s"
+      },
+      "axeLightSeriousCritical": [],
+      "axeDarkSeriousCritical": []
+    },
+    "consoleErrors": [],
+    "pageErrors": []
+  },
+  "zoom": {
+    "innerWidth": 720,
+    "clientWidth": 720,
+    "scrollWidth": 720,
+    "topics": 6,
+    "controls": 80
+  },
+  "offline": {
+    "controlled": true,
+    "topics": 6,
+    "banner": true,
+    "errors": []
+  }
+}

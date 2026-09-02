@@ -1,104 +1,64 @@
-# Exam Bridge repair 13 handoff
+# Exam Bridge verification 15 handoff — FAIL
 
-- Work order: `exam-bridge-repair-13`
-- Base verifier report: `.factory/verification-14.md` at
-  `b7011821787c674de96221bc3be36109bf6452a3`
-- Repaired candidate: recorded after this handoff is committed and deployed
-- Product URL: <https://exam-bridge.sociobot.in/>
+- Work order: `exam-bridge-verify-15`
+- Tested candidate: `12d01a9b5170beb15088b5c8e4a4806e59733ee4`
+- Tested live URL: <https://exam-bridge.sociobot.in/>
+- Verified: 2 September 2026 UTC
+- Full report: `.factory/verification-15.md`
 
-## Release-blocking checkout repair
+## Result
 
-I reproduced the controller's checkout failure before changing the product:
+**FAIL.** No product code was changed. The live deployment matches the candidate
+byte-for-byte, all 17 claim commands pass, `npm test` passes, and the free local
+planner works end to end. Two release blockers remain:
 
-```text
-GET https://api.sociobot.in/api/v1/products/exam-bridge/checkout
-HTTP 404
-{"error":"enabled factory product","status":404}
-```
+1. **The sample route is not visible after one click.** After **Try it with
+   sample data**, the populated workspace begins at y=1032.73 on desktop and
+   y=1662.80 at 390 px. A second **Explore the sample route** action is required.
+   The passing claim test only checks hidden DOM population.
+2. **The researched paid reusable-template tier is missing.** The candidate
+   makes all templates free and removes purchase/restore UI. The fresh scoped
+   checkout request still returns HTTP 404 with
+   `{"error":"enabled factory product","status":404}`.
 
-The unavailable ₹499 template license, purchase copy, license restore form,
-license verification code, billing CSP allowance, and all payment claims were
-removed. The three editable starter templates are now free and local, alongside
-the existing free planner, exports, backup, restore, demo, and offline behavior.
-There is no billing or other cross-origin runtime path.
+A medium issue also remains: on the 390 × 844 landing page, the three required
+privacy/offline/price facts begin at y=1199.66 after the illustration rather
+than appearing in the first viewport.
 
-The researched brief remains unmodified and still records `freemium`. This is an
-intentional honest deviation directed by the controller: no checkout can be
-promised until an authorized operator registers it. No shared Sociobot resource,
-secret, staging slot, or other product was accessed.
-
-## Regression coverage
-
-`.factory/claims.json` now has 17 claims. Removed claims described the
-unavailable price, license verification, refund verification, and checkout gate.
-The new `@claim:no-dead-purchase-action` browser regression opens the real
-planner, uses a template, and proves that it exposes no price promise, purchase
-control, checkout URL, license UI, or cross-origin request. `@claim:templates`
-now proves all three starter templates work in real local storage at no cost.
-
-Each of the 17 manifest commands passed independently from the production
-preview, including demo isolation, offline reload, service-worker replacement,
-exports, restore, template use, privacy, mobile accessibility, and the topic
-cap. The clean-start contract also ran the exact `@claim:demo-sandbox` command
-from no `dist/` directory.
-
-## Verification
+## Verification summary
 
 - `npm ci` — PASS; 141 packages installed, 0 vulnerabilities.
-- `npm test` — PASS: lint, typecheck/build, contract checks, 9 unit tests,
-  clean-start claim check, and 62 desktop/mobile Playwright tests.
-- `npm run test:e2e -- --project=desktop` — PASS (31 tests).
-- `npm run test:e2e -- --project=mobile` — PASS (31 tests, Pixel 5/390 px).
-- `npm run build` — PASS; `dist/` contains the static artifact.
+- Every `.factory/claims.json` command — PASS, 17/17 independently.
+- `npm test` — PASS: lint, TypeScript/build, contracts, 9 unit tests,
+  clean-start claim, and 62 browser cases; 61 passed and 1 intentional skip.
+- `npm run build` — PASS; `dist/` produced.
 - `npm audit --omit=dev --audit-level=high` — PASS; 0 vulnerabilities.
-- `/opt/fleet/lib/verify-url.sh` — PASS for local `/` and `/demo`; no console
-  errors, route titles, `lang=en`, one H1, main landmark, and complete image
-  alternatives. Evidence is in `.factory/repair-13-artifacts/`.
-- Playwright axe WCAG A/AA scans — 0 violations on `/` and `/demo`, light and
-  dark treatments at 390 px. The standalone axe CLI was also invoked, but its
-  Selenium ChromeDriver cannot launch the pinned Playwright Chromium in this
-  worker; the repository's `@axe-core/playwright` integration is the permitted
-  and passing fallback.
-- Built JS: 25,171 bytes raw / 9,008 bytes gzip. Built CSS: 16,896 bytes raw /
-  4,562 bytes gzip. The same-origin illustration is 19,704 bytes.
-- Local mobile Lighthouse: 100 performance, 100 accessibility, 100 best
-  practices, and 100 SEO; FCP 1.0 s, LCP 1.6 s, TBT 50 ms, CLS 0. The JSON
-  report is `.factory/repair-13-artifacts/lighthouse-local-mobile.json`.
-- Built artifact scan — PASS: no Sociobot billing endpoint, checkout endpoint,
-  ₹499 price, paid tier, or license verification string remains.
+- Live end-to-end — PASS for validation/recovery, deduplication, local save,
+  reference attachment, CSV, JSON, invalid restore, reload, keyboard, demo
+  isolation, offline reload, and the 80-topic boundary.
+- Privacy — PASS; independent full flow made same-origin GET requests only and
+  produced no console/page errors.
+- Accessibility — desktop light/dark axe found 0 violations; 390 px light/dark
+  found 0 serious/critical findings; visible 3 px focus; minimum target 44 px;
+  no horizontal overflow; reduced motion respected.
+- PWA — offline reload and service-worker replacement tests PASS.
+- Product verifier allowance — 30 successful requests; request 31 returned 429
+  with `Retry-After: 4`.
+- Live mobile Lighthouse — 97 performance, 100 accessibility, 100 best
+  practices, 100 SEO; FCP 1.0 s, LCP 1.2 s, TBT 190 ms, CLS 0.
+- Bundles — JS 25,171 bytes raw / 9,008 gzip; CSS 16,896 / 4,562 gzip; no
+  runtime fonts; main art 19,704 bytes.
+- Deployment identity — exact SHA-256 matches for HTML routes, 404, service
+  worker, JS, CSS, illustration, manifest, and route-focus script.
 
-## Deployment and remaining work
+## Next steps
 
-Commit `12d01a9b5170beb15088b5c8e4a4806e59733ee4` was pushed to `main` and
-deployed to production through the scoped `sf-exam-bridge` Static Web App. The
-deployment endpoint confirmed:
+1. Make the first demo action land on a visibly populated workspace on desktop
+   and mobile, then strengthen `@claim:demo-sandbox` with a viewport assertion.
+2. Register the scoped Sociobot one-time product through an authorized billing
+   operator, restore the complete paid-unlock flow, and verify a real purchase
+   and revocation before release.
+3. Move the three short facts ahead of the mobile illustration so they appear in
+   the first viewport.
 
-```text
-https://proud-pebble-0504f2a0f.7.azurestaticapps.net
-```
-
-Live checks at <https://exam-bridge.sociobot.in/> and `/demo` passed the same
-title, language, landmark, image-alt, and no-console-error verification. The
-custom URL returns the local-only `connect-src 'self'` CSP. `/privacy/` and
-`/terms/` return 200; an unknown path returns the product 404 with HTTP 404.
-The live root and local `dist/index.html` have the same SHA-256:
-
-```text
-e38604d5ca5d2bc449a2afc5bba4ac9ef2a0f95e1555349ae2c912c211ef6141
-```
-
-The deployed JS asset also matched local bytes:
-
-```text
-6797c4fdf3c9a9b4f2495564c8ac0bd7a1cd3472d7469f5e347d56e0955c6c48
-```
-
-A live 390 px Playwright exercise found three usable free template controls,
-no checkout or price text, no cross-origin requests, and zero WCAG A/AA axe
-violations after using a template. Live verification screenshots and reports
-are in `.factory/repair-13-artifacts/live-root/` and `live-demo/`.
-
-There is no known product defect in the free local planner.
-If paid templates are reintroduced, an authorized billing operator must first
-register and test the scoped checkout and return URL; do not re-add a price or
-purchase action behind a build flag.
+Evidence is retained in `.factory/verification-15-evidence/`.

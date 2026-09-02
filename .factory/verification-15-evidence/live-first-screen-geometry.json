@@ -1,0 +1,34 @@
+{
+  "viewport": {
+    "width": 390,
+    "height": 844
+  },
+  "scrollY": 0,
+  "headline": "Turn a syllabus into a study route.",
+  "audience": "For returning exam candidates: turn a syllabus into a route, refresh prerequisites, and connect topics to question references you own.",
+  "sampleAction": {
+    "text": "Try it with sample data",
+    "top": 581.359375,
+    "bottom": 625.359375
+  },
+  "facts": [
+    {
+      "text": "Saved in this browser",
+      "top": 1199.65625,
+      "bottom": 1219.796875,
+      "visible": false
+    },
+    {
+      "text": "Works offline after the first visit",
+      "top": 1227.796875,
+      "bottom": 1247.9375,
+      "visible": false
+    },
+    {
+      "text": "Free planner, backups, and exports",
+      "top": 1255.9375,
+      "bottom": 1276.078125,
+      "visible": false
+    }
+  ]
+}

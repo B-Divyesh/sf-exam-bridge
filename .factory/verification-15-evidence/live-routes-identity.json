@@ -1,0 +1,235 @@
+{
+  "checkedAt": "2026-09-02T00:47:55.488Z",
+  "resources": {
+    "/": {
+      "status": 200,
+      "bytes": 2183,
+      "sha256": "e38604d5ca5d2bc449a2afc5bba4ac9ef2a0f95e1555349ae2c912c211ef6141",
+      "localSha256": "e38604d5ca5d2bc449a2afc5bba4ac9ef2a0f95e1555349ae2c912c211ef6141",
+      "exactMatch": true,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/html",
+        "etag": "\"79645991\"",
+        "last-modified": "Wed, 02 Sep 2026 00:34:58 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    "/demo": {
+      "status": 200,
+      "bytes": 2030,
+      "sha256": "2999423600b315d121245f66da60aa8bfa569965858116a7a07e2b55a7a751b6",
+      "localSha256": "2999423600b315d121245f66da60aa8bfa569965858116a7a07e2b55a7a751b6",
+      "exactMatch": true,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/html",
+        "etag": "\"79645991\"",
+        "last-modified": "Wed, 02 Sep 2026 00:34:58 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    "/privacy/": {
+      "status": 200,
+      "bytes": 3852,
+      "sha256": "5ba7052a7481ea44401c09b7745afe4af06722d526c2ff43bdfce3addbd1a276",
+      "localSha256": "5ba7052a7481ea44401c09b7745afe4af06722d526c2ff43bdfce3addbd1a276",
+      "exactMatch": true,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/html",
+        "etag": "\"79645991\"",
+        "last-modified": "Wed, 02 Sep 2026 00:34:58 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    "/terms/": {
+      "status": 200,
+      "bytes": 3745,
+      "sha256": "2276b4741773adc7a3297d9c2a9440f1e99d225cd8683970f8003fb1ce101a85",
+      "localSha256": "2276b4741773adc7a3297d9c2a9440f1e99d225cd8683970f8003fb1ce101a85",
+      "exactMatch": true,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/html",
+        "etag": "\"79645991\"",
+        "last-modified": "Wed, 02 Sep 2026 00:34:58 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    "/404.html": {
+      "status": 200,
+      "bytes": 3055,
+      "sha256": "3c5bfd8e9f5e63f5e94c9f24178bb2f40926f85dc9f2fab0cfa7585c1a2a6c77",
+      "localSha256": "3c5bfd8e9f5e63f5e94c9f24178bb2f40926f85dc9f2fab0cfa7585c1a2a6c77",
+      "exactMatch": true,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/html",
+        "etag": "\"79645991\"",
+        "last-modified": "Wed, 02 Sep 2026 00:34:58 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    "/sw.js": {
+      "status": 200,
+      "bytes": 1326,
+      "sha256": "9bd00133fdc4d9f2c606c977ae1be413a8a9f2b01fa8adb49463a81f07ad29fb",
+      "localSha256": "9bd00133fdc4d9f2c606c977ae1be413a8a9f2b01fa8adb49463a81f07ad29fb",
+      "exactMatch": true,
+      "headers": {
+        "cache-control": "no-cache",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/javascript",
+        "etag": "\"79645991\"",
+        "last-modified": "Wed, 02 Sep 2026 00:34:58 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    "/assets/main-rktGLo3-.js": {
+      "status": 200,
+      "bytes": 25171,
+      "sha256": "6797c4fdf3c9a9b4f2495564c8ac0bd7a1cd3472d7469f5e347d56e0955c6c48",
+      "localSha256": "6797c4fdf3c9a9b4f2495564c8ac0bd7a1cd3472d7469f5e347d56e0955c6c48",
+      "exactMatch": true,
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/javascript",
+        "etag": "\"79645991\"",
+        "last-modified": "Wed, 02 Sep 2026 00:34:58 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    "/assets/main-BvICWTJR.css": {
+      "status": 200,
+      "bytes": 16896,
+      "sha256": "55c39501547d09005245537f165c04778a1983d219414eae7bb605039851115d",
+      "localSha256": "55c39501547d09005245537f165c04778a1983d219414eae7bb605039851115d",
+      "exactMatch": true,
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/css",
+        "etag": "\"79645991\"",
+        "last-modified": "Wed, 02 Sep 2026 00:34:58 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    "/assets/learning-topology.webp": {
+      "status": 200,
+      "bytes": 19704,
+      "sha256": "2b89e36f3b6404b94b7f87de69906ef6d45668f9a7c13e81190dbcb1f88b3441",
+      "localSha256": "2b89e36f3b6404b94b7f87de69906ef6d45668f9a7c13e81190dbcb1f88b3441",
+      "exactMatch": true,
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "image/webp",
+        "etag": "\"79645991\"",
+        "last-modified": "Wed, 02 Sep 2026 00:34:58 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    "/manifest.webmanifest": {
+      "status": 200,
+      "bytes": 272,
+      "sha256": "6fa5c8e733f5505af1a94051882771c02ce1587473012e639f77ad2b89f83965",
+      "localSha256": "6fa5c8e733f5505af1a94051882771c02ce1587473012e639f77ad2b89f83965",
+      "exactMatch": true,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "application/octet-stream",
+        "etag": "\"79645991\"",
+        "last-modified": "Wed, 02 Sep 2026 00:34:58 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    "/route-focus.js": {
+      "status": 200,
+      "bytes": 1866,
+      "sha256": "d362ffe074b6ef24e8a8a22ad4667eaf6920077ed43baa9181575f4e3aabd5ed",
+      "localSha256": "d362ffe074b6ef24e8a8a22ad4667eaf6920077ed43baa9181575f4e3aabd5ed",
+      "exactMatch": true,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/javascript",
+        "etag": "\"79645991\"",
+        "last-modified": "Wed, 02 Sep 2026 00:34:58 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    }
+  },
+  "unknown": {
+    "status": 404,
+    "sha256": "3c5bfd8e9f5e63f5e94c9f24178bb2f40926f85dc9f2fab0cfa7585c1a2a6c77",
+    "local404Sha256": "3c5bfd8e9f5e63f5e94c9f24178bb2f40926f85dc9f2fab0cfa7585c1a2a6c77",
+    "matches404": true,
+    "headers": {
+      "cache-control": "public, must-revalidate, max-age=30",
+      "content-length": "3055",
+      "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+      "content-type": "text/html",
+      "date": "Wed, 02 Sep 2026 00:47:55 GMT",
+      "etag": "\"79645991\"",
+      "last-modified": "Wed, 02 Sep 2026 00:34:58 GMT",
+      "permissions-policy": "camera=(), microphone=(), geolocation=()",
+      "referrer-policy": "strict-origin-when-cross-origin",
+      "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+      "x-content-type-options": "nosniff",
+      "x-dns-prefetch-control": "off",
+      "x-xss-protection": "1; mode=block"
+    }
+  },
+  "checkout": {
+    "status": 404,
+    "headers": {
+      "access-control-allow-credentials": "true",
+      "content-length": "48",
+      "content-type": "application/json",
+      "date": "Wed, 02 Sep 2026 00:47:55 GMT",
+      "vary": "origin, access-control-request-method, access-control-request-headers"
+    },
+    "body": "{\"error\":\"enabled factory product\",\"status\":404}"
+  }
+}
