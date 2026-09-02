@@ -1,0 +1,205 @@
+{
+  "baseUrl": "https://exam-bridge.sociobot.in",
+  "checkedAt": "2026-09-02T06:42:46.084Z",
+  "routes": [
+    {
+      "route": "/",
+      "viewport": 390,
+      "status": 200,
+      "title": "Exam Bridge — turn a syllabus into a study route",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://exam-bridge.sociobot.in/",
+      "description": "Turn a syllabus into a prerequisite-aware study route linked to your own past-question references.",
+      "openGraphTitle": "Exam Bridge — turn a syllabus into a study route",
+      "twitterTitle": "Exam Bridge — turn a syllabus into a study route",
+      "imagesMissingAlt": 0,
+      "axeViolations": 0,
+      "errors": []
+    },
+    {
+      "route": "/demo",
+      "viewport": 390,
+      "status": 200,
+      "title": "Demo — Exam Bridge",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://exam-bridge.sociobot.in/demo",
+      "description": "Explore a six-topic sample study route without changing your real plan.",
+      "openGraphTitle": "Demo — Exam Bridge",
+      "twitterTitle": "Demo — Exam Bridge",
+      "imagesMissingAlt": 0,
+      "axeViolations": 0,
+      "errors": []
+    },
+    {
+      "route": "/privacy/",
+      "viewport": 390,
+      "status": 200,
+      "title": "Privacy — Exam Bridge",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://exam-bridge.sociobot.in/privacy/",
+      "description": "How Exam Bridge stores plans and protects study data in your browser.",
+      "openGraphTitle": "Privacy — Exam Bridge",
+      "twitterTitle": "Privacy — Exam Bridge",
+      "imagesMissingAlt": 0,
+      "axeViolations": 0,
+      "errors": []
+    },
+    {
+      "route": "/terms/",
+      "viewport": 390,
+      "status": 200,
+      "title": "Terms — Exam Bridge",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://exam-bridge.sociobot.in/terms/",
+      "description": "Terms for using Exam Bridge to organize syllabus topics and permitted question references.",
+      "openGraphTitle": "Terms — Exam Bridge",
+      "twitterTitle": "Terms — Exam Bridge",
+      "imagesMissingAlt": 0,
+      "axeViolations": 0,
+      "errors": []
+    },
+    {
+      "route": "/polish-4-missing-route",
+      "viewport": 390,
+      "status": 404,
+      "title": "Page not found — Exam Bridge",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://exam-bridge.sociobot.in/404.html",
+      "description": "The requested Exam Bridge route was not found. Return to the planner or open the sample route.",
+      "openGraphTitle": "Page not found — Exam Bridge",
+      "twitterTitle": "Page not found — Exam Bridge",
+      "imagesMissingAlt": 0,
+      "axeViolations": 0,
+      "errors": []
+    },
+    {
+      "route": "/",
+      "viewport": 1440,
+      "status": 200,
+      "title": "Exam Bridge — turn a syllabus into a study route",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://exam-bridge.sociobot.in/",
+      "description": "Turn a syllabus into a prerequisite-aware study route linked to your own past-question references.",
+      "openGraphTitle": "Exam Bridge — turn a syllabus into a study route",
+      "twitterTitle": "Exam Bridge — turn a syllabus into a study route",
+      "imagesMissingAlt": 0,
+      "axeViolations": 0,
+      "errors": []
+    },
+    {
+      "route": "/demo",
+      "viewport": 1440,
+      "status": 200,
+      "title": "Demo — Exam Bridge",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://exam-bridge.sociobot.in/demo",
+      "description": "Explore a six-topic sample study route without changing your real plan.",
+      "openGraphTitle": "Demo — Exam Bridge",
+      "twitterTitle": "Demo — Exam Bridge",
+      "imagesMissingAlt": 0,
+      "axeViolations": 0,
+      "errors": []
+    },
+    {
+      "route": "/privacy/",
+      "viewport": 1440,
+      "status": 200,
+      "title": "Privacy — Exam Bridge",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://exam-bridge.sociobot.in/privacy/",
+      "description": "How Exam Bridge stores plans and protects study data in your browser.",
+      "openGraphTitle": "Privacy — Exam Bridge",
+      "twitterTitle": "Privacy — Exam Bridge",
+      "imagesMissingAlt": 0,
+      "axeViolations": 0,
+      "errors": []
+    },
+    {
+      "route": "/terms/",
+      "viewport": 1440,
+      "status": 200,
+      "title": "Terms — Exam Bridge",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://exam-bridge.sociobot.in/terms/",
+      "description": "Terms for using Exam Bridge to organize syllabus topics and permitted question references.",
+      "openGraphTitle": "Terms — Exam Bridge",
+      "twitterTitle": "Terms — Exam Bridge",
+      "imagesMissingAlt": 0,
+      "axeViolations": 0,
+      "errors": []
+    },
+    {
+      "route": "/polish-4-missing-route",
+      "viewport": 1440,
+      "status": 404,
+      "title": "Page not found — Exam Bridge",
+      "lang": "en",
+      "h1": 1,
+      "main": 1,
+      "canonical": "https://exam-bridge.sociobot.in/404.html",
+      "description": "The requested Exam Bridge route was not found. Return to the planner or open the sample route.",
+      "openGraphTitle": "Page not found — Exam Bridge",
+      "twitterTitle": "Page not found — Exam Bridge",
+      "imagesMissingAlt": 0,
+      "axeViolations": 0,
+      "errors": []
+    }
+  ],
+  "product": {
+    "firstScreenActionBottom": 545.359375,
+    "firstScreenFactsBottom": 820.15625,
+    "demoTopics": 6,
+    "directDemoQuery": true,
+    "demoIsolationResetExit": true,
+    "resultNamedActions": true,
+    "templateNoticeElement": "DIV",
+    "privacyAssuranceRemoved": true,
+    "sameOriginRequests": true,
+    "consoleErrors": [],
+    "routeFocus": true,
+    "linkChecks": [
+      {
+        "url": "https://exam-bridge.sociobot.in/",
+        "status": 200
+      },
+      {
+        "url": "https://exam-bridge.sociobot.in/404.html",
+        "status": 200
+      },
+      {
+        "url": "https://exam-bridge.sociobot.in/demo",
+        "status": 200
+      },
+      {
+        "url": "https://exam-bridge.sociobot.in/privacy/",
+        "status": 200
+      },
+      {
+        "url": "https://exam-bridge.sociobot.in/terms/",
+        "status": 200
+      }
+    ]
+  },
+  "offline": {
+    "topics": 6,
+    "noticeVisible": true
+  }
+}
