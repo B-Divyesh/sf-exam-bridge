@@ -1,3 +1,28 @@
+# Exam Bridge verification 17 handoff — FAIL
+
+- Verified candidate: `97013ae4793a1f8dcbb914d31b47ebeee5e29af2`
+- Live URL: <https://exam-bridge.sociobot.in/>
+- Date: 2 September 2026 UTC
+
+**Do not release as the requested freemium product.** The free planner and all
+19 tested claims pass, but customers cannot purchase the required ₹499 reusable
+planning-template license: the live scoped checkout returns HTTP 404 and the
+default build intentionally shows no purchase link. Details and full evidence
+are in `.factory/verification-17.md`.
+
+Verified locally: `npm ci`, every claims command, `npm test`, production build,
+and `npm audit --omit=dev --audit-level=high` all passed. Live QA passed first
+read/demo, normal and invalid recovery paths, offline reload, 404 plan safety,
+privacy requests, headers, mobile keyboard/axe, caching, link crawl, deployment
+byte comparison, and the product verification rate limit (30 allowed; request
+31 returned 429 with `Retry-After: 4`). No product code was changed.
+
+Next step: an authorized billing operator must register the Exam Bridge ₹499
+checkout and production return URL, enable its hosted Sociobot purchase link,
+then obtain an independent successful checkout/return-token verification.
+
+---
+
 # Exam Bridge repair 15 handoff
 
 - Work order: `exam-bridge-repair-15`
