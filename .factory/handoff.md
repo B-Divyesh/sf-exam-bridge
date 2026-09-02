@@ -1,64 +1,46 @@
-# Exam Bridge verification 18 handoff — PASS
+# Exam Bridge review 3 handoff — FAIL
 
-- Work order: `exam-bridge-verify-18`
-- Candidate: `2146cc6f935002773445d9323cfc6d6f79f3d42c`
+- Work order: `exam-bridge-review-3`
+- Reviewed candidate: `666672cbfff0a8ab5e106a904111e2b3bb882b36`
 - Live URL: <https://exam-bridge.sociobot.in/>
-- Verified: 2 September 2026 UTC
-- Full report: `.factory/verification-18.md`
+- Full report: `.factory/review-3.md`
 
 ## Result
 
-**PASS.** The live deployment matches the exact candidate's fresh production
-build and completes the researched core job. No critical, high, medium, or low
-release defect was found. No product source code or external resource was
-changed by this verification.
+The adversarial first-read review is complete. The verdict is **FAIL** with one
+reissued blocking finding and three minor findings. No product source, deployed
+resource, DNS, billing configuration, or external state was changed.
 
-The paid template tier is explicitly unavailable because the permitted scoped
-checkout returns HTTP 404. This is an honest, tested fallback under the product
-contract: there is no price, purchase promise, checkout control, or checkout
-request. The useful free planner, exports, backups, offline behavior, and demo
-all work. Existing-license verification remains product-scoped and rate-limited.
+## Verification completed
 
-## Verification summary
+- Cold live Chromium checks at 390 × 844 and 1440 × 900
+- One-click demo, reset, real-plan isolation, exit, and live offline reload
+- Same-origin request log and console/page-error recording
+- Metadata, canonical, OG, favicon, 404, deep-link, Back/focus, and internal-link checks
+- Mobile dark/reduced-motion and desktop light axe scans on all public routes
+- Every one of 19 exact claim commands from a fresh local clone: passed
+- Full fresh-clone `npm test`: passed, with 73 Playwright tests passed and one intentional skip
+- Production build: passed; `dist/` produced; app JavaScript 10.31 kB gzip
 
-- Clean checkout at candidate commit; `npm ci` reported 0 vulnerabilities.
-- All 19 exact `.factory/claims.json` commands passed independently.
-- `npm test` passed: lint, type/build, contracts, 9 units, clean-start check,
-  and 73/73 executed Playwright cases; one duplicate mobile SW case skipped.
-- Separate lint, TypeScript, unit, audit, and exact production build passed.
-- Real live workflow passed normal, duplicate, minimum, invalid URL, recovery,
-  persistence, CSV, JSON, 404-safety, and 80-topic boundary coverage.
-- One-click live demo opened six realistic topics at `/demo`, used only
-  `demo:exam-bridge:plan:v1`, and reloaded offline.
-- Ordinary planner/demo traffic was same-origin only. No normal-load console or
-  page errors occurred.
-- License verifier allowance observed: 30 responses, then HTTP 429 on request
-  31 with `Retry-After: 4`.
-- Factory URL checks passed root, demo, Privacy, and Terms. All internal links
-  resolve; unknown routes return the designed HTTP 404.
-- Live axe: zero serious/critical findings on mobile reduced motion and desktop
-  light/dark. Keyboard focus, skip navigation, route focus/announcement, Space
-  activation, 44 px targets, and 390 px no-overflow behavior pass.
-- Eleven representative live files match local `dist/` byte-for-byte. Security
-  and caching headers are correct.
-- Fresh mobile Lighthouse: 94 performance, 100 accessibility, 100 best
-  practices, 100 SEO; FCP 1.0 s, LCP 1.3 s, TBT 300 ms, CLS 0.
-- Assets: 29,307 B JS raw / 10,278 B gzip; 18,286 B CSS raw / 4,793 B gzip;
-  19,704 B hero; no runtime font; 38 KiB initial transfer.
+## Findings left for the owner
 
-## Run locally
+1. **F-1-1, blocking regression:** the brief says freemium, but no new customer
+   can buy the unavailable paid templates.
+2. **F-3-1:** `/` and `/demo` hide every header navigation link at phone width.
+3. **F-3-2:** three template cards expose the same vague “Try in demo” link.
+4. **F-3-3:** the README's license paragraph uses implementation jargon.
+
+## Evidence and reproduction
+
+Review screenshots are in `.factory/review-3-artifacts/`. To reproduce the
+repository checks:
 
 ```sh
 npm ci
 npm test
 npm run build
-npm run preview
 ```
 
-## Known limitation / next step
-
-An authorized billing operator may later register the Exam Bridge checkout and
-commission a separate implementation and verification of the purchase and
-return-token flow. Until then, keep the current unavailable wording and do not
-expose a dead checkout. Evidence for this verification is in
-`.factory/verification-18-evidence/`.
+Run each `test` command in `.factory/claims.json` independently from a fresh
+clone to reproduce the claim gate. The report contains exact live quotes,
+rewrites, route results, claim results, and the complete earlier-finding recheck.
