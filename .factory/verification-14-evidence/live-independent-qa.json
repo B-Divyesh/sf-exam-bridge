@@ -1,0 +1,293 @@
+{
+  "desktopFlow": {
+    "oneTopicError": "Add at least two distinct topic lines so there is a route to build.",
+    "sourceError": "Use a complete http:// or https:// URL for the syllabus source.",
+    "sourceFocused": true,
+    "dedupedCount": 2,
+    "firstHeading": "Signals and systems",
+    "practiceError": "Use a complete http:// or https:// link.",
+    "csvRows": 3,
+    "csvHasReference": true,
+    "jsonTopicCount": 2,
+    "jsonHasReference": true,
+    "storedBytes": 651,
+    "persistedCount": 2,
+    "persistedRef": 1,
+    "crossOriginRequests": [],
+    "requests": [
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-C-sjjQ5-.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-DkpUjvaJ.css",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/route-focus.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-C-sjjQ5-.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-DkpUjvaJ.css",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/route-focus.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-C-sjjQ5-.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/main-DkpUjvaJ.css",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/route-focus.js",
+        "postData": null
+      },
+      {
+        "method": "GET",
+        "url": "https://exam-bridge.sociobot.in/assets/learning-topology.webp",
+        "postData": null
+      }
+    ],
+    "consoleErrors": [],
+    "pageErrors": [],
+    "axe": [
+      {
+        "label": "desktop real light",
+        "seriousCritical": [],
+        "allViolations": []
+      },
+      {
+        "label": "desktop real dark",
+        "seriousCritical": [],
+        "allViolations": []
+      }
+    ]
+  },
+  "mobile": {
+    "audience": {
+      "x": 12,
+      "y": 385.796875,
+      "width": 366,
+      "height": 121.5625
+    },
+    "cta": {
+      "x": 12,
+      "y": 581.359375,
+      "width": 366,
+      "height": 44
+    },
+    "firstFocus": {
+      "text": "Skip to planner",
+      "href": "#main"
+    },
+    "afterSkip": {
+      "id": "main",
+      "outline": "rgb(23, 33, 31) solid 0px"
+    },
+    "demoTopics": 6,
+    "banner": 1,
+    "reset": 1,
+    "startReal": 1,
+    "dims": {
+      "innerWidth": 390,
+      "clientWidth": 390,
+      "scrollWidth": 390
+    },
+    "motion": {
+      "animation": "1e-05s",
+      "transition": "1e-05s"
+    },
+    "targetCount": 94,
+    "undersized": [
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 176,
+        "height": 42
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      },
+      {
+        "label": "",
+        "display": "block",
+        "visibility": "visible",
+        "width": 20,
+        "height": 20
+      }
+    ],
+    "axe": [
+      {
+        "label": "mobile demo light",
+        "seriousCritical": [],
+        "allViolations": []
+      },
+      {
+        "label": "mobile demo dark",
+        "seriousCritical": [],
+        "allViolations": []
+      }
+    ],
+    "consoleErrors": [],
+    "pageErrors": []
+  },
+  "offline": {
+    "controllerBefore": "https://exam-bridge.sociobot.in/sw.js",
+    "topics": 6,
+    "offlineBanner": 1,
+    "consoleErrors": []
+  }
+}

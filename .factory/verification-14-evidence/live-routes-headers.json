@@ -1,0 +1,355 @@
+{
+  "routes": [
+    {
+      "path": "/",
+      "status": 200,
+      "title": "Exam Bridge — turn a syllabus into a study route",
+      "lang": "en",
+      "h1": [
+        "Turn a syllabus into a study route."
+      ],
+      "main": 1,
+      "missingAlt": [],
+      "canonical": "https://exam-bridge.sociobot.in/",
+      "description": "Turn a syllabus into a prerequisite-aware study route linked to your own past-question references.",
+      "ogImage": "https://exam-bridge.sociobot.in/assets/exam-bridge-social.jpg",
+      "anchors": [
+        "https://exam-bridge.sociobot.in/#main",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/demo",
+        "https://exam-bridge.sociobot.in/#how",
+        "https://exam-bridge.sociobot.in/#templates",
+        "https://exam-bridge.sociobot.in/privacy/",
+        "https://exam-bridge.sociobot.in/demo",
+        "https://exam-bridge.sociobot.in/#planner",
+        "https://exam-bridge.sociobot.in/demo#templates",
+        "https://exam-bridge.sociobot.in/demo#templates",
+        "https://exam-bridge.sociobot.in/demo#templates",
+        "https://exam-bridge.sociobot.in/privacy/",
+        "https://exam-bridge.sociobot.in/terms/"
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "path": "/demo",
+      "status": 200,
+      "title": "Demo — Exam Bridge",
+      "lang": "en",
+      "h1": [
+        "Turn a syllabus into a study route."
+      ],
+      "main": 1,
+      "missingAlt": [],
+      "canonical": "https://exam-bridge.sociobot.in/demo",
+      "description": "Explore a six-topic sample study route without changing your real plan.",
+      "ogImage": "https://exam-bridge.sociobot.in/assets/exam-bridge-social.jpg",
+      "anchors": [
+        "https://exam-bridge.sociobot.in/demo#main",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/demo",
+        "https://exam-bridge.sociobot.in/demo#how",
+        "https://exam-bridge.sociobot.in/demo#templates",
+        "https://exam-bridge.sociobot.in/privacy/",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/demo#planner",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/privacy/",
+        "https://exam-bridge.sociobot.in/terms/"
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "path": "/privacy/",
+      "status": 200,
+      "title": "Privacy — Exam Bridge",
+      "lang": "en",
+      "h1": [
+        "Privacy, in plain language"
+      ],
+      "main": 1,
+      "missingAlt": [],
+      "canonical": "https://exam-bridge.sociobot.in/privacy/",
+      "description": "How Exam Bridge stores plans and protects study data in your browser.",
+      "ogImage": "https://exam-bridge.sociobot.in/assets/exam-bridge-social.jpg",
+      "anchors": [
+        "https://exam-bridge.sociobot.in/privacy/#main",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/demo",
+        "https://exam-bridge.sociobot.in/privacy/",
+        "https://exam-bridge.sociobot.in/terms/",
+        "mailto:privacy@sociobot.in",
+        "https://exam-bridge.sociobot.in/privacy/",
+        "https://exam-bridge.sociobot.in/terms/"
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "path": "/terms/",
+      "status": 200,
+      "title": "Terms — Exam Bridge",
+      "lang": "en",
+      "h1": [
+        "Terms of use"
+      ],
+      "main": 1,
+      "missingAlt": [],
+      "canonical": "https://exam-bridge.sociobot.in/terms/",
+      "description": "Terms for using Exam Bridge to organize syllabus topics and permitted question references.",
+      "ogImage": "https://exam-bridge.sociobot.in/assets/exam-bridge-social.jpg",
+      "anchors": [
+        "https://exam-bridge.sociobot.in/terms/#main",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/demo",
+        "https://exam-bridge.sociobot.in/privacy/",
+        "https://exam-bridge.sociobot.in/terms/",
+        "mailto:support@sociobot.in",
+        "https://exam-bridge.sociobot.in/privacy/",
+        "https://exam-bridge.sociobot.in/terms/"
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "path": "/404.html",
+      "status": 200,
+      "title": "Page not found — Exam Bridge",
+      "lang": "en",
+      "h1": [
+        "This route does not exist."
+      ],
+      "main": 1,
+      "missingAlt": [],
+      "canonical": "https://exam-bridge.sociobot.in/404.html",
+      "description": "The requested Exam Bridge route was not found. Return to the planner or open the sample route.",
+      "ogImage": "https://exam-bridge.sociobot.in/assets/exam-bridge-social.jpg",
+      "anchors": [
+        "https://exam-bridge.sociobot.in/404.html#main",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/demo",
+        "https://exam-bridge.sociobot.in/privacy/",
+        "https://exam-bridge.sociobot.in/terms/",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/demo",
+        "https://exam-bridge.sociobot.in/privacy/",
+        "https://exam-bridge.sociobot.in/terms/"
+      ],
+      "consoleErrors": [],
+      "pageErrors": []
+    },
+    {
+      "path": "/verification-14-missing-route",
+      "status": 404,
+      "title": "Page not found — Exam Bridge",
+      "lang": "en",
+      "h1": [
+        "This route does not exist."
+      ],
+      "main": 1,
+      "missingAlt": [],
+      "canonical": "https://exam-bridge.sociobot.in/404.html",
+      "description": "The requested Exam Bridge route was not found. Return to the planner or open the sample route.",
+      "ogImage": "https://exam-bridge.sociobot.in/assets/exam-bridge-social.jpg",
+      "anchors": [
+        "https://exam-bridge.sociobot.in/verification-14-missing-route#main",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/demo",
+        "https://exam-bridge.sociobot.in/privacy/",
+        "https://exam-bridge.sociobot.in/terms/",
+        "https://exam-bridge.sociobot.in/",
+        "https://exam-bridge.sociobot.in/demo",
+        "https://exam-bridge.sociobot.in/privacy/",
+        "https://exam-bridge.sociobot.in/terms/"
+      ],
+      "consoleErrors": [
+        "Failed to load resource: the server responded with a status of 404 ()"
+      ],
+      "pageErrors": []
+    }
+  ],
+  "links": [
+    "https://exam-bridge.sociobot.in/#main",
+    "https://exam-bridge.sociobot.in/",
+    "https://exam-bridge.sociobot.in/demo",
+    "https://exam-bridge.sociobot.in/#how",
+    "https://exam-bridge.sociobot.in/#templates",
+    "https://exam-bridge.sociobot.in/privacy/",
+    "https://exam-bridge.sociobot.in/#planner",
+    "https://exam-bridge.sociobot.in/demo#templates",
+    "https://exam-bridge.sociobot.in/terms/",
+    "https://exam-bridge.sociobot.in/demo#main",
+    "https://exam-bridge.sociobot.in/demo#how",
+    "https://exam-bridge.sociobot.in/demo#planner",
+    "https://exam-bridge.sociobot.in/privacy/#main",
+    "mailto:privacy@sociobot.in",
+    "https://exam-bridge.sociobot.in/terms/#main",
+    "mailto:support@sociobot.in",
+    "https://exam-bridge.sociobot.in/404.html#main",
+    "https://exam-bridge.sociobot.in/verification-14-missing-route#main"
+  ],
+  "linkResults": [
+    {
+      "url": "https://exam-bridge.sociobot.in/#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/demo",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/#how",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/#templates",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/privacy/",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/#planner",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/demo#templates",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/terms/",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/demo#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/demo#how",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/demo#planner",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/privacy/#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/terms/#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/404.html#main",
+      "status": 200,
+      "location": null
+    },
+    {
+      "url": "https://exam-bridge.sociobot.in/verification-14-missing-route#main",
+      "status": 404,
+      "location": null
+    }
+  ],
+  "headers": [
+    {
+      "path": "/",
+      "status": 200,
+      "headers": {
+        "cache-control": "public, must-revalidate, max-age=30",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in https://pilot-api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/html",
+        "etag": "\"32969754\"",
+        "last-modified": "Tue, 01 Sep 2026 23:36:03 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    {
+      "path": "/assets/main-C-sjjQ5-.js",
+      "status": 200,
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in https://pilot-api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/javascript",
+        "etag": "\"32969754\"",
+        "last-modified": "Tue, 01 Sep 2026 23:36:03 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    {
+      "path": "/assets/main-DkpUjvaJ.css",
+      "status": 200,
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in https://pilot-api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/css",
+        "etag": "\"32969754\"",
+        "last-modified": "Tue, 01 Sep 2026 23:36:03 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    {
+      "path": "/sw.js",
+      "status": 200,
+      "headers": {
+        "cache-control": "no-cache",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in https://pilot-api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "text/javascript",
+        "etag": "\"32969754\"",
+        "last-modified": "Tue, 01 Sep 2026 23:36:03 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    },
+    {
+      "path": "/assets/learning-topology.webp",
+      "status": 200,
+      "headers": {
+        "cache-control": "public, max-age=31536000, immutable",
+        "content-security-policy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in https://pilot-api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+        "content-type": "image/webp",
+        "etag": "\"32969754\"",
+        "last-modified": "Tue, 01 Sep 2026 23:36:03 GMT",
+        "permissions-policy": "camera=(), microphone=(), geolocation=()",
+        "referrer-policy": "strict-origin-when-cross-origin",
+        "strict-transport-security": "max-age=10886400; includeSubDomains; preload",
+        "x-content-type-options": "nosniff"
+      }
+    }
+  ]
+}
