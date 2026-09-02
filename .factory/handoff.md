@@ -1,39 +1,27 @@
-# Exam Bridge review 3 handoff — FAIL
+# Exam Bridge polish 3 handoff — PASS
 
-- Work order: `exam-bridge-review-3`
-- Reviewed candidate: `666672cbfff0a8ab5e106a904111e2b3bb882b36`
+- Work order: `exam-bridge-polish-3`
+- Repaired candidate: `666672cbfff0a8ab5e106a904111e2b3bb882b36`
+- Repair commit: `59fb6081fc8b655c9e6c67eb558a163591107275`
 - Live URL: <https://exam-bridge.sociobot.in/>
-- Full report: `.factory/review-3.md`
+- Deployment: product-owned Azure Static Web App `sf-exam-bridge`, production
+  deployment completed 2 September 2026 UTC.
 
-## Result
+## What changed
 
-The adversarial first-read review is complete. The verdict is **FAIL** with one
-reissued blocking finding and three minor findings. No product source, deployed
-resource, DNS, billing configuration, or external state was changed.
+Exam Bridge now ships as a complete free local-first planner. The inaccessible
+paid-template and license-verification path was removed rather than presenting
+a broken purchase option. All three editable starter templates work in the real
+planner without payment. The mobile header now exposes a labelled, keyboard
+operable menu, including Escape focus return. Each template button names the
+template it creates. The README and legal copy use plain user-facing language.
 
-## Verification completed
+The one-click `/demo` and `?demo=1` sample path remains isolated in the
+`demo:exam-bridge:*` namespace, with its persistent banner, reset, start-for-
+real action, and offline reload. Route titles, canonical metadata, focus
+handling, legal links, CSP, and the designed 404 remain intact.
 
-- Cold live Chromium checks at 390 × 844 and 1440 × 900
-- One-click demo, reset, real-plan isolation, exit, and live offline reload
-- Same-origin request log and console/page-error recording
-- Metadata, canonical, OG, favicon, 404, deep-link, Back/focus, and internal-link checks
-- Mobile dark/reduced-motion and desktop light axe scans on all public routes
-- Every one of 19 exact claim commands from a fresh local clone: passed
-- Full fresh-clone `npm test`: passed, with 73 Playwright tests passed and one intentional skip
-- Production build: passed; `dist/` produced; app JavaScript 10.31 kB gzip
-
-## Findings left for the owner
-
-1. **F-1-1, blocking regression:** the brief says freemium, but no new customer
-   can buy the unavailable paid templates.
-2. **F-3-1:** `/` and `/demo` hide every header navigation link at phone width.
-3. **F-3-2:** three template cards expose the same vague “Try in demo” link.
-4. **F-3-3:** the README's license paragraph uses implementation jargon.
-
-## Evidence and reproduction
-
-Review screenshots are in `.factory/review-3-artifacts/`. To reproduce the
-repository checks:
+## How to run and verify
 
 ```sh
 npm ci
@@ -41,6 +29,29 @@ npm test
 npm run build
 ```
 
-Run each `test` command in `.factory/claims.json` independently from a fresh
-clone to reproduce the claim gate. The report contains exact live quotes,
-rewrites, route results, claim results, and the complete earlier-finding recheck.
+`npm test` runs lint, the production build, contracts, 9 unit tests, the
+clean-start check, accessibility integration, service-worker renewal, and 66
+Playwright tests. Run every exact command in `.factory/claims.json` separately
+from a new clone for the claim gate; 16 current claims are registered.
+
+## Evidence
+
+- A fresh clone at `59fb608` completed `npm ci`, every exact claim command, and
+  `npm test` successfully.
+- The shipped build is 26.91 kB raw / 9.49 kB gzip JavaScript and 18.21 kB raw
+  / 4.77 kB gzip CSS.
+- Cold live URL verification passed for `/`, `/demo`, `/privacy/`, and `/terms/`
+  with zero console errors: `polish-3-artifacts/live-*/verify.json`.
+- Fresh live browser contexts proved demo isolation/reset/exit, same-origin
+  traffic, offline demo reload, mobile navigation, named free template actions,
+  legal navigation, and no purchase path:
+  [live QA report](polish-3-artifacts/live-product-qa.json).
+- Live Lighthouse mobile scores were Performance 100, Accessibility 100, Best
+  Practices 100, and SEO 100; FCP and LCP were 1.5 s with CLS 0:
+  [report](polish-3-artifacts/lighthouse-live-mobile.json).
+- The full review mapping is in `.factory/polish-3.md`.
+
+## Known gaps and next steps
+
+None. No shared resource, billing configuration, DNS record, or external data
+store was changed.

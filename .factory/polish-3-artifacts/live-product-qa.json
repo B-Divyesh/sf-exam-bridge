@@ -1,0 +1,75 @@
+{
+  "base": "https://exam-bridge.sociobot.in",
+  "root": {
+    "title": "Exam Bridge — turn a syllabus into a study route",
+    "sampleBox": {
+      "x": 12,
+      "y": 501.359375,
+      "width": 366,
+      "height": 44
+    },
+    "links": {
+      "Demo": "/demo",
+      "How it works": "#how",
+      "Templates": "#templates",
+      "Privacy": "/privacy/"
+    },
+    "templateLabels": [
+      "Use Engineering foundations template",
+      "Use Computer science foundations template",
+      "Use Quantitative foundations template"
+    ],
+    "freeTemplateResult": "Engineering foundations"
+  },
+  "demo": {
+    "storage": {
+      "real": "live-real-marker",
+      "demoKeys": []
+    },
+    "requestCount": 15,
+    "sameOriginOnly": true
+  },
+  "offline": {
+    "title": "GATE ECE return plan",
+    "notice": true
+  },
+  "legal": {
+    "privacyNav": [
+      {
+        "name": "Planner",
+        "visible": true
+      },
+      {
+        "name": "Demo",
+        "visible": true
+      },
+      {
+        "name": "Privacy",
+        "visible": true
+      },
+      {
+        "name": "Terms",
+        "visible": true
+      }
+    ],
+    "termsNav": [
+      {
+        "name": "Planner",
+        "visible": true
+      },
+      {
+        "name": "Demo",
+        "visible": true
+      },
+      {
+        "name": "Privacy",
+        "visible": true
+      },
+      {
+        "name": "Terms",
+        "visible": true
+      }
+    ]
+  },
+  "errors": []
+}
