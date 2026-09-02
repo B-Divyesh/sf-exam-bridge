@@ -4,7 +4,7 @@
     "claim": "Try a realistic six-topic route in one click without changing your real plan.",
     "where": "landing first screen, demo banner, README",
     "test": "npm run test:e2e -- --project=desktop --grep @claim:demo-sandbox",
-    "sandbox": "fresh browser context; seed a real-plan marker; enter /demo; edit and reset; assert only demo-prefixed keys change; exit and assert demo keys are removed"
+    "sandbox": "fresh browser context; enter from the landing in one click at 1440x900 and 390x844; assert the populated workspace and route summary fit the first viewport; verify isolated edits, reset, and exit"
   },
   {
     "id": "not-found-plan-safety",
@@ -98,11 +98,11 @@
     "sandbox": "fresh context; build a real plan; use a template; download CSV and JSON; assert every control stays enabled without account, card, payment, checkout, or cross-origin request"
   },
   {
-    "id": "no-dead-purchase-action",
-    "claim": "Exam Bridge presents no purchase or checkout action.",
+    "id": "checkout-unavailable",
+    "claim": "Checkout is unavailable and disabled, and Exam Bridge makes no checkout request.",
     "where": "templates section, Privacy, Terms, README",
-    "test": "npm run test:e2e -- --project=desktop --grep @claim:no-dead-purchase-action",
-    "sandbox": "fresh real-planner context; inspect visible controls and outgoing requests while using a template; assert no checkout URL, purchase control, price promise, or cross-origin request"
+    "test": "npm run test:e2e -- --project=desktop --grep @claim:checkout-unavailable",
+    "sandbox": "fresh real-planner context; assert the unavailable checkout control is disabled, no paid tier or price is promised, and no checkout URL or cross-origin request exists"
   },
   {
     "id": "accessible-responsive",

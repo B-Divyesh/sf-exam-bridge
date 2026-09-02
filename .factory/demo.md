@@ -5,6 +5,7 @@
 - Direct URL: `https://exam-bridge.sociobot.in/demo`
 - Local URL after `npm run dev` or `npm run preview`: `/demo`
 - The landing page action **Try it with sample data** opens the same route in one click.
+- The demo opens at the populated workspace on desktop and 390 px screens.
 - `/?demo=1` is also accepted for compatibility.
 
 ## Sample data

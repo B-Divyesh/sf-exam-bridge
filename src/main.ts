@@ -183,7 +183,7 @@ function templatesSection(): string {
   const cards = templates.map((template, index) => `<article><div><span class="template-shape" aria-hidden="true"></span><h3>${template.name}</h3><p>${template.note}</p><small>${template.topics.length} editable topics</small></div><button type="button" data-template="${index}">Use template</button></article>`).join('');
   return `<section class="templates" id="templates" aria-labelledby="templates-title"><div class="section-index"><span>+</span><div><p class="eyebrow">Reusable starting points</p><h2 id="templates-title">Choose a starter template</h2><p>Start with a reusable plan, then edit it to match your official outline.</p></div></div>
     <div class="template-list">${cards}</div>
-    <aside class="access-panel template-access"><p class="eyebrow">Free starter plans</p><h3>Use any template at no cost</h3><p>Templates stay in this browser and never replace an official syllabus.</p></aside>
+    <aside class="access-panel template-access"><p class="eyebrow">Free starter plans</p><h3>Use any template at no cost</h3><p>Templates stay in this browser and never replace an official syllabus.</p><div class="checkout-state"><button type="button" disabled aria-describedby="checkout-status">Checkout unavailable</button><p id="checkout-status">No paid offer is available. All current tools are free.</p></div></aside>
   </section>`;
 }
 
@@ -213,12 +213,25 @@ function render(): void {
   app.setAttribute('aria-busy', 'true');
   delete app.dataset.appMode;
   updateRouteMetadata();
-  app.innerHTML = `${appHeader()}${demoBanner()}<div id="offline-banner" class="offline-banner" role="status" hidden>You’re offline. Planning and exports still work on this device.</div><main id="main" tabindex="-1">${hero()}<section id="how" class="how"><p><b>Paste the outline.</b> Rate what you know. Attach only references you’re allowed to use. Your study map stays in this browser.</p></section><div id="planner">${workspace()}</div>${templatesSection()}<section class="principles" aria-labelledby="principles-title"><p class="eyebrow">Privacy and planning limits</p><h2 id="principles-title">What Exam Bridge does not do</h2><div><p>Plans stay in this browser. Exam Bridge does not host exam questions or coaching notes.</p><p>Check the official syllabus before studying. Prerequisite suggestions are only starting points.</p><p>Exam Bridge is not endorsed by any exam authority.</p></div></section></main><footer><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Exam Bridge</span></div><p>Turn a syllabus into a study route · Original generated illustration · no tracking · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.6</p></footer><div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
+  app.innerHTML = `${appHeader()}${demoBanner()}<div id="offline-banner" class="offline-banner" role="status" hidden>You’re offline. Planning and exports still work on this device.</div><main id="main" tabindex="-1">${hero()}<section id="how" class="how"><p><b>Paste the outline.</b> Rate what you know. Attach only references you’re allowed to use. Your study map stays in this browser.</p></section><div id="planner">${workspace()}</div>${templatesSection()}<section class="principles" aria-labelledby="principles-title"><p class="eyebrow">Privacy and planning limits</p><h2 id="principles-title">What Exam Bridge does not do</h2><div><p>Plans stay in this browser. Exam Bridge does not host exam questions or coaching notes.</p><p>Check the official syllabus before studying. Prerequisite suggestions are only starting points.</p><p>Exam Bridge is not endorsed by any exam authority.</p></div></section></main><footer><div class="brand"><span class="brand-mark" aria-hidden="true"><i></i></span><span>Exam Bridge</span></div><p>Turn a syllabus into a study route · Original generated illustration · no tracking · <a href="/privacy/">Privacy</a> · <a href="/terms/">Terms</a> · Built by Param Factory · v1.0.7</p></footer><div id="route-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div><div class="toast" id="toast" role="status" aria-live="polite"></div>`;
   updateNetworkStatus();
   bindEvents();
   app.dataset.appMode = isDemo ? 'demo' : 'real';
   app.setAttribute('aria-busy', 'false');
+  revealDemoWorkspace();
   focusHeadingAfterRouteChange();
+}
+
+function revealDemoWorkspace(): void {
+  if (!isDemo || (location.hash && location.hash !== '#planner')) return;
+  const planner = document.querySelector<HTMLElement>('#planner');
+  const banner = document.querySelector<HTMLElement>('.demo-banner');
+  if (!planner) return;
+  const top = planner.getBoundingClientRect().top + window.scrollY - (banner?.getBoundingClientRect().height ?? 0) - 16;
+  const previousBehavior = document.documentElement.style.scrollBehavior;
+  document.documentElement.style.scrollBehavior = 'auto';
+  window.scrollTo(0, Math.max(0, top));
+  document.documentElement.style.scrollBehavior = previousBehavior;
 }
 
 function focusHeadingAfterRouteChange(): void {
@@ -227,7 +240,7 @@ function focusHeadingAfterRouteChange(): void {
   if (!shouldFocus) return;
   sessionStorage.removeItem(ROUTE_FOCUS_KEY);
   window.requestAnimationFrame(() => {
-    const heading = document.querySelector<HTMLElement>('h1');
+    const heading = document.querySelector<HTMLElement>(isDemo ? '#workspace-title' : 'h1');
     if (!heading) return;
     heading.tabIndex = -1;
     heading.focus({ preventScroll: true });

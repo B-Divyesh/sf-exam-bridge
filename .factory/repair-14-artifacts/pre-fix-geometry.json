@@ -1,0 +1,64 @@
+[
+  {
+    "name": "desktop",
+    "width": 1440,
+    "height": 900,
+    "actionBefore": {
+      "x": 130,
+      "y": 490.046875,
+      "width": 249.671875,
+      "height": 44
+    },
+    "factsBefore": {
+      "x": 130,
+      "y": 609.421875,
+      "width": 502.1875,
+      "height": 67.28125
+    },
+    "scrollY": 0,
+    "workspace": {
+      "x": 130,
+      "y": 1032.734375,
+      "width": 1180,
+      "height": 3377.09375
+    },
+    "firstTopic": {
+      "x": 190,
+      "y": 1613.7039794921875,
+      "width": 1060,
+      "height": 407.625
+    },
+    "workspaceVisible": false
+  },
+  {
+    "name": "mobile",
+    "width": 390,
+    "height": 844,
+    "actionBefore": {
+      "x": 12,
+      "y": 581.359375,
+      "width": 366,
+      "height": 44
+    },
+    "factsBefore": {
+      "x": 12,
+      "y": 1180.65625,
+      "width": 366,
+      "height": 95.421875
+    },
+    "scrollY": 0,
+    "workspace": {
+      "x": 12,
+      "y": 1662.796875,
+      "width": 366,
+      "height": 6290.59375
+    },
+    "firstTopic": {
+      "x": 12,
+      "y": 2455.512939453125,
+      "width": 366,
+      "height": 913.53125
+    },
+    "workspaceVisible": false
+  }
+]

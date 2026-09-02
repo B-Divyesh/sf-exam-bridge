@@ -7,25 +7,28 @@ test.beforeEach(async ({ page }) => {
   await page.reload();
 });
 
-test('keeps the audience and sample action in the unscrolled 390 by 844 first viewport', async ({ page }) => {
+test('keeps the audience, sample action, and three facts in the unscrolled 390 by 844 first viewport', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('/');
 
   const audience = page.locator('.lede');
   const sampleAction = page.getByRole('link', { name: 'Try it with sample data' });
+  const facts = page.locator('.hero-facts');
   const illustration = page.locator('.hero-figure');
 
   await expect(audience).toBeVisible();
   await expect(sampleAction).toBeVisible();
   expect(await page.evaluate(() => window.scrollY)).toBe(0);
 
-  const [audienceBox, actionBox, illustrationBox] = await Promise.all([
+  const [audienceBox, actionBox, factsBox, illustrationBox] = await Promise.all([
     audience.boundingBox(),
     sampleAction.boundingBox(),
+    facts.boundingBox(),
     illustration.boundingBox(),
   ]);
   expect(audienceBox).not.toBeNull();
   expect(actionBox).not.toBeNull();
+  expect(factsBox).not.toBeNull();
   expect(illustrationBox).not.toBeNull();
   const bottom = (box: NonNullable<typeof audienceBox>) => box.y + box.height;
 
@@ -35,7 +38,9 @@ test('keeps the audience and sample action in the unscrolled 390 by 844 first vi
   expect(bottom(audienceBox!)).toBeLessThanOrEqual(844);
   expect(actionBox!.y).toBeGreaterThanOrEqual(0);
   expect(bottom(actionBox!)).toBeLessThanOrEqual(844);
-  expect(bottom(actionBox!)).toBeLessThanOrEqual(illustrationBox!.y);
+  expect(factsBox!.y).toBeGreaterThanOrEqual(bottom(actionBox!));
+  expect(bottom(factsBox!)).toBeLessThanOrEqual(844);
+  expect(bottom(factsBox!)).toBeLessThanOrEqual(illustrationBox!.y);
 });
 
 test('builds and updates a complete local study route', async ({ page }) => {
@@ -124,8 +129,8 @@ test('moves focus to the new heading and announces Home → Demo and Back route 
   await demoLink.focus();
   await page.keyboard.press('Enter');
   await expect(page).toHaveURL(/\/demo\/?$/);
-  await expect(page.locator('h1')).toBeFocused();
-  await expect(page.locator('#route-announcer')).toContainText('Demo loaded: Turn a syllabus into a study route.');
+  await expect(page.locator('#workspace-title')).toBeFocused();
+  await expect(page.locator('#route-announcer')).toContainText('Demo loaded: GATE ECE return plan');
 
   await page.goBack();
   await expect(page).toHaveURL('http://127.0.0.1:4173/');
@@ -201,8 +206,9 @@ test('keeps all effective route, shell, and footer targets at least 44px at 390p
   }
 });
 
-test('keeps templates free and offers no purchase controls', async ({ page }) => {
+test('keeps templates free and any unavailable checkout disabled', async ({ page }) => {
   await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
+  await expect(page.getByRole('button', { name: 'Checkout unavailable' })).toBeDisabled();
   await expect(page.locator('a[href*="checkout" i], form[action*="checkout" i]')).toHaveCount(0);
   await expect(page.getByText(/₹499|one-time license|exam bridge plus/iu)).toHaveCount(0);
   await page.getByRole('button', { name: 'Use template' }).first().click();

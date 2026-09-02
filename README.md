@@ -10,6 +10,7 @@ Live product: <https://exam-bridge.sociobot.in>
 
 Open <https://exam-bridge.sociobot.in/demo> or select **Try it with sample data**
 on the first screen. The six-topic sample opens without an account or setup.
+Its populated workspace is visible immediately on desktop and 390 px screens.
 Demo changes use `demo:exam-bridge:*` storage and never touch your real plan.
 Use **Reset demo** to restore the sample. Use **Start for real** to discard it.
 
@@ -57,7 +58,8 @@ npm run preview
 
 The planner, three starter templates, CSV exports, and JSON backups are free.
 They need no account, card, checkout, or payment. Templates are editable starting
-points, not official syllabuses. The app presents no purchase or checkout action.
+points, not official syllabuses. Checkout is unavailable and disabled. There is
+no paid offer.
 
 ## Deployment and privacy
 

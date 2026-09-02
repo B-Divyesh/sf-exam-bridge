@@ -3,12 +3,13 @@
   const normalize = (pathname) => pathname.replace(/\/+$/, '') || '/';
 
   const focusHeading = () => {
-    const heading = document.querySelector('h1');
+    const demo = normalize(location.pathname) === '/demo' || new URLSearchParams(location.search).get('demo') === '1';
+    const heading = document.querySelector(demo ? '#workspace-title' : 'h1');
     if (!heading) return false;
     heading.tabIndex = -1;
     heading.focus({ preventScroll: true });
     const announcer = document.querySelector('#route-announcer');
-    const routeName = normalize(location.pathname) === '/demo' ? 'Demo' : normalize(location.pathname) === '/' ? 'Planner' : 'Page';
+    const routeName = demo ? 'Demo' : normalize(location.pathname) === '/' ? 'Planner' : 'Page';
     if (announcer) announcer.textContent = `${routeName} loaded: ${heading.textContent.trim()}`;
     return true;
   };

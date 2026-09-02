@@ -1,6 +1,6 @@
 # Exam Bridge copy audit
 
-Audited 1 September 2026 against the rendered landing, demo, legal, and README
+Audited 2 September 2026 against the rendered landing, demo, legal, and README
 copy. Counts treat hyphenated forms and numeric ranges as one word.
 
 ## First screen
@@ -37,6 +37,9 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Free starter plans | 3 | `free-access` |
 | Use any template at no cost | 6 | `templates` |
 | Templates stay in this browser and never replace an official syllabus. | 11 | `templates`, `starter-template-boundary` |
+| Checkout unavailable | 2 | `checkout-unavailable` |
+| No paid offer is available. | 5 | `checkout-unavailable` |
+| All current tools are free. | 5 | `free-access` |
 | Plans stay in this browser. | 5 | `local-private` |
 | Exam Bridge does not host exam questions or coaching notes. | 9 | `hosted-content-boundary` |
 | Check the official syllabus before studying. | 6 | Boundary |
@@ -53,6 +56,7 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Start for real | 3 | Action |
 | Explore six realistic topics. | 4 | `demo-sandbox` |
 | Changes stay in the temporary demo sandbox. | 7 | `demo-sandbox` |
+| Its populated workspace is visible immediately on desktop and 390 px screens. | 11 | `demo-sandbox` |
 | You’re offline. | 2 | State |
 | Planning and exports still work on this device. | 9 | `offline-reload`, `csv-export` |
 
@@ -65,13 +69,15 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | They are not sent to Exam Bridge. | 7 | `local-private` |
 | The demo uses separate keys beginning with demo:exam-bridge:. | 8 | `demo-sandbox` |
 | It never reads or changes your real plan. | 8 | `demo-sandbox` |
-| The app loads no third-party scripts, fonts, advertisements, behavioral analytics, or checkout services. | 14 | `local-private`, `no-dead-purchase-action` |
+| The app loads no third-party scripts, fonts, advertisements, behavioral analytics, or checkout services. | 14 | `local-private`, `checkout-unavailable` |
 | Planning, templates, exports, and backups use this browser only. | 9 | `local-private`, `free-access` |
+| Checkout is unavailable and disabled. | 5 | `checkout-unavailable` |
+| The control sends no request. | 5 | `checkout-unavailable` |
 | Exam Bridge organizes study plans. | 5 | Plain description |
 | It does not guarantee results or represent an exam authority. | 10 | Boundary |
 | The planner, templates, CSV exports, and JSON backups are free. | 10 | `free-access` |
 | They need no account, card, checkout, or payment. | 8 | `free-access` |
-| The app presents no purchase or checkout action. | 8 | `no-dead-purchase-action` |
+| There is no paid offer. | 5 | `checkout-unavailable` |
 
 ## Not-found page
 
@@ -104,7 +110,7 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 - No sentence exceeds 22 words.
 - No banned marketing word appears in visitor copy.
 - The first screen names the audience, job, and first action.
-- The unavailable purchase promise was removed; templates are now clearly free.
+- Checkout is visibly unavailable and disabled; no paid tier is promised.
 - Every outcome, boundary, and provenance statement maps to a registered claim test.
 
 | Concept | Term used |

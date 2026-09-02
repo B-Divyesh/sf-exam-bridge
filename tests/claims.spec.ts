@@ -21,6 +21,7 @@ async function leaveDemoForReadyPlanner(page: import('@playwright/test').Page): 
 }
 
 test('@claim:demo-sandbox opens, resets, and leaves an isolated sample route', async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto('/');
   await page.evaluate(() => {
     localStorage.clear();
@@ -32,6 +33,13 @@ test('@claim:demo-sandbox opens, resets, and leaves an isolated sample route', a
   await expect(page).toHaveURL(/\/demo\/?$/);
   await expect(page.locator('#workspace-title')).toHaveText('GATE ECE return plan');
   await expect(page.locator('.topic')).toHaveCount(6);
+  const desktopWorkspace = await page.locator('.workspace').boundingBox();
+  const desktopOverview = await page.locator('.route-overview').boundingBox();
+  expect(desktopWorkspace, 'the populated workspace must be visible after the one sample click').not.toBeNull();
+  expect(desktopOverview, 'the populated route summary must be visible after the one sample click').not.toBeNull();
+  expect(desktopWorkspace!.y).toBeGreaterThanOrEqual(0);
+  expect(desktopWorkspace!.y).toBeLessThan(900);
+  expect(desktopOverview!.y + desktopOverview!.height).toBeLessThanOrEqual(900);
   expect(await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'))).toBe('real-plan-marker');
   expect(await page.evaluate(() => Object.keys(localStorage).filter(key => key.startsWith('demo:')))).toEqual(['demo:exam-bridge:plan:v1']);
 
@@ -43,6 +51,17 @@ test('@claim:demo-sandbox opens, resets, and leaves an isolated sample route', a
   await expect(page).toHaveURL('http://127.0.0.1:4173/');
   expect(await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'))).toBe('real-plan-marker');
   expect(await page.evaluate(() => Object.keys(localStorage).filter(key => key.startsWith('demo:')))).toEqual([]);
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.getByRole('link', { name: 'Try it with sample data' }).click();
+  await expect(page).toHaveURL(/\/demo\/?$/);
+  const mobileWorkspace = await page.locator('.workspace').boundingBox();
+  const mobileOverview = await page.locator('.route-overview').boundingBox();
+  expect(mobileWorkspace, 'the 390px sample workspace must be visible after one click').not.toBeNull();
+  expect(mobileOverview, 'the 390px populated route summary must be visible after one click').not.toBeNull();
+  expect(mobileWorkspace!.y).toBeGreaterThanOrEqual(0);
+  expect(mobileWorkspace!.y).toBeLessThan(844);
+  expect(mobileOverview!.y + mobileOverview!.height).toBeLessThanOrEqual(844);
 
   await page.goto('/?demo=1');
   await expect(page).toHaveTitle('Demo — Exam Bridge');
@@ -289,12 +308,14 @@ test('@claim:free-access provides the planner, templates, CSV, and JSON without 
   expect(requests.filter(url => /\/(?:auth|login|checkout|payment)(?:[/?#]|$)/iu.test(new URL(url).pathname))).toEqual([]);
 });
 
-test('@claim:no-dead-purchase-action presents no purchase, price, license, or checkout path', async ({ page }) => {
+test('@claim:checkout-unavailable keeps checkout truthful, disabled, and disconnected', async ({ page }) => {
   const requests: string[] = [];
   page.on('request', request => requests.push(request.url()));
   await page.goto('/');
 
-  await expect(page.locator('a[href*="checkout" i], form[action*="checkout" i], button').filter({ hasText: /buy|purchase|checkout|license|₹/iu })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Checkout unavailable' })).toBeDisabled();
+  await expect(page.locator('#checkout-status')).toHaveText('No paid offer is available. All current tools are free.');
+  await expect(page.locator('a[href*="checkout" i], form[action*="checkout" i]')).toHaveCount(0);
   await expect(page.locator('text=/₹499|one-time license|exam bridge plus/iu')).toHaveCount(0);
   await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
   await page.getByRole('button', { name: 'Use template' }).first().click();
