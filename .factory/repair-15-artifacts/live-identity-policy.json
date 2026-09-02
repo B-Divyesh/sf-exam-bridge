@@ -1,0 +1,115 @@
+{
+  "files": [
+    {
+      "url": "/",
+      "status": 200,
+      "bytes": 2183,
+      "localSha256": "8d2d7382c18716a5369e0b1065a6f57b75a47d17ba144c7463dad737a1c5b13f",
+      "liveSha256": "8d2d7382c18716a5369e0b1065a6f57b75a47d17ba144c7463dad737a1c5b13f",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30"
+    },
+    {
+      "url": "/demo",
+      "status": 200,
+      "bytes": 2030,
+      "localSha256": "07623cc52b6cf6b564238961dee9d8daaebd80837a6853187f77ef72735fc339",
+      "liveSha256": "07623cc52b6cf6b564238961dee9d8daaebd80837a6853187f77ef72735fc339",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30"
+    },
+    {
+      "url": "/privacy/",
+      "status": 200,
+      "bytes": 4355,
+      "localSha256": "08971039be6ba827e2fa1c73805f069761d5b5a051508443c9856b78e22c2c80",
+      "liveSha256": "08971039be6ba827e2fa1c73805f069761d5b5a051508443c9856b78e22c2c80",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30"
+    },
+    {
+      "url": "/terms/",
+      "status": 200,
+      "bytes": 4183,
+      "localSha256": "cc0113ad7b3bca86c36c094b02b84ace2b1e036f0b84153b677a336e1ca220b3",
+      "liveSha256": "cc0113ad7b3bca86c36c094b02b84ace2b1e036f0b84153b677a336e1ca220b3",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30"
+    },
+    {
+      "url": "/404.html",
+      "status": 200,
+      "bytes": 3055,
+      "localSha256": "ee76833eeb016e789190559c8c79cc72f3acb53b0dd078bf8b74625115b557bb",
+      "liveSha256": "ee76833eeb016e789190559c8c79cc72f3acb53b0dd078bf8b74625115b557bb",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30"
+    },
+    {
+      "url": "/sw.js",
+      "status": 200,
+      "bytes": 1326,
+      "localSha256": "5ea792315fe2de89f6117a5b63419faee4e4f43aaf9df3fa5a80bf82e480d02f",
+      "liveSha256": "5ea792315fe2de89f6117a5b63419faee4e4f43aaf9df3fa5a80bf82e480d02f",
+      "match": true,
+      "cacheControl": "no-cache"
+    },
+    {
+      "url": "/route-focus.js",
+      "status": 200,
+      "bytes": 1977,
+      "localSha256": "a1cd658a29e5fdea5bdf8c46f4d3b359328e00727bbff4015c7fe7963c874f42",
+      "liveSha256": "a1cd658a29e5fdea5bdf8c46f4d3b359328e00727bbff4015c7fe7963c874f42",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30"
+    },
+    {
+      "url": "/manifest.webmanifest",
+      "status": 200,
+      "bytes": 272,
+      "localSha256": "6fa5c8e733f5505af1a94051882771c02ce1587473012e639f77ad2b89f83965",
+      "liveSha256": "6fa5c8e733f5505af1a94051882771c02ce1587473012e639f77ad2b89f83965",
+      "match": true,
+      "cacheControl": "public, must-revalidate, max-age=30"
+    },
+    {
+      "url": "/assets/learning-topology.webp",
+      "status": 200,
+      "bytes": 19704,
+      "localSha256": "2b89e36f3b6404b94b7f87de69906ef6d45668f9a7c13e81190dbcb1f88b3441",
+      "liveSha256": "2b89e36f3b6404b94b7f87de69906ef6d45668f9a7c13e81190dbcb1f88b3441",
+      "match": true,
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "url": "/assets/main-CqvOZKh5.js",
+      "status": 200,
+      "bytes": 29372,
+      "localSha256": "abcbcc617bf8055f3e07e7b51400aa3d5e6c55eb4dbba8165b2d3366f38193dd",
+      "liveSha256": "abcbcc617bf8055f3e07e7b51400aa3d5e6c55eb4dbba8165b2d3366f38193dd",
+      "match": true,
+      "cacheControl": "public, max-age=31536000, immutable"
+    },
+    {
+      "url": "/assets/main-BmT7zjvM.css",
+      "status": 200,
+      "bytes": 18286,
+      "localSha256": "8de4b8524483af7d6602acdbfba0998c91afbd2c12aeb2d2e976a2a16900d877",
+      "liveSha256": "8de4b8524483af7d6602acdbfba0998c91afbd2c12aeb2d2e976a2a16900d877",
+      "match": true,
+      "cacheControl": "public, max-age=31536000, immutable"
+    }
+  ],
+  "allMatch": true,
+  "policy": {
+    "rootStatus": 200,
+    "missingStatus": 404,
+    "contentSecurityPolicy": "default-src 'self'; img-src 'self' data:; style-src 'self'; script-src 'self'; connect-src 'self' https://api.sociobot.in https://pilot-api.sociobot.in; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+    "strictTransportSecurity": "max-age=10886400; includeSubDomains; preload",
+    "referrerPolicy": "strict-origin-when-cross-origin",
+    "xContentTypeOptions": "nosniff",
+    "permissionsPolicy": "camera=(), microphone=(), geolocation=()",
+    "rootCacheControl": "public, must-revalidate, max-age=30",
+    "missingCacheControl": "public, must-revalidate, max-age=30"
+  }
+}

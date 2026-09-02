@@ -1,0 +1,20 @@
+{
+  "finding": "V16-2",
+  "candidate": "a1a021d29e5541e754515735889b88f602ce94b3",
+  "before": {
+    "exit_code": 1,
+    "result": "#how is not a headed semantic three-step section after #planner"
+  },
+  "after": {
+    "exit_code": 0,
+    "heading": "How it works",
+    "list_element": "OL",
+    "step_count": 3,
+    "after_planner": true,
+    "desktop_width": 1440,
+    "desktop_scroll_width": 1440,
+    "mobile_width": 390,
+    "mobile_scroll_width": 390,
+    "console_errors": 0
+  }
+}

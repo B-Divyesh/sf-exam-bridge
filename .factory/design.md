@@ -54,6 +54,10 @@ path rather than a generic card grid. Round nodes mean knowledge; square marks m
 practice. Primary controls are clipped-corner lozenges, echoing bridge trusses. All
 targets are at least 44 px. Focus uses a high-contrast double outline.
 
+The post-planner How it works section uses the same route grammar: three numbered
+nodes joined by one thin path. It becomes a vertical route on phones, preserving
+the sequence without turning the steps into generic cards.
+
 Feedback is immediate and plain: save state is announced; invalid syllabus input
 points to the exact fix; destructive reset is confirmed and offers no ambiguous OK.
 Offline status is a persistent, non-blocking strip explaining that planning and

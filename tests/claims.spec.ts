@@ -120,7 +120,7 @@ test('@claim:offline-reload reloads the demo after the first visit with the netw
     await context.setOffline(true);
     await page.reload({ waitUntil: 'domcontentloaded' });
     await expect(page.locator('#workspace-title')).toHaveText('GATE ECE return plan');
-    await expect(page.getByText('You’re offline. Planning and exports still work on this device.')).toBeVisible();
+    await expect(page.getByText('You’re offline. Planning and exports still work; license checks wait for a connection.')).toBeVisible();
   } finally {
     await context.setOffline(false);
     await context.close();
@@ -186,22 +186,14 @@ test('@claim:syllabus-route cleans headings and reorders the route by confidence
   await expect(page.locator('.topic').last().getByRole('heading', { level: 3 })).toHaveText('Engineering mathematics');
 });
 
-test('@claim:templates provides every editable starter template at no cost', async ({ page }) => {
-  const expectedTemplates = [
-    { name: 'Engineering foundations', topics: 5 },
-    { name: 'Computer science foundations', topics: 7 },
-    { name: 'Quantitative foundations', topics: 6 },
-  ];
-
-  for (const [index, expected] of expectedTemplates.entries()) {
-    await page.goto('/');
-    await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
-    if (index > 0) page.once('dialog', dialog => dialog.accept());
-    await page.getByRole('button', { name: 'Use template' }).nth(index).click();
-    await expect(page.locator('#workspace-title')).toHaveText(expected.name);
-    await expect(page.locator('.topic')).toHaveCount(expected.topics);
-    expect(await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'))).toContain(expected.name);
-  }
+test('@claim:templates loads an editable starter template inside demo storage', async ({ page }) => {
+  await openDemo(page);
+  page.once('dialog', dialog => dialog.accept());
+  await page.getByRole('button', { name: 'Use template' }).first().click();
+  await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
+  await expect(page.locator('.topic')).toHaveCount(5);
+  expect(await page.evaluate(() => localStorage.getItem('exam-bridge:plan:v1'))).toBeNull();
+  expect(await page.evaluate(() => localStorage.getItem('demo:exam-bridge:plan:v1'))).toContain('Engineering foundations');
 });
 
 test('@claim:starter-template-boundary loads an editable starter template rather than an official syllabus', async ({ page }) => {
@@ -261,14 +253,14 @@ test('@claim:generated-illustration displays the documented original generated a
   });
 });
 
-test('@claim:free-access provides the planner, templates, CSV, and JSON without account, card, checkout, or payment', async ({ page }) => {
+test('@claim:free-access provides the planner, CSV, and JSON without account, card, checkout, or payment', async ({ page }) => {
   const requests: string[] = [];
   page.on('request', request => requests.push(request.url()));
   await openDemo(page);
   await leaveDemoForReadyPlanner(page);
 
   await expect(page).toHaveURL('http://127.0.0.1:4173/');
-  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
+  await expect(page.getByRole('link', { name: /checkout|buy/i })).toHaveCount(0);
   await expect(page.locator([
     'input[type="password"]',
     'input[autocomplete="email"]',
@@ -289,17 +281,13 @@ test('@claim:free-access provides the planner, templates, CSV, and JSON without 
   await expect(page.locator('#workspace-title')).toHaveText('Free return plan');
   await expect(page.locator('.topic')).toHaveCount(2);
 
-  page.once('dialog', dialog => dialog.accept());
-  await page.getByRole('button', { name: 'Use template' }).first().click();
-  await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
-  await expect(page.locator('.topic')).toHaveCount(5);
-
   const csvDownload = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export CSV' }).click();
   await expect((await csvDownload).suggestedFilename()).toMatch(/-route\.csv$/u);
   const jsonDownload = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Back up JSON' }).click();
   await expect((await jsonDownload).suggestedFilename()).toMatch(/-backup\.json$/u);
+  await expect(page.getByRole('link', { name: 'Try in demo' })).toHaveCount(3);
   await expect(page.getByRole('button', { name: 'Export CSV' })).toBeEnabled();
   await expect(page.getByRole('button', { name: 'Back up JSON' })).toBeEnabled();
 
@@ -308,18 +296,84 @@ test('@claim:free-access provides the planner, templates, CSV, and JSON without 
   expect(requests.filter(url => /\/(?:auth|login|checkout|payment)(?:[/?#]|$)/iu.test(new URL(url).pathname))).toEqual([]);
 });
 
-test('@claim:checkout-unavailable keeps checkout truthful, disabled, and disconnected', async ({ page }) => {
+test('@claim:paid-template-license verifies one license, caches it for 24 hours, and enables every reusable template', async ({ page }) => {
+  let checks = 0;
+  await page.route('**/api/v1/products/exam-bridge/verify?license=valid-template-license', async route => {
+    checks += 1;
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ valid: true, reason: 'ok', expires_at: null }),
+    });
+  });
+  await page.goto('/');
+
+  await expect(page.locator('#paid-note')).toContainText('One-time ₹499 license');
+  await page.getByLabel('Have a license?').fill('valid-template-license');
+  await page.getByRole('button', { name: 'Verify license' }).click();
+  await expect(page.getByRole('heading', { name: 'Template license active' })).toBeVisible();
+  expect(checks).toBe(1);
+  expect(await page.evaluate(() => localStorage.getItem('sb_license:exam-bridge'))).toBe('valid-template-license');
+  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
+
+  await page.getByRole('button', { name: 'Use template' }).first().click();
+  await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
+  await expect(page.locator('.topic')).toHaveCount(5);
+  await page.evaluate(async () => { await navigator.serviceWorker.ready; });
+  await page.reload();
+  await page.waitForFunction(() => Boolean(navigator.serviceWorker.controller));
+  await expect(page.getByRole('heading', { name: 'Template license active' })).toBeVisible();
+  expect(checks).toBe(1);
+  try {
+    await page.context().setOffline(true);
+    await page.reload({ waitUntil: 'domcontentloaded' });
+    await expect(page.getByRole('heading', { name: 'Template license active' })).toBeVisible();
+    await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
+    expect(checks).toBe(1);
+  } finally {
+    await page.context().setOffline(false);
+  }
+});
+
+test('@claim:refund-revokes-license removes template access after Sociobot reports a revoked license', async ({ page }) => {
+  let checks = 0;
+  await page.route('**/api/v1/products/exam-bridge/verify?license=refunded-license', async route => {
+    checks += 1;
+    await route.fulfill({
+      contentType: 'application/json',
+      body: JSON.stringify({ valid: false, reason: 'revoked', expires_at: null }),
+    });
+  });
+  await page.goto('/');
+  await page.evaluate(() => {
+    localStorage.setItem('sb_license:exam-bridge', 'refunded-license');
+    localStorage.setItem('exam-bridge:license-verdict', JSON.stringify({ valid: true, checkedAt: Date.now(), expiresAt: null }));
+  });
+  await page.reload();
+
+  await expect(page.getByRole('heading', { name: 'Template license active' })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
+  expect(checks).toBe(0);
+  await page.getByRole('button', { name: 'Recheck license' }).click();
+
+  await expect(page.getByRole('heading', { name: 'Reuse three planning templates' })).toBeVisible();
+  await expect(page.locator('.license-notice')).toHaveText('This license is not active. Check the token or buy a new license when purchases open.');
+  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(0);
+  await expect(page.getByRole('link', { name: 'Try in demo' })).toHaveCount(3);
+  expect(checks).toBe(1);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('exam-bridge:license-verdict') ?? '{}'))).toMatchObject({ valid: false });
+});
+
+test('@claim:checkout-registration-gate keeps unavailable checkout closed while showing price, previews, and license restore', async ({ page }) => {
   const requests: string[] = [];
   page.on('request', request => requests.push(request.url()));
   await page.goto('/');
 
-  await expect(page.getByRole('button', { name: 'Checkout unavailable' })).toBeDisabled();
-  await expect(page.locator('#checkout-status')).toHaveText('No paid offer is available. All current tools are free.');
-  await expect(page.locator('a[href*="checkout" i], form[action*="checkout" i]')).toHaveCount(0);
-  await expect(page.locator('text=/₹499|one-time license|exam bridge plus/iu')).toHaveCount(0);
-  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
-  await page.getByRole('button', { name: 'Use template' }).first().click();
-  await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
+  await expect(page.locator('#paid-note')).toContainText('One-time ₹499 license');
+  await expect(page.locator('#purchase-status')).toHaveText('New purchases are not open yet. Checkout needs operator activation.');
+  await expect(page.getByRole('link', { name: /buy|checkout/i })).toHaveCount(0);
+  await expect(page.getByLabel('Have a license?')).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Verify license' })).toBeVisible();
+  await expect(page.getByRole('link', { name: 'Try in demo' })).toHaveCount(3);
   const origin = new URL(page.url()).origin;
   expect(requests.filter(url => new URL(url).origin !== origin)).toEqual([]);
 });

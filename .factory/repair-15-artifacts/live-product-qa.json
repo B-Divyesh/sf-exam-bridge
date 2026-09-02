@@ -1,0 +1,56 @@
+{
+  "desktop": {
+    "semantics": {
+      "heading": "How it works",
+      "list": "OL",
+      "steps": [
+        "Paste your outline",
+        "Rate what you know",
+        "Follow your route"
+      ],
+      "afterPlanner": true
+    },
+    "errors": [],
+    "externalRequests": [],
+    "nonGetRequests": [],
+    "topics": 2
+  },
+  "mobile": {
+    "rootGeometry": {
+      "clientWidth": 390,
+      "scrollWidth": 390,
+      "factsBottom": 834.15625,
+      "viewport": 844
+    },
+    "demoGeometry": {
+      "workspaceTop": 153.15625,
+      "overviewBottom": 714.96875,
+      "viewport": 844,
+      "topics": 6
+    },
+    "rootAxe": [],
+    "demoAxe": [],
+    "errors": []
+  },
+  "offline": {
+    "topics": 6,
+    "status": "You’re offline. Planning and exports still work; license checks wait for a connection.",
+    "controlled": true
+  },
+  "routes": {
+    "/": 200,
+    "/demo": 200,
+    "/privacy/": 200,
+    "/terms/": 200,
+    "/404.html": 200,
+    "/robots.txt": 200,
+    "/sitemap.xml": 200,
+    "/manifest.webmanifest": 200,
+    "/icon.svg": 200,
+    "/apple-touch-icon.png": 200,
+    "/art-provenance.json": 200,
+    "/assets/learning-topology.webp": 200,
+    "/assets/exam-bridge-social.jpg": 200,
+    "/repair-15-not-found": 404
+  }
+}

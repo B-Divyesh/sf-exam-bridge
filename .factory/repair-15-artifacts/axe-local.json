@@ -1,0 +1,7 @@
+[
+  {"route":"/","viewport":"1440x900","theme":"light","violations":[]},
+  {"route":"/","viewport":"390x844","theme":"dark","violations":[]},
+  {"route":"/demo","viewport":"390x844","theme":"light","violations":[]},
+  {"route":"/privacy/","viewport":"390x844","theme":"light","violations":[]},
+  {"route":"/terms/","viewport":"390x844","theme":"light","violations":[]}
+]

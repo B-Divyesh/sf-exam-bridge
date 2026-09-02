@@ -22,24 +22,32 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 
 | Copy | Words | Claim coverage |
 | --- | ---: | --- |
-| Paste the outline. | 3 | Instruction |
-| Rate what you know. | 4 | Instruction |
-| Attach only references you’re allowed to use. | 7 | Instruction |
-| Your study map stays in this browser. | 7 | `local-private` |
 | Paste headings only—one per line. | 5 | Instruction |
 | Exam Bridge never uploads this text. | 6 | `local-private` |
 | One topic per line; bullets and numbering are fine. | 9 | `syllabus-route` |
 | Study route order | 3 | Clear populated-plan heading |
 | Question references | 2 | Clear topic-card heading |
+| How it works | 3 | Semantic section heading |
+| Paste your outline | 3 | Step 1 heading |
+| Add syllabus headings and the official source link when you have one. | 11 | Step 1 instruction |
+| Rate what you know | 4 | Step 2 heading |
+| Set your confidence and note the prerequisites each topic needs. | 10 | Step 2 instruction |
+| Follow your route | 3 | Step 3 heading |
+| Study lower-confidence topics first and attach question references you may use. | 10 | Step 3 instruction |
 | Choose a starter template | 4 | Clear templates heading |
 | Start with a reusable plan, then edit it to match your official outline. | 12 | `templates` |
 | A reusable starter template—not an official syllabus. | 7 | `starter-template-boundary` |
-| Free starter plans | 3 | `free-access` |
-| Use any template at no cost | 6 | `templates` |
-| Templates stay in this browser and never replace an official syllabus. | 11 | `templates`, `starter-template-boundary` |
-| Checkout unavailable | 2 | `checkout-unavailable` |
-| No paid offer is available. | 5 | `checkout-unavailable` |
-| All current tools are free. | 5 | `free-access` |
+| Paid template preview | 3 | `templates` |
+| Try every template in the demo | 6 | `templates` |
+| Sample use needs no license and stays in temporary demo storage. | 11 | `templates`, `demo-sandbox` |
+| Exam Bridge Plus | 3 | Paid tier name |
+| Reuse three planning templates | 4 | `paid-template-license` |
+| One-time ₹499 license. | 3 | `paid-template-license` |
+| The free planner, CSV, and JSON tools remain available. | 9 | `free-access` |
+| New purchases are not open yet. | 6 | `checkout-registration-gate` |
+| Checkout needs operator activation. | 4 | `checkout-registration-gate` |
+| Have a license? | 3 | Restore field label |
+| Verify license | 2 | Restore action |
 | Plans stay in this browser. | 5 | `local-private` |
 | Exam Bridge does not host exam questions or coaching notes. | 9 | `hosted-content-boundary` |
 | Check the official syllabus before studying. | 6 | Boundary |
@@ -58,7 +66,7 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Changes stay in the temporary demo sandbox. | 7 | `demo-sandbox` |
 | Its populated workspace is visible immediately on desktop and 390 px screens. | 11 | `demo-sandbox` |
 | You’re offline. | 2 | State |
-| Planning and exports still work on this device. | 9 | `offline-reload`, `csv-export` |
+| Planning and exports still work; license checks wait for a connection. | 11 | `offline-reload`, `free-access` |
 
 ## Legal pages
 
@@ -69,15 +77,17 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | They are not sent to Exam Bridge. | 7 | `local-private` |
 | The demo uses separate keys beginning with demo:exam-bridge:. | 8 | `demo-sandbox` |
 | It never reads or changes your real plan. | 8 | `demo-sandbox` |
-| The app loads no third-party scripts, fonts, advertisements, behavioral analytics, or checkout services. | 14 | `local-private`, `checkout-unavailable` |
-| Planning, templates, exports, and backups use this browser only. | 9 | `local-private`, `free-access` |
-| Checkout is unavailable and disabled. | 5 | `checkout-unavailable` |
-| The control sends no request. | 5 | `checkout-unavailable` |
+| The app loads no third-party scripts, fonts, advertisements, or behavioral analytics. | 12 | `local-private` |
+| License checks are the only optional cross-origin requests made by the app. | 12 | `paid-template-license` |
+| Checkout stays unavailable until an authorized billing operator activates it. | 10 | `checkout-registration-gate` |
+| The default build sends no checkout request. | 7 | `checkout-registration-gate` |
 | Exam Bridge organizes study plans. | 5 | Plain description |
 | It does not guarantee results or represent an exam authority. | 10 | Boundary |
-| The planner, templates, CSV exports, and JSON backups are free. | 10 | `free-access` |
+| The planner, CSV exports, and JSON backups are free. | 9 | `free-access` |
 | They need no account, card, checkout, or payment. | 8 | `free-access` |
-| There is no paid offer. | 5 | `checkout-unavailable` |
+| Exam Bridge Plus is a one-time ₹499 license for three reusable, editable planning templates. | 14 | `paid-template-license` |
+| A valid license can be restored on another device. | 9 | `paid-template-license` |
+| A refund makes the license inactive after the next check. | 10 | `refund-revokes-license` |
 
 ## Not-found page
 
@@ -105,12 +115,12 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 
 ## Result
 
-- Automated extraction checked 461 rendered and README text units across `/`,
+- Automated extraction checked 469 rendered and README text units across `/`,
   `/demo`, `/privacy/`, `/terms/`, `/404.html`, and `README.md`.
 - No sentence exceeds 22 words.
 - No banned marketing word appears in visitor copy.
 - The first screen names the audience, job, and first action.
-- Checkout is visibly unavailable and disabled; no paid tier is promised.
+- The paid tier is visible while checkout stays closed behind the operator gate.
 - Every outcome, boundary, and provenance statement maps to a registered claim test.
 
 | Concept | Term used |

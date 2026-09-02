@@ -15,8 +15,8 @@ levels, selected prerequisites, attempted and pending question references, and a
 unstarted topic. The sample uses question IDs only and contains no copyrighted
 question text or official-source claim.
 
-All three free starter templates can be used inside the demo. Template changes
-stay in demo storage and never change a real plan.
+All three paid starter templates can be previewed inside the demo without a
+license. Template changes stay in demo storage and never change a real plan.
 
 ## Isolation and reset
 

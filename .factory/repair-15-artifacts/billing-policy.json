@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-09-02T02:27:39Z",
+  "checkout": {
+    "url": "https://api.sociobot.in/api/v1/products/exam-bridge/checkout",
+    "status": 404,
+    "body": {"error":"enabled factory product","status":404}
+  },
+  "verify": {
+    "url": "https://api.sociobot.in/api/v1/products/exam-bridge/verify?license=repair-15-invalid-fixture",
+    "status": 200,
+    "cache_control": "no-store",
+    "body": {"expires_at":null,"reason":"invalid","valid":false}
+  }
+}
