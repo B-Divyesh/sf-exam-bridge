@@ -13,7 +13,8 @@
     "test:unit": "vitest run",
     "test:e2e": "playwright test",
     "test:clean-claim-start": "node scripts/clean-claim-start.test.mjs",
-    "test:sw-upgrade": "npm run test:e2e -- --project=desktop --grep @claim:service-worker-renewal"
+    "test:sw-upgrade": "npm run test:e2e -- --project=desktop --grep @claim:service-worker-renewal",
+    "verify:live": "node scripts/verify-live.mjs"
   },
   "devDependencies": {
     "@axe-core/playwright": "4.10.2",

@@ -1,59 +1,67 @@
-# Exam Bridge review 4 handoff — FAIL
+# Exam Bridge polish round 4 handoff
 
-- Work order: `exam-bridge-review-4`
-- Reviewed candidate: `7019219e67e40958bd33707d9ec71fb75b5eeaa5`
+- Work order: `exam-bridge-polish-4`
+- Reviewed candidate: `04d3525996b01ba2ba91bfda6e9d1e0ab74a7c47`
+- Review report: `3caa4e9c1413d23c5590c4c141b4cdfe15799e35`
+- Runtime repair commit: `2cbac4b26311a63693cc10ed30c68224fe6f0c24`
+- Version: `1.1.1`
 - Live URL: <https://exam-bridge.sociobot.in/>
-- Reviewed: 2 September 2026 UTC
+- Deployment: `6fc709b8-b643-4deb-949b-410e88f90b9f` to `sf-exam-bridge`
+- Verified: 2 September 2026 UTC
 
-## Result
+## What changed
 
-Adversarial review 4 is recorded in `.factory/review-4.md`. The first-read,
-one-click demo, isolation, offline, registered claims, routing, link, metadata,
-history, and full-suite gates pass. The verdict is **FAIL** because seven minor
-findings remain: one axe landmark defect, one unlisted privacy assurance, three
-non-result-naming planner buttons, and two implementation-jargon copy issues.
+All findings from reviews 1–4 are resolved. Round 4 removes the nested Templates
+landmark and the unproved hosting-log use assurance. Planner actions now say
+**Add prerequisite**, **Attach question reference**, and **Delete this plan**.
+Demo, README, and Privacy copy now explain separation and deletion without
+implementation jargon. The free scope, one-click isolated demo, route metadata,
+focus handling, product 404, legal navigation, and distinct learning-topology
+visual system remain intact.
 
-No product code, deployment, DNS, cloud resource, app setting, secret, or other
-service was changed.
+The accessibility gate now rejects every axe WCAG A/AA violation instead of
+filtering by severity. A repeatable live verifier covers all public routes and
+the real 404 at 390 and 1440 px, plus isolation, `?demo=1`, focus, privacy,
+same-origin traffic, result-naming actions, and offline reload.
 
 ## How to verify
 
-From a clean clone:
-
 ```sh
 npm ci
-jq -r '.[] | [.id,.test] | @tsv' .factory/claims.json
-# Run every printed test command independently.
 npm test
 npm run build
+npm run verify:live -- https://exam-bridge.sociobot.in .factory/polish-4-artifacts/live-product-qa.json
 ```
 
-For the live review, open `/` in fresh 390 × 844 and 1440 × 900 contexts, select
-**Try it with sample data**, and inspect `/demo`, `/privacy/`, `/terms/`, and an
-unknown route. Run `/opt/fleet/lib/verify-url.sh` on the four public routes and
-run axe on every route without filtering moderate violations.
+Run every exact `test` command in `.factory/claims.json` independently from a
+fresh clone. The direct sample URL is <https://exam-bridge.sociobot.in/demo>;
+`https://exam-bridge.sociobot.in/?demo=1` is also supported.
 
-## Verified
+## Evidence
 
-- All 16 exact claim commands passed independently in a fresh clone.
-- `npm test` passed 65 Playwright tests with one intentional duplicate mobile
-  service-worker skip, plus lint, contracts, 9 unit tests, build, and the clean
-  claim-start check.
-- The production build emitted 26.91 kB raw / 9.49 kB gzip JavaScript.
-- Live demo reset/exit preserved an exact real-plan marker and removed demo
-  keys on exit; requests stayed same-origin; offline reload retained six topics.
-- All discovered links resolved, route metadata passed, and the live root HTML,
-  JS, and CSS hashes matched the clean production build.
+- Fresh clone at `2cbac4b26311a63693cc10ed30c68224fe6f0c24`:
+  `npm ci` passed with zero vulnerabilities; all 16 exact claim commands passed.
+- Fresh-clone `npm test` passed lint, build, contracts, 9 unit tests, the clean
+  claim-start check, and 69 browser tests. One duplicate mobile service-worker
+  case was intentionally skipped.
+- The final build contains 27.01 kB raw / 9.48 kB gzip JavaScript and 18.21 kB
+  raw / 4.77 kB gzip CSS.
+- [Live QA](polish-4-artifacts/live-product-qa.json) records zero axe WCAG A/AA
+  violations and zero console errors on all five routes at both viewports.
+- The same report records the 404 response, first-screen geometry, demo
+  isolation/reset/exit, direct query demo, route focus, offline reload,
+  same-origin requests, revised privacy copy, and result-naming actions.
+- `verify-url.sh` reports for [root](polish-4-artifacts/live-root/verify.json),
+  [demo](polish-4-artifacts/live-demo/verify.json),
+  [privacy](polish-4-artifacts/live-privacy/verify.json), and
+  [terms](polish-4-artifacts/live-terms/verify.json) show correct titles,
+  `lang`, one H1, one main landmark, alt coverage, and no console errors.
+- Live mobile Lighthouse: Performance 100, Accessibility 100, Best Practices
+  100, SEO 100; FCP 0.9 s, LCP 1.1 s, TBT 20 ms, CLS 0.
+- Live root and local `dist/index.html` share SHA-256
+  `d985b3d07397a49914f23ea247a776119283bbc5591a53fa7691ff8458ed1056`.
 
-## Work left
+## Known gaps and next steps
 
-- F-4-1: replace or relocate the nested Templates `aside` and reject all axe
-  WCAG A/AA violations in regression tests.
-- F-4-2: remove or observably verify the hosting-log profiling assurance.
-- F-4-3 through F-4-5: rename **Add**, **Attach**, and **Start over** to state
-  their results.
-- F-4-6 and F-4-7: replace “sandbox”, “browser storage”, and the raw demo key in
-  visitor guidance with plain descriptions of plan isolation and deletion.
-
-Rerun the complete adversarial checklist after repair. No known earlier review
-finding has regressed.
+No known product, review, accessibility, privacy, offline, routing, or deployment
+gap remains. No follow-up is required for this work order.
