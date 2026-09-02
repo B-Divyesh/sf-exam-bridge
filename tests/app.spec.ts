@@ -205,6 +205,15 @@ test('keeps all effective route, shell, and footer targets at least 44px at 390p
     expect(box.width, `${box.label} must be at least 44px wide`).toBeGreaterThanOrEqual(44);
     expect(box.height, `${box.label} must be at least 44px high`).toBeGreaterThanOrEqual(44);
   }
+
+  // The prerequisite control was previously exactly 44px tall, which can be
+  // reported just under 44px after Chromium subpixel rounding in a full run.
+  // Keep an explicit four-pixel buffer rather than relying on the legal minimum.
+  const prerequisite = firstTopic.locator('.check-list label').first();
+  await expect(prerequisite).toHaveCSS('min-height', '48px');
+  const prerequisiteBox = await prerequisite.boundingBox();
+  expect(prerequisiteBox).not.toBeNull();
+  expect(prerequisiteBox!.height).toBeGreaterThanOrEqual(48);
 });
 
 test('renders a semantic three-step How it works section after the product', async ({ page }) => {
