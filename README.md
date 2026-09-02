@@ -11,8 +11,8 @@ Live product: <https://exam-bridge.sociobot.in>
 Open <https://exam-bridge.sociobot.in/demo> or select **Try it with sample data**
 on the first screen. The six-topic sample opens without an account or setup.
 Its populated workspace is visible immediately on desktop and 390 px screens.
-Demo changes use `demo:exam-bridge:*` storage and never touch your real plan.
-Use **Reset demo** to restore the sample. Use **Start for real** to discard it.
+Demo changes stay separate from your plan. **Start for real** deletes the demo
+changes. Use **Reset demo** to restore the sample.
 
 ## What v1 includes
 

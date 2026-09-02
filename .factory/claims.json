@@ -15,7 +15,7 @@
   },
   {
     "id": "local-private",
-    "claim": "Planner content stays in browser storage, and ordinary planning sends no data to third parties or trackers.",
+    "claim": "Planner content stays in this browser, and ordinary planning sends no data to third parties or trackers.",
     "where": "landing facts, planner, privacy page, README",
     "test": "npm run test:e2e -- --project=desktop --grep @claim:local-private",
     "sandbox": "fresh /demo context; edit and reload; record every request; assert persisted demo data and same-origin requests only"

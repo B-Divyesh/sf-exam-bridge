@@ -1,1 +1,1 @@
-Turn syllabus headings into a study route with prerequisites and your own question references.
+Turn syllabus headings into a confidence-ordered study route with prerequisites and your own question references.

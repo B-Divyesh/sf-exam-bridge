@@ -33,6 +33,9 @@ test('@claim:demo-sandbox opens, resets, and leaves an isolated sample route', a
   await expect(page).toHaveURL(/\/demo\/?$/);
   await expect(page.locator('#workspace-title')).toHaveText('GATE ECE return plan');
   await expect(page.locator('.topic')).toHaveCount(6);
+  await expect(page.locator('.demo-banner')).toContainText('Demo changes stay separate from your plan and are removed when you choose Start for real.');
+  await expect(page.locator('.action-note')).toContainText('Your demo changes stay separate from your plan.');
+  await expect(page.locator('.save-state')).toContainText('Sample route loaded. Demo changes are separate from your plan.');
   const desktopWorkspace = await page.locator('.workspace').boundingBox();
   const desktopOverview = await page.locator('.route-overview').boundingBox();
   expect(desktopWorkspace, 'the populated workspace must be visible after the one sample click').not.toBeNull();
@@ -46,6 +49,7 @@ test('@claim:demo-sandbox opens, resets, and leaves an isolated sample route', a
   await page.locator('.topic').first().getByLabel(/Confidence/).selectOption('ready');
   await page.getByRole('button', { name: 'Reset demo' }).click();
   await expect(page.locator('.topic').first().getByRole('heading', { level: 3 })).toHaveText('Control systems');
+  await expect(page.locator('.save-state')).toContainText('Sample route reset. Demo changes are separate from your plan.');
   await page.locator('.demo-banner').getByRole('link', { name: 'Start for real' }).click();
 
   await expect(page).toHaveURL('http://127.0.0.1:4173/');
@@ -96,7 +100,7 @@ test('@claim:local-private keeps demo edits local and makes no third-party reque
 
   const firstTopic = page.locator('.topic').first();
   await firstTopic.getByLabel(/Question ID or note/).fill('Revision set · Q4');
-  await firstTopic.getByRole('button', { name: 'Attach' }).click();
+  await firstTopic.getByRole('button', { name: 'Attach question reference' }).click();
   await page.reload();
   await expect(page.getByText('Revision set · Q4', { exact: true })).toBeVisible();
 
@@ -132,7 +136,7 @@ test('@claim:csv-export exports every sample topic with only selected prerequisi
   const control = page.locator('.topic').filter({ has: page.getByRole('heading', { level: 3, name: 'Control systems' }) });
   await control.getByLabel(/Question ID or note/).fill('2025 · Q42');
   await control.getByLabel('Link').fill('https://example.org/questions/42');
-  await control.getByRole('button', { name: 'Attach' }).click();
+  await control.getByRole('button', { name: 'Attach question reference' }).click();
 
   const pendingDownload = page.waitForEvent('download');
   await page.getByRole('button', { name: 'Export CSV' }).click();
@@ -174,7 +178,7 @@ test('@claim:json-backup-restore exports and restores the complete sample plan',
 test('@claim:syllabus-route cleans headings and reorders the route by confidence', async ({ page }) => {
   await openDemo(page);
   page.once('dialog', dialog => dialog.accept());
-  await page.getByRole('button', { name: 'Start over' }).click();
+  await page.getByRole('button', { name: 'Delete this plan' }).click();
   await page.getByLabel('Plan name').fill('Return plan');
   await page.getByLabel(/Syllabus topics/).fill('1. Engineering mathematics\n• Signals and systems\n2) Control systems\nengineering mathematics');
   await page.getByRole('button', { name: /Map my syllabus/ }).click();
@@ -335,7 +339,7 @@ test('@claim:accessible-responsive supports keyboard, themes, reduced motion, an
   for (const theme of ['light', 'dark']) {
     if (theme === 'dark') await page.getByRole('button', { name: 'Switch color theme' }).click();
     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
-    expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([]);
+    expect(results.violations).toEqual([]);
   }
 
   const undersized = await page.locator('a, button, .file-button, .check-list label, .practice-list li > label').evaluateAll(elements => elements

@@ -27,6 +27,9 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | One topic per line; bullets and numbering are fine. | 9 | `syllabus-route` |
 | Study route order | 3 | Clear populated-plan heading |
 | Question references | 2 | Clear topic-card heading |
+| Add prerequisite | 2 | Result-naming action |
+| Attach question reference | 3 | Result-naming action |
+| Delete this plan | 3 | Destructive result-naming action |
 | How it works | 3 | Semantic section heading |
 | Paste your outline | 3 | Step 1 heading |
 | Add syllabus headings and the official source link when you have one. | 11 | Step 1 instruction |
@@ -53,12 +56,15 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 
 | Copy | Words | Claim coverage |
 | --- | ---: | --- |
-| Demo — sample data, nothing is saved | 7 | `demo-sandbox` |
-| Changes use separate browser storage and never touch your real plan. | 10 | `demo-sandbox` |
+| Demo — sample data, nothing is saved | 6 | `demo-sandbox` |
+| Demo changes stay separate from your plan and are removed when you choose Start for real. | 16 | `demo-sandbox` |
 | Reset demo | 2 | Action |
 | Start for real | 3 | Action |
 | Explore six realistic topics. | 4 | `demo-sandbox` |
-| Changes stay in the temporary demo sandbox. | 7 | `demo-sandbox` |
+| Your demo changes stay separate from your plan. | 8 | `demo-sandbox` |
+| Sample route loaded. | 3 | `demo-sandbox` |
+| Demo changes are separate from your plan. | 7 | `demo-sandbox` |
+| Sample route reset. | 3 | `demo-sandbox` |
 | Its populated workspace is visible immediately on desktop and 390 px screens. | 11 | `demo-sandbox` |
 | You’re offline. | 2 | State |
 | Planning and exports still work in this browser. | 9 | `offline-reload`, `free-access` |
@@ -68,12 +74,17 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Copy | Words | Result |
 | --- | ---: | --- |
 | Exam Bridge works without an account and keeps planner content in your browser. | 12 | `free-access`, `local-private` |
-| Your plan name, topics, confidence choices, prerequisites, practice references, and theme stay in browser storage. | 15 | `local-private` |
+| Your plan name, topics, confidence choices, prerequisites, practice references, and theme stay in this browser. | 15 | `local-private` |
 | They are not sent to Exam Bridge. | 7 | `local-private` |
-| The demo uses separate keys beginning with demo:exam-bridge:. | 8 | `demo-sandbox` |
-| It never reads or changes your real plan. | 8 | `demo-sandbox` |
+| Demo changes stay separate from your plan. | 7 | `demo-sandbox` |
+| The demo never reads or changes your plan. | 8 | `demo-sandbox` |
+| Reset demo restores the sample. | 5 | Instruction |
+| Start for real deletes the demo changes. | 7 | `demo-sandbox` |
 | The app loads no third-party scripts, fonts, advertisements, or behavioral analytics. | 12 | `local-private` |
 | The planner does not send your plan to an external service. | 11 | `local-private` |
+| Standard hosting logs may contain an IP address, browser information, requested path, and timestamp. | 14 | Factual hosting disclosure; no use assurance |
+| Export your plan as CSV or JSON at any time. | 10 | `csv-export`, `json-backup-restore` |
+| Use Delete this plan to remove the current plan. | 9 | Action instruction |
 | Exam Bridge organizes study plans. | 5 | Plain description |
 | It does not guarantee results or represent an exam authority. | 10 | Boundary |
 | The planner, starter templates, CSV exports, and JSON backups are free. | 10 | `free-access` |
@@ -99,12 +110,15 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Three reusable starter templates, free to use and edit. | 9 | `free-access` |
 | The planner, starter templates, CSV exports, and JSON backups are free. | 10 | `free-access` |
 | No account, card, checkout, payment, or license is needed. | 10 | `free-access` |
+| Demo changes stay separate from your plan. | 7 | `demo-sandbox` |
+| Start for real deletes the demo changes. | 7 | `demo-sandbox` |
+| Use Reset demo to restore the sample. | 7 | Instruction |
 
 ## Catalog description
 
 | Copy | Characters | Result |
 | --- | ---: | --- |
-| Turn syllabus headings into a study route with prerequisites and your own question references. | 90 | Verb first; under 120 |
+| Turn syllabus headings into a confidence-ordered study route with prerequisites and your own question references. | 113 | Verb first; under 120 |
 
 ## Result
 
@@ -115,6 +129,7 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 - The first screen names the audience, job, and first action.
 - The complete planner is free, so it presents no unavailable tier or purchase path.
 - Every outcome, boundary, and provenance statement maps to a registered claim test.
+- Visitor copy contains no “sandbox”, “browser storage”, raw storage key, or hosting-log use assurance.
 
 | Concept | Term used |
 | --- | --- |

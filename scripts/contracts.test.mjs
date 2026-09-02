@@ -76,6 +76,11 @@ assert.match(app, /ROUTE_FOCUS_KEY/u, 'app routes must retain their route-change
 assert.match(app, /id="menu-toggle"/u, 'main routes must expose a labelled mobile navigation menu');
 assert.match(app, /id="primary-nav"/u, 'main routes must retain primary navigation destinations on mobile');
 assert.match(app, /Use \$\{template\.name\} template/u, 'template actions must name the result they produce');
+assert.match(app, /<div class="access-panel demo-access">/u, 'the template notice must be section content, not a nested complementary landmark');
+assert.doesNotMatch(app, /<aside class="access-panel/u, 'the template notice must not create a nested complementary landmark');
+for (const action of ['Add prerequisite', 'Attach question reference', 'Delete this plan']) {
+  assert.match(app, new RegExp(`>${action}<`, 'u'), `planner action must name its result: ${action}`);
+}
 for (const templateName of ['Engineering foundations', 'Computer science foundations', 'Quantitative foundations']) {
   assert.match(app, new RegExp(`name: '${templateName}'`, 'u'), `the result-naming action must have a distinct ${templateName} template`);
 }
@@ -87,6 +92,9 @@ await readFile('.factory/demo.md', 'utf8');
 const copyAudit = await readFile('.factory/copy-audit.md', 'utf8');
 assert.match(copyAudit, /No sentence exceeds 22 words\./u);
 assert.match(copyAudit, /## Legal pages/u, 'copy audit must include the legal routes');
+const catalogDescription = (await readFile('.factory/catalog-description.txt', 'utf8')).trim();
+assert.ok(catalogDescription.length <= 120, 'catalog description must be at most 120 characters');
+assert.match(catalogDescription, /^(?:Turn|Create|Build|Plan|Map|Organize|Convert)\b/u, 'catalog description must start with a verb');
 for (const file of ['public/privacy/index.html', 'public/terms/index.html']) {
   const legalPage = await readFile(file, 'utf8');
   for (const paragraph of legalPage.matchAll(/<p(?: [^>]*)?>(.*?)<\/p>/gu)) {
@@ -97,8 +105,13 @@ for (const file of ['public/privacy/index.html', 'public/terms/index.html']) {
     }
   }
 }
-const visitorCopy = `${app}\n${await readFile('README.md', 'utf8')}\n${await readFile('index.html', 'utf8')}\n${notFound}`;
+const readme = await readFile('README.md', 'utf8');
+const privacy = await readFile('public/privacy/index.html', 'utf8');
+const visitorCopy = `${app}\n${readme}\n${privacy}\n${await readFile('index.html', 'utf8')}\n${notFound}`;
 assert.doesNotMatch(visitorCopy, /\b(?:leverage|seamless|effortless|robust|powerful|intuitive|reimagine|supercharge|unlock|delightful|journey|ecosystem|AI-powered)\b/iu, 'visitor copy contains a banned marketing word');
+assert.doesNotMatch(visitorCopy, /demo sandbox|browser storage/iu, 'visitor copy must explain local and demo behavior without implementation jargon');
+assert.doesNotMatch(readme, /demo:exam-bridge/iu, 'README visitor guidance must not expose the internal demo key');
+assert.doesNotMatch(privacy, /demo:exam-bridge|profile you/iu, 'Privacy must not expose an internal key or make an untested hosting-log assurance');
 if (/without an account|\bNo accounts\b|No account, card/iu.test(visitorCopy)) {
   assert.ok(ids.includes('free-access'), 'visitor free-access promises must be registered as free-access');
 }

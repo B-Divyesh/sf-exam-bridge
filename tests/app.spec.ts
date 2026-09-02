@@ -57,7 +57,7 @@ test('builds and updates a complete local study route', async ({ page }) => {
 
   const first = page.locator('.topic').first();
   await first.getByLabel(/Question ID or note/).fill('2023 · Q14');
-  await first.getByRole('button', { name: 'Attach' }).click();
+  await first.getByRole('button', { name: 'Attach question reference' }).click();
   await expect(page.getByText('2023 · Q14', { exact: true })).toBeVisible();
   await page.reload();
   await expect(page.getByText('2023 · Q14', { exact: true })).toBeVisible();
@@ -66,7 +66,7 @@ test('builds and updates a complete local study route', async ({ page }) => {
 test('@claim:topic-cap prevents a topic 81 mutation and keeps the maximum plan available after reload', async ({ page }) => {
   await page.goto('/demo');
   page.once('dialog', dialog => dialog.accept());
-  await page.getByRole('button', { name: 'Start over' }).click();
+  await page.getByRole('button', { name: 'Delete this plan' }).click();
   const maximumTopics = Array.from({ length: 80 }, (_, index) => `Topic ${index + 1}`).join('\n');
   await page.getByLabel(/Syllabus topics/).fill(maximumTopics);
   await page.getByRole('button', { name: /Map my syllabus/ }).click();
@@ -108,12 +108,12 @@ test('recovers an over-limit legacy plan instead of hiding it after an upgrade',
   await expect(page.getByRole('button', { name: 'Add topic' })).toBeDisabled();
 });
 
-test('validates the empty route and has no serious accessibility findings', async ({ page }) => {
+test('validates the empty route and has no WCAG A or AA accessibility findings', async ({ page }) => {
   await page.getByLabel(/Syllabus topics/).fill('Only one topic');
   await page.getByRole('button', { name: /Map my syllabus/ }).click();
   await expect(page.getByRole('alert')).toContainText('at least two');
   const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
-  expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([]);
+  expect(results.violations).toEqual([]);
 });
 
 test('moves keyboard focus into main content from the skip link', async ({ page }) => {
@@ -146,12 +146,12 @@ test('keeps the populated route accessible and generated remove controls touch-s
   for (const theme of ['light', 'dark']) {
     if (theme === 'dark') await page.getByRole('button', { name: 'Switch color theme' }).click();
     const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
-    expect(results.violations.filter(item => ['serious', 'critical'].includes(item.impact ?? ''))).toEqual([]);
+    expect(results.violations).toEqual([]);
   }
 
   const firstTopic = page.locator('.topic').first();
   await firstTopic.getByLabel(/Question ID or note/).fill('2023 · Q14');
-  await firstTopic.getByRole('button', { name: 'Attach' }).click();
+  await firstTopic.getByRole('button', { name: 'Attach question reference' }).click();
   const remove = firstTopic.getByRole('button', { name: 'Remove 2023 · Q14' });
   const box = await remove.boundingBox();
   expect(box).not.toBeNull();
@@ -173,7 +173,7 @@ test('keeps visible focus on Restore JSON and preserves focus after marking prac
 
   const firstTopic = page.locator('.topic').first();
   await firstTopic.getByLabel(/Question ID or note/).fill('2023 · Q14');
-  await firstTopic.getByRole('button', { name: 'Attach' }).click();
+  await firstTopic.getByRole('button', { name: 'Attach question reference' }).click();
   const complete = page.getByRole('checkbox', { name: 'Mark 2023 · Q14 complete' });
   await complete.focus();
   await page.keyboard.press('Space');
@@ -187,7 +187,7 @@ test('keeps all effective route, shell, and footer targets at least 44px at 390p
   await page.getByRole('button', { name: /Map my syllabus/ }).click();
   const firstTopic = page.locator('.topic').first();
   await firstTopic.getByLabel(/Question ID or note/).fill('2023 · Q14');
-  await firstTopic.getByRole('button', { name: 'Attach' }).click();
+  await firstTopic.getByRole('button', { name: 'Attach question reference' }).click();
 
   const targets = page.locator('a, button, .file-button, .check-list label, .practice-list li > label');
   const boxes = await targets.evaluateAll(elements => elements
@@ -232,6 +232,23 @@ test('offers three free template actions with unique result names', async ({ pag
   await page.getByLabel(/Syllabus topics/).fill('Signals and systems\nControl systems');
   await page.getByRole('button', { name: /Map my syllabus/ }).click();
   await expect(page.locator('.topic')).toHaveCount(2);
+});
+
+test('names every populated-plan action by its result', async ({ page }) => {
+  await page.goto('/demo');
+  const topicCount = await page.locator('.topic').count();
+  await expect(page.locator('form[data-action="add-prerequisite"] button')).toHaveCount(topicCount);
+  await expect(page.locator('form[data-action="add-prerequisite"] button')).toHaveText(
+    Array.from({ length: topicCount }, () => 'Add prerequisite'),
+  );
+  await expect(page.locator('form[data-action="add-practice"] button')).toHaveCount(topicCount);
+  await expect(page.locator('form[data-action="add-practice"] button')).toHaveText(
+    Array.from({ length: topicCount }, () => 'Attach question reference'),
+  );
+  await expect(page.getByRole('button', { name: 'Delete this plan', exact: true })).toBeVisible();
+  await expect(page.getByRole('button', { name: 'Add', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Attach', exact: true })).toHaveCount(0);
+  await expect(page.getByRole('button', { name: 'Start over', exact: true })).toHaveCount(0);
 });
 
 test('removes the retired purchase and license path', async ({ page }) => {
@@ -285,6 +302,8 @@ test('legal pages use route-specific titles, shared navigation, complete footer 
   await expect(page.locator('header').getByRole('link', { name: 'Demo' })).toHaveAttribute('href', '/demo');
   await expect(page.locator('footer').getByRole('link', { name: 'Privacy' })).toHaveAttribute('href', '/privacy/');
   await expect(page.locator('footer').getByRole('link', { name: 'Terms' })).toHaveAttribute('href', '/terms/');
+  await expect(page.getByText('Standard hosting logs may contain an IP address, browser information, requested path, and timestamp.')).toBeVisible();
+  await expect(page.getByText(/profile you|demo:exam-bridge|browser storage/iu)).toHaveCount(0);
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: 'Skip to content' })).toBeFocused();
   await page.keyboard.press('Enter');
@@ -305,6 +324,20 @@ test('renders the product-owned 404 without third-party resources', async ({ pag
   await expect(page.getByRole('link', { name: 'Open the planner' })).toHaveAttribute('href', '/');
   const origin = new URL(page.url()).origin;
   expect(requests.filter(url => new URL(url).origin !== origin)).toEqual([]);
+});
+
+test('has no WCAG A or AA axe findings on every public route', async ({ page }) => {
+  for (const viewport of [
+    { width: 390, height: 844 },
+    { width: 1440, height: 900 },
+  ]) {
+    await page.setViewportSize(viewport);
+    for (const route of ['/', '/demo', '/privacy/', '/terms/', '/404.html']) {
+      await page.goto(route);
+      const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa']).analyze();
+      expect(results.violations, `${route} at ${viewport.width}px must have no WCAG A/AA axe findings`).toEqual([]);
+    }
+  }
 });
 
 test('shows an offline state and loads without console errors', async ({ page, context }) => {
