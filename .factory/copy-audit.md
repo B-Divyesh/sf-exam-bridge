@@ -32,16 +32,11 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Study route order | 3 | Clear populated-plan heading |
 | Question references | 2 | Clear topic-card heading |
 | Choose a starter template | 4 | Clear templates heading |
-| Preview all three in the demo. | 6 | `templates` |
-| A one-time ₹499 license lets you reuse them in your own plans. | 11 | `paid-template-license` |
+| Start with a reusable plan, then edit it to match your official outline. | 12 | `templates` |
 | A reusable starter template—not an official syllabus. | 7 | `starter-template-boundary` |
-| One-time ₹499 license. | 3 | `paid-template-license` |
-| The free planner, CSV, and JSON tools remain available. | 9 | `free-access` |
-| A refund makes the license inactive after the next check. | 10 | `refund-revokes-license` |
-| New purchases are not open yet. | 6 | `checkout-registration-gate` |
-| The shared checkout still needs operator activation. | 7 | `checkout-registration-gate` |
-| Have a license? | 3 | Restore label |
-| Verify license | 2 | Action |
+| Free starter plans | 3 | `free-access` |
+| Use any template at no cost | 6 | `templates` |
+| Templates stay in this browser and never replace an official syllabus. | 11 | `templates`, `starter-template-boundary` |
 | Plans stay in this browser. | 5 | `local-private` |
 | Exam Bridge does not host exam questions or coaching notes. | 9 | `hosted-content-boundary` |
 | Check the official syllabus before studying. | 6 | Boundary |
@@ -58,10 +53,8 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | Start for real | 3 | Action |
 | Explore six realistic topics. | 4 | `demo-sandbox` |
 | Changes stay in the temporary demo sandbox. | 7 | `demo-sandbox` |
-| Try every template in the demo. | 6 | `templates` |
-| Sample use needs no license and stays in temporary demo storage. | 11 | `templates`, `demo-sandbox` |
 | You’re offline. | 2 | State |
-| Planning and exports still work; license checks wait for a connection. | 11 | `offline-reload`, `csv-export` |
+| Planning and exports still work on this device. | 9 | `offline-reload`, `csv-export` |
 
 ## Legal pages
 
@@ -72,15 +65,13 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 | They are not sent to Exam Bridge. | 7 | `local-private` |
 | The demo uses separate keys beginning with demo:exam-bridge:. | 8 | `demo-sandbox` |
 | It never reads or changes your real plan. | 8 | `demo-sandbox` |
-| The app loads no third-party scripts, fonts, advertisements, or behavioral analytics. | 11 | `local-private` |
+| The app loads no third-party scripts, fonts, advertisements, behavioral analytics, or checkout services. | 14 | `local-private`, `no-dead-purchase-action` |
+| Planning, templates, exports, and backups use this browser only. | 9 | `local-private`, `free-access` |
 | Exam Bridge organizes study plans. | 5 | Plain description |
 | It does not guarantee results or represent an exam authority. | 10 | Boundary |
-| The planner, CSV exports, and JSON backups are free. | 9 | `free-access` |
+| The planner, templates, CSV exports, and JSON backups are free. | 10 | `free-access` |
 | They need no account, card, checkout, or payment. | 8 | `free-access` |
-| Exam Bridge Plus is a one-time ₹499 license for three reusable, editable planning templates. | 14 | `paid-template-license` |
-| The purchase button appears only after the shared Sociobot checkout is activated. | 12 | `checkout-registration-gate` |
-| A successful result is cached for up to 24 hours. | 10 | `paid-template-license` |
-| A refund makes the license inactive after the next check. | 10 | `refund-revokes-license` |
+| The app presents no purchase or checkout action. | 8 | `no-dead-purchase-action` |
 
 ## Not-found page
 
@@ -113,7 +104,7 @@ copy. Counts treat hyphenated forms and numeric ranges as one word.
 - No sentence exceeds 22 words.
 - No banned marketing word appears in visitor copy.
 - The first screen names the audience, job, and first action.
-- The researched freemium scope, exact price, and operator-gated checkout state are explicit.
+- The unavailable purchase promise was removed; templates are now clearly free.
 - Every outcome, boundary, and provenance statement maps to a registered claim test.
 
 | Concept | Term used |

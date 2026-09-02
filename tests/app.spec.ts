@@ -201,49 +201,12 @@ test('keeps all effective route, shell, and footer targets at least 44px at 390p
   }
 });
 
-test('keeps checkout operator-gated and the free planner available', async ({ page }) => {
-  await expect(page.getByRole('link', { name: /checkout|buy/i })).toHaveCount(0);
-  await expect(page.locator('#purchase-status')).toContainText('not open yet');
-  await expect(page.locator('input[name="license"]')).toBeVisible();
-  await expect(page.getByRole('link', { name: 'Try in demo' })).toHaveCount(3);
-  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(0);
-  await page.getByLabel(/Syllabus topics/).fill('Signals and systems\nControl systems');
-  await page.getByRole('button', { name: /Map my syllabus/ }).click();
-  await expect(page.locator('.topic')).toHaveCount(2);
-});
-
-test('stores and strips a returned license before verifying it', async ({ page }) => {
-  await page.route('**/api/v1/products/exam-bridge/verify?license=returned-license', route => route.fulfill({
-    contentType: 'application/json',
-    body: JSON.stringify({ valid: true, reason: 'ok', expires_at: null }),
-  }));
-  await page.goto('/?license=returned-license');
-  await expect(page).toHaveURL('http://127.0.0.1:4173/');
-  await expect(page.getByRole('heading', { name: 'Template license active' })).toBeVisible();
-  expect(await page.evaluate(() => localStorage.getItem('sb_license:exam-bridge'))).toBe('returned-license');
-});
-
-test('locks an invalid license and explains verification rate limits', async ({ page }) => {
-  await page.route('**/api/v1/products/exam-bridge/verify?license=invalid-license', route => route.fulfill({
-    contentType: 'application/json',
-    body: JSON.stringify({ valid: false, reason: 'invalid', expires_at: null }),
-  }));
-  await page.goto('/');
-  await page.getByLabel('Have a license?').fill('invalid-license');
-  await page.getByRole('button', { name: 'Verify license' }).click();
-  await expect(page.locator('.license-notice')).toContainText('not active');
-  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(0);
-
-  await page.unroute('**/api/v1/products/exam-bridge/verify?license=invalid-license');
-  await page.route('**/api/v1/products/exam-bridge/verify?license=rate-limited', route => route.fulfill({
-    status: 429,
-    headers: { 'Access-Control-Expose-Headers': 'Retry-After', 'Retry-After': '60' },
-    contentType: 'application/json',
-    body: JSON.stringify({ error: 'rate limit' }),
-  }));
-  await page.getByLabel('Have a license?').fill('rate-limited');
-  await page.getByRole('button', { name: 'Verify license' }).click();
-  await expect(page.locator('#license-status')).toHaveText('Too many checks. Try again in 60 seconds.');
+test('keeps templates free and offers no purchase controls', async ({ page }) => {
+  await expect(page.getByRole('button', { name: 'Use template' })).toHaveCount(3);
+  await expect(page.locator('a[href*="checkout" i], form[action*="checkout" i]')).toHaveCount(0);
+  await expect(page.getByText(/₹499|one-time license|exam bridge plus/iu)).toHaveCount(0);
+  await page.getByRole('button', { name: 'Use template' }).first().click();
+  await expect(page.locator('#workspace-title')).toHaveText('Engineering foundations');
 });
 
 test('serves demo-specific metadata before application JavaScript runs', async ({ request }) => {
