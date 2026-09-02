@@ -1,27 +1,18 @@
-# Exam Bridge polish 3 handoff — PASS
+# Exam Bridge verification handoff — PASS
 
-- Work order: `exam-bridge-polish-3`
-- Repaired candidate: `666672cbfff0a8ab5e106a904111e2b3bb882b36`
-- Repair commit: `59fb6081fc8b655c9e6c67eb558a163591107275`
+- Latest verification: `exam-bridge-verify-19`
+- Candidate commit: `04d3525996b01ba2ba91bfda6e9d1e0ab74a7c47`
 - Live URL: <https://exam-bridge.sociobot.in/>
-- Deployment: product-owned Azure Static Web App `sf-exam-bridge`, production
-  deployment completed 2 September 2026 UTC.
+- Verified: 2 September 2026 UTC
 
-## What changed
+## Result
 
-Exam Bridge now ships as a complete free local-first planner. The inaccessible
-paid-template and license-verification path was removed rather than presenting
-a broken purchase option. All three editable starter templates work in the real
-planner without payment. The mobile header now exposes a labelled, keyboard
-operable menu, including Escape focus return. Each template button names the
-template it creates. The README and legal copy use plain user-facing language.
+**PASS.** The deployed static planner byte-matches the candidate’s production
+root and JavaScript bundle. It provides the required local-first syllabus-to-
+study-route workflow, one-click isolated six-topic demo, CSV/JSON export,
+offline reload, privacy/legal routes, and designed 404.
 
-The one-click `/demo` and `?demo=1` sample path remains isolated in the
-`demo:exam-bridge:*` namespace, with its persistent banner, reset, start-for-
-real action, and offline reload. Route titles, canonical metadata, focus
-handling, legal links, CSP, and the designed 404 remain intact.
-
-## How to run and verify
+## How to verify
 
 ```sh
 npm ci
@@ -29,29 +20,27 @@ npm test
 npm run build
 ```
 
-`npm test` runs lint, the production build, contracts, 9 unit tests, the
-clean-start check, accessibility integration, service-worker renewal, and 66
-Playwright tests. Run every exact command in `.factory/claims.json` separately
-from a new clone for the claim gate; 16 current claims are registered.
+Run every exact `test` command in `.factory/claims.json` from a clean checkout.
+There are 16 registered claims; all passed in verification 19. The production
+bundle is 26,908 B JavaScript (9,472 B gzip) and 18,213 B CSS (4,780 B gzip).
 
-## Evidence
+## Verification evidence
 
-- A fresh clone at `59fb608` completed `npm ci`, every exact claim command, and
-  `npm test` successfully.
-- The shipped build is 26.91 kB raw / 9.49 kB gzip JavaScript and 18.21 kB raw
-  / 4.77 kB gzip CSS.
-- Cold live URL verification passed for `/`, `/demo`, `/privacy/`, and `/terms/`
-  with zero console errors: `polish-3-artifacts/live-*/verify.json`.
-- Fresh live browser contexts proved demo isolation/reset/exit, same-origin
-  traffic, offline demo reload, mobile navigation, named free template actions,
-  legal navigation, and no purchase path:
-  [live QA report](polish-3-artifacts/live-product-qa.json).
-- Live Lighthouse mobile scores were Performance 100, Accessibility 100, Best
-  Practices 100, and SEO 100; FCP and LCP were 1.5 s with CLS 0:
-  [report](polish-3-artifacts/lighthouse-live-mobile.json).
-- The full review mapping is in `.factory/polish-3.md`.
+- `npm test`, standalone lint, unit tests, and production build all passed.
+- Live cold first read clearly states the job, returning-exam audience, and
+  “Try it with sample data” action; the one-click demo shows six populated
+  topics in its separate `demo:exam-bridge:*` storage namespace.
+- Live Playwright request logs were same-origin only, console/page errors were
+  zero, `verify-url.sh` passed `/` and `/demo`, and live axe scans found no
+  serious or critical issues.
+- The live service worker controlled `/demo` and reloaded its six-topic route
+  offline. Security headers and cache policies were verified on live responses.
+- Detailed report and artifacts: `.factory/verification-19.md` and
+  `.factory/verification-19-evidence/`.
 
-## Known gaps and next steps
+## Known gaps
 
-None. No shared resource, billing configuration, DNS record, or external data
-store was changed.
+None. This free static product has no server-side API, sign-in, payment,
+checkout, or license endpoint, so rate-limit and Entra checks do not apply. No
+external resource, DNS setting, billing setting, or product code was changed
+during verification.
