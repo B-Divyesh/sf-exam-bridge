@@ -69,8 +69,36 @@ from no `dist/` directory.
 
 ## Deployment and remaining work
 
-The production deploy and live identity check are recorded below after the
-commit is pushed. There is no known product defect in the free local planner.
+Commit `12d01a9b5170beb15088b5c8e4a4806e59733ee4` was pushed to `main` and
+deployed to production through the scoped `sf-exam-bridge` Static Web App. The
+deployment endpoint confirmed:
+
+```text
+https://proud-pebble-0504f2a0f.7.azurestaticapps.net
+```
+
+Live checks at <https://exam-bridge.sociobot.in/> and `/demo` passed the same
+title, language, landmark, image-alt, and no-console-error verification. The
+custom URL returns the local-only `connect-src 'self'` CSP. `/privacy/` and
+`/terms/` return 200; an unknown path returns the product 404 with HTTP 404.
+The live root and local `dist/index.html` have the same SHA-256:
+
+```text
+e38604d5ca5d2bc449a2afc5bba4ac9ef2a0f95e1555349ae2c912c211ef6141
+```
+
+The deployed JS asset also matched local bytes:
+
+```text
+6797c4fdf3c9a9b4f2495564c8ac0bd7a1cd3472d7469f5e347d56e0955c6c48
+```
+
+A live 390 px Playwright exercise found three usable free template controls,
+no checkout or price text, no cross-origin requests, and zero WCAG A/AA axe
+violations after using a template. Live verification screenshots and reports
+are in `.factory/repair-13-artifacts/live-root/` and `live-demo/`.
+
+There is no known product defect in the free local planner.
 If paid templates are reintroduced, an authorized billing operator must first
 register and test the scoped checkout and return URL; do not re-add a price or
 purchase action behind a build flag.
